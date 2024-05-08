@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:new_app/Const/global_var.dart';
+import 'package:new_app/auth/forgot_password.dart';
 import 'package:new_app/auth/registering.dart';
 import 'package:new_app/comen/common_methords.dart';
 import 'package:new_app/components/applogo_area.dart';
@@ -187,10 +188,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (c) => const SignUpScreen()));
+                              builder: (c) => const ForgotPassword()));
                     },
                     child: const Text(
-                      'forgot password',
+                      'Forgot password',
                       style: TextStyle(
                         color: Colors.grey,
                       ),
