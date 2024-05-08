@@ -143,7 +143,7 @@ class _DrewerState extends State<Drewer> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const Settings(),
+                              builder: (_) =>  Settings(),
                             ),
                           );
                         },

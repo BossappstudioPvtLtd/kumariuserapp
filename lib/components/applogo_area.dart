@@ -58,7 +58,7 @@ class _ApplogoAreaState extends State<ApplogoArea> {
                   height: 20,
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 60,
                 ),
                 Text(
                   widget.text,

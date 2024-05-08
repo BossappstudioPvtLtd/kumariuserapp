@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                             color: Colors.white,
                                             shape: const CircleBorder(),
                                             elevation: 0,
-                                            child:  Icon(Icons.edit),
+                                            child:  const Icon(Icons.edit),
                                             onPressed: () {
                                               Navigator.push(
                                                   context,
@@ -128,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: <Widget>[
                                     CircleAvatar(
                                       radius: 42,
-                                      backgroundColor: Colors.green,
+                                      backgroundColor: Color.fromARGB(255, 9, 77, 77),
                                       child: CircleAvatar(
                                         radius: 40,
                                         backgroundColor: Colors.white,
@@ -158,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
 
                         
-                          SizedBox(height: 10.0),
+                          const SizedBox(height: 10.0),
                           Column(children: [
                             Container(
                               padding:
@@ -203,14 +203,14 @@ class _ProfilePageState extends State<ProfilePage> {
                                             ),
                                             ListTile(
                                               leading: const Icon(Icons.email),
-                                              title: Text("email"),
+                                              title: const Text("email"),
                                               subtitle:
                                                   Text("${data['email']}"),
                                             ),
                                             ListTile(
                                               leading: const Icon(
                                                   Icons.phone_iphone_sharp),
-                                              title: Text("phone"),
+                                              title: const Text("phone"),
                                               subtitle:
                                                   Text("${data['phone']}"),
                                             ),
@@ -227,7 +227,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     );
                   } else {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   }
                 }));
   }
