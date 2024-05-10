@@ -128,7 +128,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: <Widget>[
                                     CircleAvatar(
                                       radius: 42,
-                                      backgroundColor: Color.fromARGB(255, 9, 77, 77),
+                                      backgroundColor: const Color.fromARGB(255, 9, 77, 77),
                                       child: CircleAvatar(
                                         radius: 40,
                                         backgroundColor: Colors.white,

@@ -74,6 +74,7 @@ dependencies:
   pinput: ^4.0.0
   country_picker: ^2.0.25
   cached_network_image: ^3.3.1
+  shared_preferences: ^2.2.3
 
   
 
