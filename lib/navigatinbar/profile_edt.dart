@@ -1,4 +1,4 @@
-// ignore_for_file: unused_element, deprecated_member_use, use_build_context_synchronously, unused_field
+// ignore_for_file: unused_element, deprecated_member_use, use_build_context_synchronously, unused_field, avoid_print
 
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -95,8 +95,11 @@ class _PrifileEdtState extends State<PrifileEdt> {
     _phoneController.text = "";
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text("Profile Editing"),
+        
+      backgroundColor: Colors.white,
       ),
       body: currentUser == null || userRef == null
         ? const Center(child: Text('No user logged in'))
@@ -134,11 +137,11 @@ class _PrifileEdtState extends State<PrifileEdt> {
                                 onTap: getImage,
                                 child: Material(
                                   borderRadius: BorderRadius.circular(25),
-                                  color: Color.fromARGB(235, 1, 72, 130),
-                                  child: Container(
+                                  color: const Color.fromARGB(235, 1, 72, 130),
+                                  child: const SizedBox(
                                     height: 30,
                                     width: 30,
-                                    child: const Icon(Icons.add_a_photo_rounded,
+                                    child: Icon(Icons.add_a_photo_rounded,
                                         size: 20, color: Colors.white),
                                   ),
                                 ),
@@ -176,6 +179,8 @@ class _PrifileEdtState extends State<PrifileEdt> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         Material(
+                          
+                          color: Colors.white,
                           elevation: 10,
                           borderRadius: BorderRadius.circular(10.0),
                           child: TextFormField(
@@ -194,6 +199,7 @@ class _PrifileEdtState extends State<PrifileEdt> {
                         ),
                         const SizedBox(height: 20),
                         Material(
+                          color: Colors.white,
                           elevation: 10,
                           borderRadius: BorderRadius.circular(10.0),
                           child: TextFormField(
@@ -214,6 +220,8 @@ class _PrifileEdtState extends State<PrifileEdt> {
                         const SizedBox(height: 20),
                         Material(
                           elevation: 10,
+                          
+                          color: Colors.white,
                           borderRadius: BorderRadius.circular(10.0),
                           child: TextFormField(
                             keyboardType: TextInputType.phone,

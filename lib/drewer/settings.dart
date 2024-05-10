@@ -1,6 +1,15 @@
+// ignore_for_file: unnecessary_import
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:new_app/components/m_buttons.dart';
+import 'package:new_app/components/setting_listtile.dart';
+import 'package:new_app/components/text_add.dart';
+import 'package:new_app/navigatinbar/profile_edt.dart';
+import 'package:new_app/themes/NewMethord/ui_Provider.dart';
+import 'package:provider/provider.dart';
 
 class Settings extends StatefulWidget {
   const Settings({super.key});
@@ -13,14 +22,16 @@ class SettingsState extends State<Settings> {
   final bool _switch = true;
   final bool _switch1 = false;
 
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        
-        
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         leading: IconButton(
           onPressed: () {
             setState(() {
@@ -53,7 +64,9 @@ class SettingsState extends State<Settings> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: <Widget>[
-             //Account
+              //Account
+
+              
 
               const Row(
                 children: <Widget>[
@@ -76,45 +89,28 @@ class SettingsState extends State<Settings> {
               const SizedBox(
                 height: 10,
               ),
-              Material(
-                elevation: 10,
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: const Column(
-                    children: <Widget>[
-                      
-                      ListTile(
-                        leading: Icon(Icons.edit),
-                        title: Text(
-                          
-                          "Edit Profile",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20,
-                        ),
-                      ),
-                      ListTile(
-                        leading: Text(
-                          "Change Password",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20,
-                        ),
-                      ),
-                    
-                    ],
-                  ),
-                ),
+              SettingListTile(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const PrifileEdt(
+                                name: '',
+                                email: '',
+                                phone: '',
+                                photo: '',
+                              )));
+                },
+                text: "Edit Profile",
+                leadingicon: Icons.edit_outlined,
+                leadingiconcolor: Colors.blueGrey,
+                trailingicon: Icons.arrow_forward_ios,
+                text1: "Change Password",
+                leadingiconcolor1: Colors.green,
+                leadingicon1: Icons.lock_outline,
+                trailingicon1: Icons.arrow_forward_ios,
               ),
+
               const SizedBox(
                 height: 40,
               ),
@@ -152,7 +148,11 @@ class SettingsState extends State<Settings> {
                   child: Column(
                     children: <Widget>[
                       ListTile(
-                        leading: const Text(
+                        leading: const Icon(
+                          Icons.notifications_active_outlined,
+                          color: Colors.amber,
+                        ),
+                        title: const Text(
                           "Notification",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
@@ -165,24 +165,32 @@ class SettingsState extends State<Settings> {
                             onChanged: (bool val) {}),
                       ),
                       ListTile(
-                        leading: const Text(
+                        leading: const Icon(
+                          Icons.notifications_off_outlined,
+                          color: Colors.red,
+                        ),
+                        title: const Text(
                           "App Notification",
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
-                        trailing: Switch(
-                            value: _switch1,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            activeColor: Colors.green,
-                            onChanged: (bool val) {}),
+                        trailing: Consumer<UiProvider>(
+                          builder: (context, UiProvider notifier, child) {
+                            return Switch(
+                                value:  notifier.isDark,
+                                materialTapTargetSize:
+                                    MaterialTapTargetSize.shrinkWrap,
+                                activeColor: Colors.green,
+                                onChanged: (value)=>notifier.changeTheme());
+                          }
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
 
-            //More
+              //More
 
               const SizedBox(
                 height: 40,
@@ -208,54 +216,81 @@ class SettingsState extends State<Settings> {
               const SizedBox(
                 height: 10,
               ),
-              Material(
-                
-                elevation: 10,
-                borderRadius: BorderRadius.circular(10),
-                child: Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                  child: const Column(
-                    children: <Widget>[
-                      ListTile(
-                        leading: Text(
-                          "Language",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20,
-                        ),
-                      ),
-                      ListTile(
-                        leading: Text(
-                          "Country",
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
-                        ),
-                        trailing: Icon(
-                          Icons.arrow_forward_ios,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              const SettingListTile(
+                text: "Language",
+                leadingicon: Icons.language_outlined,
+                leadingiconcolor: Colors.blue,
+                trailingicon: Icons.arrow_forward_ios,
+                text1: "Darak Mode",
+                leadingiconcolor1: Colors.grey,
+                leadingicon1: Icons.dark_mode_outlined,
+                trailingicon1: Icons.arrow_forward_ios,
               ),
+
               const SizedBox(
                 height: 40,
               ),
               MaterialButtons(
-                onPressed: () {},
+                onTap: () {
+                  showCupertinoDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.black87,
+                          elevation: 20,
+                          title: const TextEdt(
+                            text: 'Email Sign Out',
+                            color: Colors.white,
+                            fontSize: null,
+                          ),
+                          content: const TextEdt(
+                            text: 'Do you want to continue with sign out?',
+                            fontSize: null,
+                            color: Colors.grey,
+                          ),
+                          actions: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                MaterialButtons(
+                                  onTap: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                  elevationsize: 20,
+                                  text: '   Cancel    ',
+                                  fontSize: 17,
+                                  containerheight: 40,
+                                  containerwidth: 100,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
+                                  onPressed: null,
+                                ),
+                                MaterialButtons(
+                                  onTap: () {
+                                    _signOut();
+                                    Navigator.of(context).pop();
+                                  },
+                                  elevationsize: 20,
+                                  text: 'Continue',
+                                  fontSize: 17,
+                                  containerheight: 40,
+                                  containerwidth: 100,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
+                                  onPressed: null,
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      });
+                },
                 containerheight: 40,
                 borderRadius: BorderRadius.circular(10),
-               meterialColor: Colors.white,
+                meterialColor: Colors.white,
                 text: 'Sign Out',
                 textcolor: Colors.red,
                 elevationsize: 20,
-                
               )
             ],
           ),
