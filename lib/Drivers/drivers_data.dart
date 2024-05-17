@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -105,11 +106,13 @@ class _DriverListScreenState extends State<DriverListScreen> {
                                           horizontal: 25),
                                       child: Container(
                                         height: 230,
-                                        decoration: const BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(32)),
-                                            color: Color.fromARGB(
-                                                255, 236, 232, 232)),
+                                        decoration: BoxDecoration(
+                                          borderRadius: const BorderRadius.all(
+                                              Radius.circular(32)),
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .background,
+                                        ),
                                         padding: const EdgeInsets.all(16),
                                         child: Column(
                                           children: [
@@ -167,13 +170,17 @@ class _DriverListScreenState extends State<DriverListScreen> {
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 25),
                                               child: MaterialButtons(
-                                                text: 'Select Your ',
+                                                text: 'Enjoy Your Ride!'.tr(),
                                                 textcolor: Colors.white,
                                                 meterialColor:
                                                     const Color.fromARGB(
                                                         255, 3, 22, 60),
                                                 onTap: () {
-                                                  Navigator.push(context, MaterialPageRoute(builder: (_)=>HomePage()));
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (_) =>
+                                                              const HomePage()));
                                                 },
                                                 elevationsize: 20,
                                                 containerheight: 40,
@@ -214,8 +221,8 @@ class _DriverListScreenState extends State<DriverListScreen> {
               ),
               Text(
                 _drivers[index].name,
-                style: const TextStyle(
-                    color: Color.fromARGB(255, 75, 16, 90),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
                     fontWeight: FontWeight.bold),
               ),
               /*Text('Phone: ${_drivers[index].phone}\n'

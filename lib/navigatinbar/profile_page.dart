@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -65,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: Theme.of(context).colorScheme.background,
         extendBodyBehindAppBar: true,
         extendBody: true,
         body: currentUser == null || userRef == null
@@ -86,14 +87,12 @@ class _ProfilePageState extends State<ProfilePage> {
                               Stack(
                                 children: [
                                   Ink(
-                                    height: 200,
                                     width: double.infinity,
                                     decoration: const BoxDecoration(
                                       color: Colors.black38,
                                     ),
-                                    child: Image.asset(
-                                      "assets/images/taxi.jpg",
-                                    ),
+                                    child: Image.asset("assets/images/taxi.jpg",
+                                        fit: BoxFit.cover),
                                   ),
                                   Row(
                                     children: [
@@ -102,19 +101,30 @@ class _ProfilePageState extends State<ProfilePage> {
                                         padding:
                                             const EdgeInsets.only(top: 120),
                                         child: MaterialButton(
-                                            color: Colors.white,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .background,
                                             shape: const CircleBorder(),
                                             elevation: 0,
-                                            child:  const Icon(Icons.edit),
+                                            child: Icon(
+                                              Icons.edit,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onBackground,
+                                            ),
                                             onPressed: () {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (_) =>
-                                                           PrifileEdt( name: "${data['name']}",
-                                     email: " ${data['email']}",
-                                      phone: "${data['phone']}",
-                                     photo:  "${data['photo']}") ));
+                                                      builder: (_) => PrifileEdt(
+                                                          name:
+                                                              "${data['name']}",
+                                                          email:
+                                                              " ${data['email']}",
+                                                          phone:
+                                                              "${data['phone']}",
+                                                          photo:
+                                                              "${data['photo']}")));
                                             }),
                                       )
                                     ],
@@ -128,7 +138,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                   children: <Widget>[
                                     CircleAvatar(
                                       radius: 42,
-                                      backgroundColor: const Color.fromARGB(255, 9, 77, 77),
+                                      backgroundColor:
+                                          const Color.fromARGB(255, 9, 77, 77),
                                       child: CircleAvatar(
                                         radius: 40,
                                         backgroundColor: Colors.white,
@@ -156,18 +167,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             " ${data['name']}",
                             style: const TextStyle(fontSize: 20),
                           ),
-
-                        
                           const SizedBox(height: 10.0),
                           Column(children: [
                             Container(
                               padding:
                                   const EdgeInsets.only(left: 8.0, bottom: 4.0),
                               alignment: Alignment.topLeft,
-                              child: const Text(
-                                "User Information",
+                              child: Text(
+                                "User Information".tr(),
                                 style: TextStyle(
-                                  color: Colors.black87,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.background,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 16,
                                 ),
@@ -176,8 +186,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             Card(
                               elevation: 10,
-                              color: const Color.fromARGB(255, 236, 255, 255),
                               child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onInverseSurface,
+                                ),
                                 alignment: Alignment.topLeft,
                                 padding: const EdgeInsets.all(15),
                                 child: Column(
@@ -192,27 +207,55 @@ class _ProfilePageState extends State<ProfilePage> {
                                                   const EdgeInsets.symmetric(
                                                       horizontal: 12,
                                                       vertical: 4),
-                                              leading:
-                                                  const Icon(Icons.my_location),
-                                              title: const Text("Location"),
+                                              leading: Icon(
+                                                Icons.my_location,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
+                                              title:  Text("Location".tr()),
                                               subtitle: Text(
                                                 _locationMessage,
-                                                style: const TextStyle(
-                                                    color: Colors.black),
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground,
+                                                ),
                                               ),
                                             ),
                                             ListTile(
-                                              leading: const Icon(Icons.email),
-                                              title: const Text("email"),
-                                              subtitle:
-                                                  Text("${data['email']}"),
+                                              leading: Icon(
+                                                Icons.email,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
+                                              title:  Text("Email".tr()),
+                                              subtitle: Text(
+                                                "${data['email']}",
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground,
+                                                ),
+                                              ),
                                             ),
                                             ListTile(
-                                              leading: const Icon(
-                                                  Icons.phone_iphone_sharp),
-                                              title: const Text("phone"),
-                                              subtitle:
-                                                  Text("${data['phone']}"),
+                                              leading: Icon(
+                                                Icons.phone_iphone_sharp,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onBackground,
+                                              ),
+                                              title:  Text("Phone".tr()),
+                                              subtitle: Text(
+                                                "${data['phone']}",
+                                                style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground,
+                                                ),
+                                              ),
                                             ),
                                           ],
                                         ),

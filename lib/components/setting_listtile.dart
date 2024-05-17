@@ -13,8 +13,8 @@ class SettingListTile extends StatefulWidget {
   final String text;
   final String text1;
 
-  final IconData? trailingicon;
-  final IconData? trailingicon1;
+  final Widget? trailing;
+  final Widget? trailing1;
 
   const SettingListTile(
       {super.key,
@@ -22,12 +22,13 @@ class SettingListTile extends StatefulWidget {
       required this.text,
       this.leadingiconcolor,
       this.leadingicon,
-      this.trailingicon,
+      
       this.onTap1,
       this.leadingicon1,
       required this.text1,
       this.leadingiconcolor1,
-      this.trailingicon1});
+       this.trailing, 
+       this.trailing1});
 
   @override
   State<SettingListTile> createState() => _SettingListTileState();
@@ -41,8 +42,8 @@ class _SettingListTileState extends State<SettingListTile> {
       borderRadius: BorderRadius.circular(10),
       child: Container(
         decoration: 
-        const BoxDecoration(
-            color: Colors.white,
+         BoxDecoration(
+              color: Theme.of(context).colorScheme.background, 
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: Column(
           children: <Widget>[
@@ -55,10 +56,7 @@ class _SettingListTileState extends State<SettingListTile> {
                   widget.text,
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
-                trailing: Icon(
-                  widget.trailingicon,
-                  size: 20,
-                ),
+                trailing:widget.trailing
               ),
             ),
             GestureDetector(
@@ -72,10 +70,7 @@ class _SettingListTileState extends State<SettingListTile> {
                   widget.text1,
                   style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
                 ),
-                trailing: Icon(
-                  widget.trailingicon,
-                  size: 20,
-                ),
+                 trailing:widget.trailing1,
               ),
             ),
           ],
