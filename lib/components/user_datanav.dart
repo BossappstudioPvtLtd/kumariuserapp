@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -23,76 +24,75 @@ class _UserInfoNavState extends State<UserInfoNav> {
           .child('users/${currentUser!.uid}');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream:userRef!.onValue ,
-      builder: (context,AsyncSnapshot event) {
-        if (event.hasData &&
-                    !event.hasError &&
-                    event.data.snapshot.value != null) {
-                       Map data = event.data.snapshot.value;
-        return Padding(
-          padding: const EdgeInsets.only(
-            right: 12,
-          ),
-          child: Material(
-            shadowColor: const Color.fromARGB(255, 3, 22, 60),
-            borderRadius: const BorderRadius.only(
-              bottomLeft: Radius.circular(35),
-              topLeft: Radius.circular(35),
-              topRight: Radius.circular(10),
-              bottomRight: Radius.circular(10),
-            ),
-            elevation: 10,
-            color: Colors.white,
-            child: Row(
-              children: [
-                Material(
-                  elevation: 20,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(50),
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
-                    child:  Image.network("${data['photo']}",
-                        // child: Image.network(currentUser!.photoURL!,
-                        width: 70,
-                        height: 70,
-                        fit: BoxFit.cover),
-                  ),
+        stream: userRef!.onValue,
+        builder: (context, AsyncSnapshot event) {
+          if (event.hasData &&
+              !event.hasError &&
+              event.data.snapshot.value != null) {
+            Map data = event.data.snapshot.value;
+            return Padding(
+              padding: const EdgeInsets.only(
+                right: 12,
+              ),
+              child: Material(
+                shadowColor: const Color.fromARGB(255, 3, 22, 60),
+                borderRadius: const BorderRadius.only(
+                  bottomLeft: Radius.circular(35),
+                  topLeft: Radius.circular(35),
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                 Column(
+                elevation: 10,
+                color: Theme.of(context).colorScheme.background,
+                child: Row(
                   children: [
-                    Text(
-                      // "Hello, $userName!",
-                     
-                      'Hello: ${data['name']}',
-                      style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    Material(
+                      elevation: 20,
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(50),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(100.0),
+                        child: Image.network("${data['photo']}",
+                            // child: Image.network(currentUser!.photoURL!,
+                            width: 70,
+                            height: 70,
+                            fit: BoxFit.cover),
+                      ),
                     ),
-                    const Text(
-
-                      "Where are we taking you?",
-                      style: TextStyle(fontSize: 20, color: Colors.black54),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Row(
+                      children: [
+                         Text(
+                          'Hello'.tr(),
+                          style: const TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          " ${data['name']}!",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            ),
-          ),
-        );
-      }
-      else{
-        return const Center(child: CircularProgressIndicator(
-          color:Colors.black87,
-        ));
-      }
-      }
-     
-  
-    );
+                ),
+              ),
+            );
+          } else {
+            return const Center(
+                child: CircularProgressIndicator(
+              color: Colors.black87,
+            ));
+          }
+        });
   }
 }

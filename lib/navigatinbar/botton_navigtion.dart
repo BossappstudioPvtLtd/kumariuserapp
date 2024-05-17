@@ -3,8 +3,10 @@
 import 'dart:io';
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -65,7 +67,7 @@ class _BottonNavigationsState extends State<BottonNavigations> {
   ];
   List bottomPages = [
     const HomePage(),
-    const RealTimeCRUDEdatabase(),
+    const ChatPage(),
     const Deatails(),
     const ProfilePage()
   ];
@@ -165,9 +167,8 @@ class _BottonNavigationsState extends State<BottonNavigations> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var responseFromSearchPage = await showModalBottomSheet(
-            isScrollControlled: true,
-            backgroundColor: Colors.white24,
+          var responseFromSearchPage = await showCupertinoModalPopup(
+            
             context: context,
             builder: (builder) {
               return StatefulBuilder(
@@ -221,9 +222,9 @@ class _BottonNavigationsState extends State<BottonNavigations> {
                                           searchLocation(inputText);
                                         },
                                         textInputAction: TextInputAction.search,
-                                        decoration: const InputDecoration(
-                                          hintText: "Search Your Destination",
-                                          prefixIcon: Padding(
+                                        decoration:  InputDecoration(
+                                          hintText: "Search Your Destination".tr(),
+                                          prefixIcon: const Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 12),
                                             child: Icon(
@@ -263,7 +264,7 @@ class _BottonNavigationsState extends State<BottonNavigations> {
                             children: [
                               MaterialButtons(
                                 elevationsize: 2,
-                                text: "Reset",
+                                text: "Reset".tr(),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 containerheight: 50,
@@ -277,14 +278,14 @@ class _BottonNavigationsState extends State<BottonNavigations> {
                               ),
                               MaterialButtons(
                                 elevationsize: 2,
-                                text: "Apply",
+                                text: "Apply".tr(),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 containerheight: 50,
                                 containerwidth: 150,
                                 fontSize: 17,
                                 textweight: FontWeight.bold,
-                                textcolor: const Color.fromARGB(255, 5, 31, 69),
+                                textcolor:Theme.of(context).colorScheme.onBackground,
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -457,17 +458,18 @@ class _BottonNavigationsState extends State<BottonNavigations> {
           borderRadius: BorderRadius.circular(50),
         ),
         backgroundColor: const Color.fromARGB(255, 3, 22, 60),
-        child: Icon(
+        child: const Icon(
           Icons.location_on_outlined,
-          color: Theme.of(context).colorScheme.onTertiary,
+          color: Colors.white,
           size: 30,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      backgroundColor: const Color.fromARGB(244, 255, 255, 255),
+     
+        backgroundColor:Theme.of(context).colorScheme.background,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         iconSize: 30,
-        inactiveColor: Theme.of(context).colorScheme.onTertiary,
+        inactiveColor: Colors.white,
         icons: iconList,
         activeColor: Colors.grey.shade50,
         activeIndex: bottomNavInde,

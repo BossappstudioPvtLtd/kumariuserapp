@@ -75,6 +75,16 @@ dependencies:
   country_picker: ^2.0.25
   cached_network_image: ^3.3.1
   shared_preferences: ^2.2.3
+  flutter_tts: ^4.0.2
+  language_code: ^0.5.3+2
+  language_picker: ^0.4.3
+  flutter_credit_card_new: ^0.0.4
+  easy_localization: ^3.0.7
+  webview_flutter: ^4.7.0
+  getwidget: ^4.0.0
+  app_settings: ^5.1.1
+ 
+  
 
   
 
@@ -127,6 +137,7 @@ flutter:
      - assets/logo/
      - assets/avatar/
      - assets/vectors/
+     - assets/translations/
     
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

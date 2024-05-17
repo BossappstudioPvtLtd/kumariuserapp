@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:math';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +12,11 @@ import 'package:new_app/components/info_card.dart';
 import 'package:new_app/components/list_tiles.dart';
 import 'package:new_app/components/m_buttons.dart';
 import 'package:new_app/components/text_add.dart';
+import 'package:new_app/drewer/About/about.dart';
 import 'package:new_app/drewer/electric_car.dart';
-import 'package:new_app/drewer/help.dart';
-import 'package:new_app/drewer/notifications.dart';
+import 'package:new_app/drewer/HelpeCenter/help.dart';
 import 'package:new_app/drewer/rider_history.dart';
-import 'package:new_app/drewer/settings.dart';
+import 'package:new_app/drewer/Settings/settings.dart';
 import 'package:new_app/navigatinbar/botton_navigtion.dart';
 
 class Drewer extends StatefulWidget {
@@ -60,7 +61,8 @@ class _DrewerState extends State<Drewer> {
     // User chose to sign out
     _signOutGoogle();
 
-    Navigator.push(context, MaterialPageRoute(builder: (_)=>const LoginScreen()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => const LoginScreen()));
   }
 
   @override
@@ -112,7 +114,7 @@ class _DrewerState extends State<Drewer> {
                           );
                         },
                         icon: Icons.directions_car_outlined,
-                        text: "Elactric cars",
+                        text: "Booking".tr(),
                       ),
                       ListTiles(
                         onTap: () {
@@ -124,31 +126,21 @@ class _DrewerState extends State<Drewer> {
                           );
                         },
                         icon: Icons.settings_backup_restore_rounded,
-                        text: "Rider history",
+                        text: "Rider History".tr(),
                       ),
+                     
+                     
                       ListTiles(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const Notifications(),
-                            ),
-                          );
-                        },
-                        icon: Icons.notification_add_outlined,
-                        text: "Notifications",
-                      ),
-                      ListTiles(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) =>  Settings(),
+                              builder: (_) => const Settings(),
                             ),
                           );
                         },
                         icon: Icons.settings_outlined,
-                        text: "Settings",
+                        text: "Settings".tr(),
                       ),
                       ListTiles(
                         onTap: () {
@@ -159,11 +151,23 @@ class _DrewerState extends State<Drewer> {
                             ),
                           );
                         },
-                        icon: Icons.help_center_outlined,
-                        text: "Help",
+                        icon: Icons.headset_mic_outlined,
+                        text: "Help Center".tr(),
+                      ),
+                      ListTiles(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>  const About(),
+                            ),
+                          );
+                        },
+                        icon: Icons.info_outline_rounded,
+                        text: "About".tr(),
                       ),
                       const SizedBox(
-                        height: 150,
+                        height: 100,
                       ),
                       ListTiles(
                         onTap: () {
@@ -171,13 +175,13 @@ class _DrewerState extends State<Drewer> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 236, 255, 255),
+                                 
+        backgroundColor:Theme.of(context).colorScheme.background,
                                   elevation: 20,
-                                  title: const Text('Google Sign Out'),
-                                  content: const TextEdt(
+                                  title:  Text('Sign Out Your Account'.tr()),
+                                  content:  TextEdt(
                                     text:
-                                        'Do you want to continue with sign out?',
+                                        'Do you want to continue with sign out?'.tr(),
                                     fontSize: null,
                                     color: null,
                                   ),
@@ -187,7 +191,7 @@ class _DrewerState extends State<Drewer> {
                                         Navigator.of(context).pop(false);
                                       },
                                       elevationsize: 20,
-                                      text: '   Cancel    ',
+                                      text: 'Cancel'.tr(),
                                       fontSize: 17,
                                       containerheight: 40,
                                       containerwidth: 100,
@@ -210,14 +214,14 @@ class _DrewerState extends State<Drewer> {
                                                     : ElevatedButton(
                                                         onPressed:
                                                             _navigateToSecondScreen,
-                                                        child: const Text(
-                                                            'Are you sure'),
+                                                        child:  Text(
+                                                            'Are you sure'.tr()),
                                                       ),
                                               );
                                             });
                                       },
                                       elevationsize: 20,
-                                      text: 'Continue',
+                                      text: 'Continue'.tr(),
                                       fontSize: 17,
                                       containerheight: 40,
                                       containerwidth: 100,
@@ -230,7 +234,7 @@ class _DrewerState extends State<Drewer> {
                               });
                         },
                         icon: Icons.logout_outlined,
-                        text: "Sign Out",
+                        text: "Sign Out".tr(),
                       ),
                     ],
                   ),
@@ -269,4 +273,8 @@ class _DrewerState extends State<Drewer> {
       ),
     );
   }
+}
+
+class Payment {
+  const Payment();
 }

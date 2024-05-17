@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:new_app/components/m_buttons.dart';
 
@@ -46,13 +47,14 @@ class _DeatailsState extends State<Deatails> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text('Mohammed shahin',
-                                style: TextStyle(
+                                style: TextStyle(color: Colors.black,
                                     fontSize: 16, fontWeight: FontWeight.w500)),
                             SizedBox(
                               height: 8,
+                              
                             ),
                             Text('Cinemas',
-                                style: TextStyle(color: Colors.blue, fontSize: 14)),
+                                style: TextStyle(color: Colors.black, fontSize: 14)),
                             SizedBox(
                               height: 8,
                             ),
@@ -68,7 +70,7 @@ class _DeatailsState extends State<Deatails> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: MaterialButtons(
-                        text: 'Select Your ',
+                        text: 'Enjoy Your Ride!'.tr(),
                         textcolor: Colors.white,
                         meterialColor:const Color.fromARGB(255, 3, 22, 60),
                         onTap: () {},

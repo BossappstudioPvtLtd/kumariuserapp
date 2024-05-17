@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_import
 
+import 'package:app_settings/app_settings.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,9 +20,15 @@ class Settings extends StatefulWidget {
   SettingsState createState() => SettingsState();
 }
 
+class LocalizationChecker {
+  static changeLanguage(BuildContext context, Locale newLocale) {
+    EasyLocalization.of(context)!.setLocale(newLocale);
+  }
+}
+
 class SettingsState extends State<Settings> {
   final bool _switch = true;
-  final bool _switch1 = false;
+  Locale _currentLocale = const Locale('en', 'US');
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
@@ -29,25 +37,27 @@ class SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         leading: IconButton(
           onPressed: () {
             setState(() {
               Navigator.pop(context);
             });
           },
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
             size: 20,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onBackground,
           ),
         ),
-        title: const Text(
-          "Settings",
+        title: Text(
+          "Settings".tr(),
           style: TextStyle(
-              fontSize: 20, color: Colors.black, fontWeight: FontWeight.w400),
+              fontSize: 20,
+              color: Theme.of(context).colorScheme.onBackground,
+              fontWeight: FontWeight.w400),
         ),
         actions: <Widget>[
           IconButton(
@@ -66,22 +76,20 @@ class SettingsState extends State<Settings> {
             children: <Widget>[
               //Account
 
-              
-
-              const Row(
+              Row(
                 children: <Widget>[
                   Icon(
                     Icons.person_outline,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Text(
-                    "Account",
+                    "Account".tr(),
                     style: TextStyle(
                         fontSize: 18,
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -101,37 +109,47 @@ class SettingsState extends State<Settings> {
                                 photo: '',
                               )));
                 },
-                text: "Edit Profile",
+                text: "Edit Profile".tr(),
                 leadingicon: Icons.edit_outlined,
                 leadingiconcolor: Colors.blueGrey,
-                trailingicon: Icons.arrow_forward_ios,
-                text1: "Change Password",
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                ), //Icons.arrow_forward_ios,
+                text1: "App Settings".tr(),
+
                 leadingiconcolor1: Colors.green,
-                leadingicon1: Icons.lock_outline,
-                trailingicon1: Icons.arrow_forward_ios,
+                trailing1: const Icon(
+                  Icons.arrow_forward_ios,
+                ),
+                onTap1: () {
+                  setState(() {
+                    AppSettings.openAppSettings();
+                  });
+                },
+                leadingicon1: Icons.phonelink_setup,
               ),
 
               const SizedBox(
                 height: 40,
               ),
-              const Row(
+              Row(
                 children: <Widget>[
                   Icon(
                     Icons.notifications_none,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
 
                   //Notification
 
                   Text(
-                    "Notification",
+                    "Notification".tr(),
                     style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w600),
+                        color: Theme.of(context).colorScheme.onBackground,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 20),
                   ),
                 ],
               ),
@@ -142,9 +160,10 @@ class SettingsState extends State<Settings> {
                 elevation: 10,
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
                   child: Column(
                     children: <Widget>[
                       ListTile(
@@ -152,9 +171,9 @@ class SettingsState extends State<Settings> {
                           Icons.notifications_active_outlined,
                           color: Colors.amber,
                         ),
-                        title: const Text(
-                          "Notification",
-                          style: TextStyle(
+                        title: Text(
+                          "Notification".tr(),
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                         trailing: Switch(
@@ -166,24 +185,23 @@ class SettingsState extends State<Settings> {
                       ),
                       ListTile(
                         leading: const Icon(
-                          Icons.notifications_off_outlined,
-                          color: Colors.red,
+                          Icons.sunny,
+                          color: Colors.grey,
                         ),
-                        title: const Text(
-                          "App Notification",
-                          style: TextStyle(
+                        title: Text(
+                          "Darak Mode".tr(),
+                          style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
                         trailing: Consumer<UiProvider>(
-                          builder: (context, UiProvider notifier, child) {
-                            return Switch(
-                                value:  notifier.isDark,
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                activeColor: Colors.green,
-                                onChanged: (value)=>notifier.changeTheme());
-                          }
-                        ),
+                            builder: (context, UiProvider notifier, child) {
+                          return Switch(
+                              value: notifier.isDark,
+                              materialTapTargetSize:
+                                  MaterialTapTargetSize.shrinkWrap,
+                              activeColor: Colors.green,
+                              onChanged: (value) => notifier.changeTheme());
+                        }),
                       ),
                     ],
                   ),
@@ -195,20 +213,20 @@ class SettingsState extends State<Settings> {
               const SizedBox(
                 height: 40,
               ),
-              const Row(
+              Row(
                 children: <Widget>[
                   Icon(
                     Icons.expand_more,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 15,
                   ),
                   Text(
                     "More",
                     style: TextStyle(
                         fontSize: 18,
-                        color: Colors.black,
+                        color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.w600),
                   ),
                 ],
@@ -216,15 +234,46 @@ class SettingsState extends State<Settings> {
               const SizedBox(
                 height: 10,
               ),
-              const SettingListTile(
-                text: "Language",
+              SettingListTile(
+                text: "Language".tr(),
+                onTap: () {
+                  // LocalizationChecker.changeLanguge(context);
+                },
                 leadingicon: Icons.language_outlined,
                 leadingiconcolor: Colors.blue,
-                trailingicon: Icons.arrow_forward_ios,
-                text1: "Darak Mode",
+                trailing: DropdownButtonHideUnderline(
+                  child: DropdownButton<Locale>(
+                    value: _currentLocale,
+                    items: const [
+                      DropdownMenuItem<Locale>(
+                        value: Locale('en', 'US'),
+                        child: Text('English'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('ta', 'IN'),
+                        child: Text('Tamil'),
+                      ),
+                      DropdownMenuItem<Locale>(
+                        value: Locale('ml', 'IN'),
+                        child: Text('Malayalam'),
+                      ),
+                    ],
+                    onChanged: (Locale? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          _currentLocale = newValue;
+                          LocalizationChecker.changeLanguage(context, newValue);
+                        });
+                      }
+                    },
+                  ),
+                ),
+                text1: "Darak Mode".tr(),
                 leadingiconcolor1: Colors.grey,
                 leadingicon1: Icons.dark_mode_outlined,
-                trailingicon1: Icons.arrow_forward_ios,
+                trailing1: const Icon(
+                  Icons.arrow_forward_ios,
+                ),
               ),
 
               const SizedBox(
@@ -238,13 +287,13 @@ class SettingsState extends State<Settings> {
                         return AlertDialog(
                           backgroundColor: Colors.black87,
                           elevation: 20,
-                          title: const TextEdt(
-                            text: 'Email Sign Out',
+                          title: TextEdt(
+                            text: 'Sign Out Your Account'.tr(),
                             color: Colors.white,
                             fontSize: null,
                           ),
-                          content: const TextEdt(
-                            text: 'Do you want to continue with sign out?',
+                          content: TextEdt(
+                            text: 'Do you want to continue with sign out?'.tr(),
                             fontSize: null,
                             color: Colors.grey,
                           ),
@@ -257,7 +306,7 @@ class SettingsState extends State<Settings> {
                                     Navigator.of(context).pop(false);
                                   },
                                   elevationsize: 20,
-                                  text: '   Cancel    ',
+                                  text: 'Cancel'.tr(),
                                   fontSize: 17,
                                   containerheight: 40,
                                   containerwidth: 100,
@@ -271,7 +320,7 @@ class SettingsState extends State<Settings> {
                                     Navigator.of(context).pop();
                                   },
                                   elevationsize: 20,
-                                  text: 'Continue',
+                                  text: 'Continue'.tr(),
                                   fontSize: 17,
                                   containerheight: 40,
                                   containerwidth: 100,
@@ -288,7 +337,7 @@ class SettingsState extends State<Settings> {
                 containerheight: 40,
                 borderRadius: BorderRadius.circular(10),
                 meterialColor: Colors.white,
-                text: 'Sign Out',
+                text: 'Sign Out'.tr(),
                 textcolor: Colors.red,
                 elevationsize: 20,
               )

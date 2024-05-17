@@ -11,10 +11,12 @@ class UiProvider extends ChangeNotifier{
 
   //Custom dark theme
   final darkTheme = ThemeData(
-    backgroundColor:Colors.white ,
+    backgroundColor: Colors.white,
     primaryColor: const Color.fromARGB(31, 0, 0, 0),
     brightness: Brightness.dark,
     primaryColorDark: Colors.black12,
+  
+    
   );
 
   //Custom light theme

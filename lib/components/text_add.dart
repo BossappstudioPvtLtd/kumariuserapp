@@ -10,8 +10,9 @@ class TextEdt extends StatefulWidget {
     super.key,
     this.onTap,
     required this.text,
-    required this.color,
-    required this.fontSize, this.decoration,
+    this.color,
+     this.fontSize, 
+     this.decoration,
   });
 
   @override
@@ -27,7 +28,7 @@ class _TextEdtState extends State<TextEdt> {
         widget.text,
         style: TextStyle(
             color: widget.color,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.w400,
             fontSize: widget.fontSize,
             decoration: widget.decoration),
       ),

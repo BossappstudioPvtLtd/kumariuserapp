@@ -233,10 +233,10 @@ class _SpalshRippleState extends State<SpalshRipple>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor:Theme.of(context).colorScheme.background,
       body: Stack(
         children: [
-          DriverListScreen(),
+          const DriverListScreen(),
           Center(
             child: CustomPaint(
               painter: MyPainter(

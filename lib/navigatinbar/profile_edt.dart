@@ -1,6 +1,7 @@
 // ignore_for_file: unused_element, deprecated_member_use, use_build_context_synchronously, unused_field, avoid_print
 
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -10,7 +11,11 @@ import 'package:new_app/components/m_buttons.dart';
 
 class PrifileEdt extends StatefulWidget {
   const PrifileEdt(
-      {super.key, required String name, required String email, required String phone, required String photo});
+      {super.key,
+      required String name,
+      required String email,
+      required String phone,
+      required String photo});
 
   @override
   // ignore: library_private_types_in_public_api
@@ -38,6 +43,7 @@ class _PrifileEdtState extends State<PrifileEdt> {
     _phoneController.dispose();
     super.dispose();
   }
+
   Future getImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
@@ -49,6 +55,7 @@ class _PrifileEdtState extends State<PrifileEdt> {
       }
     });
   }
+
   //updata data
   Future uploadFile() async {
     if (_image == null) return;
@@ -61,9 +68,9 @@ class _PrifileEdtState extends State<PrifileEdt> {
       String downloadURL = await ref.getDownloadURL();
       updateUserData(downloadURL);
     });
-    
   }
-    Future updateUserData(String photoUrl) async {
+
+  Future updateUserData(String photoUrl) async {
     String userId = _auth.currentUser!.uid;
     databaseRef.child('users/$userId').update({
       'name': _usernameController.text,
@@ -73,8 +80,6 @@ class _PrifileEdtState extends State<PrifileEdt> {
     });
   }
 
-
-   
   User? currentUser = FirebaseAuth.instance.currentUser;
   DatabaseReference? userRef;
 
@@ -95,179 +100,173 @@ class _PrifileEdtState extends State<PrifileEdt> {
     _phoneController.text = "";
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text("Profile Editing"),
-        
-      backgroundColor: Colors.white,
+        title:  Text("Profile Editing".tr()),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: currentUser == null || userRef == null
-        ? const Center(child: Text('No user logged in'))
-      :StreamBuilder<Object>(
-        stream: userRef!.onValue,
-        builder: (context, AsyncSnapshot event) {
-           if (event.hasData &&
-                  !event.hasError &&
-                  event.data.snapshot.value != null){
-                      Map data = event.data.snapshot.value;
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-               _image == null
-                      ? Stack(
-                          children: [
-                            GestureDetector(
-                                onTap: getImage,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(40),
-                                  elevation: 15,
-                                  child:  CircleAvatar(
-                                    radius: 43,
-                                    backgroundColor: Colors.white,
-                                    child: CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage:
-                                          NetworkImage("${data['photo']}")
+          ? const Center(child: Text('No user logged in'))
+          : StreamBuilder<Object>(
+              stream: userRef!.onValue,
+              builder: (context, AsyncSnapshot event) {
+                if (event.hasData &&
+                    !event.hasError &&
+                    event.data.snapshot.value != null) {
+                  Map data = event.data.snapshot.value;
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _image == null
+                            ? Stack(
+                                children: [
+                                  GestureDetector(
+                                      onTap: getImage,
+                                      child: Material(
+                                        borderRadius: BorderRadius.circular(40),
+                                        elevation: 15,
+                                        child: CircleAvatar(
+                                          radius: 43,
+                                          backgroundColor: Colors.white,
+                                          child: CircleAvatar(
+                                              radius: 40,
+                                              backgroundImage: NetworkImage(
+                                                  "${data['photo']}")),
+                                        ),
+                                      )),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 60, left: 60),
+                                    child: InkWell(
+                                      onTap: getImage,
+                                      child: Material(
+                                        borderRadius: BorderRadius.circular(25),
+                                        color: const Color.fromARGB(
+                                            235, 1, 72, 130),
+                                        child: const SizedBox(
+                                          height: 30,
+                                          width: 30,
+                                          child: Icon(Icons.add_a_photo_rounded,
+                                              size: 20, color: Colors.white),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                )),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 60, left: 60),
-                              child: InkWell(
-                                onTap: getImage,
-                                child: Material(
-                                  borderRadius: BorderRadius.circular(25),
-                                  color: const Color.fromARGB(235, 1, 72, 130),
-                                  child: const SizedBox(
-                                    height: 30,
-                                    width: 30,
-                                    child: Icon(Icons.add_a_photo_rounded,
-                                        size: 20, color: Colors.white),
+                                  )
+                                ],
+                              )
+                            : Material(
+                                elevation: 15,
+                                borderRadius: BorderRadius.circular(50),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(100),
+                                    child: Image.file(
+                                      _image!,
+                                      height: 80,
+                                      width: 80,
+                                    ))),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                         SizedBox(
+                          height: 30,
+                          width: 300,
+                          child: Center(child: Text("Add Your Image".tr())),
+                        ),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        Form(
+                          key: _formKey,
+                          child: SingleChildScrollView(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Material(
+                                  color:Theme.of(context).colorScheme.background,
+                                  elevation: 10,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: TextFormField(
+                                    controller: _usernameController,
+                                    decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        labelText: 'Name'.tr(),
+                                        hintText: ' ${data['name']}',
+                                        icon: const Padding(
+                                          padding: EdgeInsets.only(left: 15),
+                                          child: Icon(Icons.person),
+                                        )),
                                   ),
                                 ),
-                              ),
-                            )
-                          ],
-                        )
-                      : Material(
-                          elevation: 15,
-                          borderRadius: BorderRadius.circular(50),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(100),
-                              child: Image.file(
-                                _image!,
-                                height: 80,
-                                width: 80,
-                              ))),
-                const SizedBox(
-                  height: 20,
-                ),
-                const SizedBox(
-                  height: 30,
-                  width: 150,
-                  child: Center(child: Text("Add your profile")),
-                ),
-                
-                const SizedBox(
-                  height: 50,
-                ),
-                Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        Material(
-                          
-                          color: Colors.white,
-                          elevation: 10,
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: TextFormField(
-                            controller: _usernameController,
-                            decoration:  InputDecoration(
-                                border: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                labelText: 'User Name',
-                                 hintText: ' ${data['name']}',
-                                icon: const Padding(
-                                  padding: EdgeInsets.only(left: 15),
-                                  child: Icon(Icons.person),
-                                )),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Material(
-                          color: Colors.white,
-                          elevation: 10,
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: TextFormField(
-                            controller: _emailController,
-                            decoration:  InputDecoration(
-                              icon: const Padding(
-                                padding: EdgeInsets.only(left: 15),
-                                child: Icon(Icons.email_outlined),
-                              ),
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                              labelText: "Email",
-                              hintText: ' ${data['email']}'
+                                const SizedBox(height: 20),
+                                Material(
+                                  color:Theme.of(context).colorScheme.background,
+                                  elevation: 10,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: TextFormField(
+                                    controller: _emailController,
+                                    decoration: InputDecoration(
+                                        icon: const Padding(
+                                          padding: EdgeInsets.only(left: 15),
+                                          child: Icon(Icons.email_outlined),
+                                        ),
+                                        border: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        labelText: "Email".tr(),
+                                        hintText: ' ${data['email']}'),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                Material(
+                                  elevation: 10,
+                                  color:Theme.of(context).colorScheme.background,
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.phone,
+                                    controller: _phoneController,
+                                    decoration: InputDecoration(
+                                        icon: const Padding(
+                                          padding: EdgeInsets.only(left: 15),
+                                          child:
+                                              Icon(Icons.phone_android_rounded),
+                                        ),
+                                        labelText: 'Phone'.tr(),
+                                        border: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintText: ' ${data['phone']}'),
+                                  ),
+                                ),
+                                const SizedBox(height: 50),
+                                MaterialButtons(
+                                  borderRadius: BorderRadius.circular(10),
+                                  meterialColor:
+                                      const Color.fromARGB(255, 3, 22, 60),
+                                  containerheight: 50,
+                                  elevationsize: 20,
+                                  textcolor: Colors.white,
+                                  fontSize: 18,
+                                  textweight: FontWeight.bold,
+                                  text: "Submit".tr(),
+                                  onTap: () {
+                                    uploadFile();
+                                  },
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        Material(
-                          elevation: 10,
-                          
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: TextFormField(
-                            keyboardType: TextInputType.phone,
-                            controller: _phoneController,
-                            decoration:  InputDecoration(
-                              icon: const Padding(
-                                padding: EdgeInsets.only(left: 15),
-                                child: Icon(Icons.phone_android_rounded),
-                              ),
-                              labelText: 'Phone Number',
-                              border: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                               hintText: ' ${data['phone']}'
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 50),
-                        MaterialButtons(
-                          borderRadius: BorderRadius.circular(10),
-                          meterialColor: const Color.fromARGB(255, 3, 22, 60),
-                          containerheight: 50,
-                          elevationsize: 20,
-                          textcolor: Colors.white,
-                          fontSize: 18,
-                          textweight: FontWeight.bold,
-                          text: "Submit",
-                          onTap: () {
-                           uploadFile();
-                          },
                         ),
                       ],
                     ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-        else{
-         return const Center(child: CircularProgressIndicator());
-        }
-        }
-      ),
+                  );
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }),
     );
   }
-
-  
 }
