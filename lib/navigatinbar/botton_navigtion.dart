@@ -67,7 +67,7 @@ class _BottonNavigationsState extends State<BottonNavigations> {
   ];
   List bottomPages = [
     const HomePage(),
-    const ChatPage(),
+      ChatPage(),
     const Deatails(),
     const ProfilePage()
   ];
@@ -100,9 +100,6 @@ class _BottonNavigationsState extends State<BottonNavigations> {
           '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].country}';
     });
   }
-
-  
-  
 
   ///Places API - Place AutoComplete
   searchLocation(String locationName) async {
@@ -168,7 +165,6 @@ class _BottonNavigationsState extends State<BottonNavigations> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           var responseFromSearchPage = await showCupertinoModalPopup(
-            
             context: context,
             builder: (builder) {
               return StatefulBuilder(
@@ -176,15 +172,15 @@ class _BottonNavigationsState extends State<BottonNavigations> {
                     void Function(void Function()) setState) {
                   return ListView(
                     children: [
-                    const  Padding(
-                        padding:  EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 40),
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 40),
                         child: Padding(
-                          padding:  EdgeInsets.only(
+                          padding: EdgeInsets.only(
                             left: 20,
                             top: 10,
                           ),
-                          child:UserInfoNav(),
+                          child: UserInfoNav(),
                         ),
                       ),
                       Padding(
@@ -222,8 +218,9 @@ class _BottonNavigationsState extends State<BottonNavigations> {
                                           searchLocation(inputText);
                                         },
                                         textInputAction: TextInputAction.search,
-                                        decoration:  InputDecoration(
-                                          hintText: "Search Your Destination".tr(),
+                                        decoration: InputDecoration(
+                                          hintText:
+                                              "Search Your Destination".tr(),
                                           prefixIcon: const Padding(
                                             padding: EdgeInsets.symmetric(
                                                 vertical: 12),
@@ -285,7 +282,8 @@ class _BottonNavigationsState extends State<BottonNavigations> {
                                 containerwidth: 150,
                                 fontSize: 17,
                                 textweight: FontWeight.bold,
-                                textcolor:Theme.of(context).colorScheme.onBackground,
+                                textcolor:
+                                    Theme.of(context).colorScheme.onBackground,
                                 onTap: () {
                                   Navigator.push(
                                     context,
@@ -465,8 +463,7 @@ class _BottonNavigationsState extends State<BottonNavigations> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-     
-        backgroundColor:Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       bottomNavigationBar: AnimatedBottomNavigationBar(
         iconSize: 30,
         inactiveColor: Colors.white,

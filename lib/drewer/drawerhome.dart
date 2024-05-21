@@ -11,9 +11,10 @@ import 'package:new_app/auth/login_page.dart';
 import 'package:new_app/components/info_card.dart';
 import 'package:new_app/components/list_tiles.dart';
 import 'package:new_app/components/m_buttons.dart';
+import 'package:new_app/components/screen_bright.dart';
 import 'package:new_app/components/text_add.dart';
 import 'package:new_app/drewer/About/about.dart';
-import 'package:new_app/drewer/electric_car.dart';
+import 'package:new_app/drewer/Gift/gift_details.dart';
 import 'package:new_app/drewer/HelpeCenter/help.dart';
 import 'package:new_app/drewer/rider_history.dart';
 import 'package:new_app/drewer/Settings/settings.dart';
@@ -106,15 +107,12 @@ class _DrewerState extends State<Drewer> {
                       ),
                       ListTiles(
                         onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const ElectricCars(),
-                            ),
-                          );
+                         showCupertinoModalPopup(context: context, 
+                         builder: (builder){
+                        return const ScreanBrightness();});
                         },
-                        icon: Icons.directions_car_outlined,
-                        text: "Booking".tr(),
+                        icon: Icons.wb_sunny_outlined,
+                        text: "Brightness".tr(),
                       ),
                       ListTiles(
                         onTap: () {
@@ -141,6 +139,18 @@ class _DrewerState extends State<Drewer> {
                         },
                         icon: Icons.settings_outlined,
                         text: "Settings".tr(),
+                      ),
+                       ListTiles(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>  const GiftPage(),
+                            ),
+                          );
+                        },
+                        icon: Icons.card_giftcard_rounded,
+                        text: "Gift".tr(),
                       ),
                       ListTiles(
                         onTap: () {

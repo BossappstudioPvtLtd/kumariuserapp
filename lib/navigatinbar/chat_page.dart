@@ -1,3 +1,4 @@
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 
@@ -5,19 +6,17 @@ class ChatPage extends StatefulWidget {
   const ChatPage({super.key});
 
   @override
-  State<ChatPage> createState() => ChatPageState();
+  _ChatPageState createState() => _ChatPageState();
 }
 
-class ChatPageState extends State<ChatPage> {
+class _ChatPageState extends State<ChatPage> {
+ 
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        
-      ),
-      body: const Center(
-        child: Text("Chat page"),
-      ),
+    return const Scaffold(
+     
+      
     );
   }
 }

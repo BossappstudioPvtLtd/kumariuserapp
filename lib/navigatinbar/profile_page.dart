@@ -91,8 +91,11 @@ class _ProfilePageState extends State<ProfilePage> {
                                     decoration: const BoxDecoration(
                                       color: Colors.black38,
                                     ),
-                                    child: Image.asset("assets/images/taxi.jpg",
-                                        fit: BoxFit.cover),
+                                    child: Image.asset(
+                                      "assets/images/taxi.jpg",
+                                      fit: BoxFit.cover,
+                                     
+                                    ),
                                   ),
                                   Row(
                                     children: [
@@ -213,7 +216,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .colorScheme
                                                     .onBackground,
                                               ),
-                                              title:  Text("Location".tr()),
+                                              title: Text("Location".tr()),
                                               subtitle: Text(
                                                 _locationMessage,
                                                 style: TextStyle(
@@ -230,7 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .colorScheme
                                                     .onBackground,
                                               ),
-                                              title:  Text("Email".tr()),
+                                              title: Text("Email".tr()),
                                               subtitle: Text(
                                                 "${data['email']}",
                                                 style: TextStyle(
@@ -247,7 +250,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                     .colorScheme
                                                     .onBackground,
                                               ),
-                                              title:  Text("Phone".tr()),
+                                              title: Text("Phone".tr()),
                                               subtitle: Text(
                                                 "${data['phone']}",
                                                 style: TextStyle(

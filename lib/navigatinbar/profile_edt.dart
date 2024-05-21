@@ -7,6 +7,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_app/components/loading_dialog.dart';
 import 'package:new_app/components/m_buttons.dart';
 
 class PrifileEdt extends StatefulWidget {
@@ -58,6 +59,12 @@ class _PrifileEdtState extends State<PrifileEdt> {
 
   //updata data
   Future uploadFile() async {
+     showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) =>
+          LoadingDialog(messageText: "Registering your account"),
+    );
     if (_image == null) return;
     String userId = _auth.currentUser!.uid;
     String fileName = 'user_photos/$userId';
@@ -68,6 +75,7 @@ class _PrifileEdtState extends State<PrifileEdt> {
       String downloadURL = await ref.getDownloadURL();
       updateUserData(downloadURL);
     });
+     
   }
 
   Future updateUserData(String photoUrl) async {
@@ -78,6 +86,7 @@ class _PrifileEdtState extends State<PrifileEdt> {
       'email': _emailController.text,
       'photo': photoUrl,
     });
+     Navigator.pop(context);
   }
 
   User? currentUser = FirebaseAuth.instance.currentUser;
