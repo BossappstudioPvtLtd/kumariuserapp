@@ -1,5 +1,6 @@
 {
-    
+    "Brightness":"തെളിച്ചം",
+    "App Settings":"ആപ്പ് ക്രമീകരണങ്ങൾ",
     "Settings": "സെറ്റിംഗുകൾ",
     "Account": "അക്കൗണ്ട്",
     "Edit Profile": "പ്രൊഫൈൽ എഡിറ്റുചെയ്യുക",
@@ -77,9 +78,10 @@
     "Fatigue Management": "അവസാന മാനേജ്മെന്റ്",
 
 
-    
-    
 
+
+    
+    
 
 
     "Create an Account, Once downloaded, open the app and follow the instructions to create an account. Youll need to provide your email, phone number.": "ഒരു അക്കൗണ്ട് സൃഷ്ടിക്കുക, ഒരുമിച്ച് ഡൗൺലോഡ് ചെയ്തു, ആപ്പ് തുറന്ന് അക്കൗണ്ട് സൃഷ്ടിക്കാനുള്ള നിർദ്ദേശങ്ങൾ പിന്തുടരുക. നിങ്ങൾക്ക് നിങ്ങളുടെ ഇമെയിൽ, ഫോൺ നമ്പർ നൽകണം.",
@@ -131,6 +133,12 @@
     "Join the Ride Experience the difference with City Cabs. Book your next ride and let us take the wheel.":"സിറ്റി ക്യാബുകളുമായുള്ള വ്യത്യാസം അനുഭവിച്ച് റൈഡിൽ ചേരൂ. നിങ്ങളുടെ അടുത്ത സവാരി ബുക്ക് ചെയ്യുക, നമുക്ക് ചക്രം എടുക്കാം.",
     "Safe travels are just a click away!":"സുരക്ഷിത യാത്രകൾ ഒരു ക്ലിക്ക് അകലെയാണ്!",
 
-    "Welcome to RideNow! Your premier choice for convenient and reliable transportation.then get your gift.":"RideNow-ലേക്ക് സ്വാഗതം! സൗകര്യപ്രദവും വിശ്വസനീയവുമായ ഗതാഗതത്തിനായുള്ള നിങ്ങളുടെ പ്രധാന തിരഞ്ഞെടുപ്പ്. തുടർന്ന് നിങ്ങളുടെ സമ്മാനം നേടൂ"
 
+    "Gift":"സമ്മാനം",
+    "Explore Features":"സവിശേഷതകൾ പര്യവേക്ഷണം ചെയ്യുക",
+    "Get Started":"ആരംഭിക്കുക",
+    "Welcome to RideNow Your premier choice for convenient and reliable transportation.then get your gift":"സൗകര്യപ്രദവും വിശ്വസനീയവുമായ ഗതാഗതത്തിനായുള്ള നിങ്ങളുടെ പ്രധാന ചോയ്‌സ് RideNow-ലേക്ക് സ്വാഗതം. തുടർന്ന് നിങ്ങളുടെ സമ്മാനം നേടൂ",
+    "Discover and enjoy the gift features of the app":"ആപ്പിൻ്റെ സമ്മാന സവിശേഷതകൾ കണ്ടെത്തുകയും ആസ്വദിക്കുകയും ചെയ്യുക",
+    "Spin your way to happiness with our gift":"ഞങ്ങളുടെ സമ്മാനം ഉപയോഗിച്ച് സന്തോഷത്തിലേക്കുള്ള വഴി തിരിക്കുക"
+    
 }

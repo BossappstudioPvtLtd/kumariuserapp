@@ -1,92 +1,193 @@
-// ignore_for_file: unnecessary_import
-
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:new_app/components/m_buttons.dart';
+import 'package:new_app/components/fortune_wheel_screen.dart';
+class OnboardingContent {
+  final String image;
+  final String title;
+  final String description;
 
+  OnboardingContent({
+    required this.image,
+    required this.title,
+    required this.description,
+  });
+}
+
+// Example data for the onboarding screens
+final List<OnboardingContent> onboardingData = [
+  OnboardingContent(
+    image: 'assets/images/gift2.png',
+    title: '',
+    description: 'Welcome to RideNow! Your premier choice for convenient and reliable transportation.then get your gift'.tr(),
+  ),
+  OnboardingContent(
+    image: 'assets/images/egg.png',
+    title: 'Explore Features'.tr(),
+    description: 'Discover and enjoy the gift features of the app'.tr(),
+  ),
+  OnboardingContent(
+    image: 'assets/images/wheel.png',
+    title: 'Get Started'.tr(),
+    description: 'Spin your way to happiness with our gift'.tr(),
+  ),
+];
+
+// Onboarding screen widget
 class Deatails extends StatefulWidget {
   const Deatails({super.key});
 
   @override
-  State<Deatails> createState() => _DeatailsState();
+  DeatailsState createState() => DeatailsState();
 }
 
-class _DeatailsState extends State<Deatails> {
+class DeatailsState extends State<Deatails> {
+  int _currentPage = 0;
+  final PageController _pageController = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: Material(
-              borderRadius: BorderRadius.circular(30),
-              elevation: 20,
-              child: Container(
-               
-                decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(32)),
-                    color: Color.fromARGB(255, 236, 232, 232)),
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                      Container(
-                        height: 130,
-                        decoration: const BoxDecoration(  borderRadius: BorderRadius.all(Radius.circular(32)),),
-                        child: Image.asset(
-                            "assets/images/user.jpg",
-                           // height: 130,
-                            fit: BoxFit.cover,
-                          
-                          ),
+      body: Stack(
+        children: <Widget>[
+          PageView.builder(
+            controller: _pageController,
+            itemCount: onboardingData.length,
+            onPageChanged: (int page) {
+              setState(() {
+                _currentPage = page;
+              });
+            },
+            itemBuilder: (context, index) {
+              return OnboardingPageContent(
+                content: onboardingData[index],
+              );
+            },
+          ),
+          Positioned(
+            bottom: 20.0,
+            left: 0,
+            right: 0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List<Widget>.generate(
+                    onboardingData.length,
+                    (int index) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: 10,
+                      width: (index == _currentPage) ? 30 : 10,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: (index == _currentPage)
+                            ? Colors.amber
+                            : Colors.grey.withOpacity(0.5),
                       ),
-                        const SizedBox(
-                          width: 16,
-                        ),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Mohammed shahin',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w500)),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text('Cinemas',
-                                style: TextStyle(color: Colors.blue, fontSize: 14)),
-                            SizedBox(
-                              height: 8,
-                            ),
-                            Text('Thus ',
-                                style: TextStyle(fontSize: 14))
-                          ],
-                        )
-                      ],
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: MaterialButtons(
-                        text: 'Select Your ',
-                        textcolor: Colors.white,
-                        meterialColor:const Color.fromARGB(255, 3, 22, 60),
-                        onTap: () {},
-                        elevationsize: 20,
-                        containerheight: 40,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                _currentPage != onboardingData.length - 1
+                    ? ElevatedButton(
+                        onPressed: () {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        child: const Icon(Icons.arrow_forward),
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (builder) {
+                                return Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 200,
+                                      
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 25),
+                                      child: Material(
+                                      borderRadius: BorderRadius.circular(16),
+                                        child: Stack(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+                                              child: Image.asset(
+                                                  "assets/images/background.jpg",
+                                                  fit: BoxFit.cover),
+                                            ),
+                                            const Column(
+                                              children: [
+                                             
+                                                SizedBox(
+                                                  height: 15,
+                                                ),
+                                                SizedBox(
+                                                  width: 300,
+                                                  child: WheelScreen(),
+                                                ),
+                                                
+                                               
+                                               
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
+                              );
+                        },
+                        child:  Text('Get Started'.tr()),
+                      ),
+              ],
             ),
           ),
-        ),
+        ],
       ),
+    );
+  }
+}
+
+// Individual onboarding page content
+class OnboardingPageContent extends StatelessWidget {
+  final OnboardingContent content;
+
+  const OnboardingPageContent({super.key, required this.content});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(content.image),
+        const SizedBox(height: 30),
+        Text(
+          content.title,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 15),
+        Text(
+          content.description,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ],
     );
   }
 }

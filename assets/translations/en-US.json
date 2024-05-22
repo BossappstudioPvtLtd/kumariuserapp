@@ -1,8 +1,10 @@
 {
-   
+    "Brightness":"Brightness",
     "Settings": "Settings",
     "Account": "Account",
     "Edit Profile": "Edit Profile",
+    "App Settings":"App Settings",
+   
     "Change Password": "ChangePassword",
     "Notification": "Notification",
     "Darak_Mode": "Darak Mode",
@@ -48,10 +50,7 @@
 
      
     "Speak":"Speak",
-    "Enjoy Your Ride!":"Enjoy Your Ride!",
-
-
-
+    
     "Guide Book": "Guide Book",
 
     "Create an Account": "Create an Account",
@@ -133,10 +132,10 @@
     "Join the Ride Experience the difference with City Cabs. Book your next ride and let us take the wheel.":"Join the Ride Experience the difference with City Cabs. Book your next ride and let us take the wheel.",
     "Safe travels are just a click away!":"Safe travels are just a click away!",
 
-
-    "Welcome to RideNow! Your premier choice for convenient and reliable transportation.then get your gift.":"Welcome to RideNow! Your premier choice for convenient and reliable transportation.then get your gift."
-   
-     
+     "Gift":"Gift",
+    "Welcome to RideNow Your premier choice for convenient and reliable transportation.then get your gift":"Welcome to RideNow Your premier choice for convenient and reliable transportation.then get your gift",
+    "Discover and enjoy the gift features of the app":"Discover and enjoy the gift features of the app",
+    "Spin your way to happiness with our gift":"Spin your way to happiness with our gift"
 
 
 }

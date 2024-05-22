@@ -189,7 +189,7 @@ class SettingsState extends State<Settings> {
                           color: Colors.grey,
                         ),
                         title: Text(
-                          "Darak Mode".tr(),
+                          "Dark Mode".tr(),
                           style: const TextStyle(
                               fontSize: 16, fontWeight: FontWeight.w500),
                         ),
@@ -223,7 +223,7 @@ class SettingsState extends State<Settings> {
                     width: 15,
                   ),
                   Text(
-                    "More",
+                    "More".tr(),
                     style: TextStyle(
                         fontSize: 18,
                         color: Theme.of(context).colorScheme.onBackground,
@@ -268,7 +268,7 @@ class SettingsState extends State<Settings> {
                     },
                   ),
                 ),
-                text1: "Darak Mode".tr(),
+                text1: "Dark Mode".tr(),
                 leadingiconcolor1: Colors.grey,
                 leadingicon1: Icons.dark_mode_outlined,
                 trailing1: const Icon(

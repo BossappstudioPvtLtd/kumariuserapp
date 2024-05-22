@@ -27,6 +27,10 @@
     "Are you sure": "நீங்கள் உறுதியாக இருக்கிறீர்களா?",
 
 
+    
+    "Brightness":"பிரகாசம்",
+    
+    "App Settings":"பயன்பாட்டு அமைப்புகள்",
     "Settings": "அமைப்புகள்",
     "Account": "கணக்கு",
     "Edit Profile": "சுயவிவரத்தை திருத்து",
@@ -39,6 +43,11 @@
     "Booking": "முன்பதிவு",
     "Rider History": "பயண வரலாறு",
     "Help Center": "உதவி மையம்",
+
+    "Gift":"பரிசு",
+    "Get Started":"தொடங்கு",
+    "Spin":"சுழல்",
+    
 
     "About": "பற்றி",
     "Darak Mode": "இருள் முறை",
@@ -111,8 +120,8 @@
     "Join the Ride Experience the difference with City Cabs. Book your next ride and let us take the wheel.": "பயணத்தில் சேருங்கள்: சிட்டி கேப்ஸுடன் வித்தியாசத்தை அனுபவியுங்கள். உங்கள் அடுத்த பயணத்தை முன்பதிவு செய்து எங்களை சக்கரத்தை எடுத்துக் கொள்ள அனுமதியுங்கள்.",
     "Safe travels are just a click away!": "பாதுகாப்பான பயணங்கள் ஒரு கிளிக்கில் தூரத்தில் உள்ளன!",
 
-
-    "Welcome to RideNow! Your premier choice for convenient and reliable transportation.then get your gift.":"RideNow க்கு வரவேற்கிறோம்! வசதியான மற்றும் நம்பகமான போக்குவரத்திற்கான உங்கள் முதன்மைத் தேர்வு. பின்னர் உங்கள் பரிசைப் பெறுங்கள்"
-
-
+    "Explore Features":"அம்சங்களை ஆராயுங்கள்",
+    "Welcome to RideNow Your premier choice for convenient and reliable transportation.then get your gift":"வசதியான மற்றும் நம்பகமான போக்குவரத்திற்கான உங்கள் முதன்மைத் தேர்வான RideNow க்கு வரவேற்கிறோம். பின்னர் உங்கள் பரிசைப் பெறுங்கள்",
+    "Discover and enjoy the gift features of the app" : "ஆப்பின் பரிசு அம்சங்களை கண்டறிந்து மகிழுங்கள்",
+    "Spin your way to happiness with our gift" :"எங்கள் பரிசு மூலம் உங்களின் மகிழ்ச்சிக்கு சுழியுங்கள்" 
 }
