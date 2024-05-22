@@ -67,7 +67,7 @@ class _BottonNavigationsState extends State<BottonNavigations> {
   ];
   List bottomPages = [
     const HomePage(),
-      ChatPage(),
+      const ChatPage(),
     const Deatails(),
     const ProfilePage()
   ];

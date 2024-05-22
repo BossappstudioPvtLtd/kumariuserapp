@@ -107,9 +107,11 @@ class _DrewerState extends State<Drewer> {
                       ),
                       ListTiles(
                         onTap: () {
-                         showCupertinoModalPopup(context: context, 
-                         builder: (builder){
-                        return const ScreanBrightness();});
+                          showCupertinoModalPopup(
+                              context: context,
+                              builder: (builder) {
+                                return const ScreanBrightness();
+                              });
                         },
                         icon: Icons.wb_sunny_outlined,
                         text: "Brightness".tr(),
@@ -126,8 +128,6 @@ class _DrewerState extends State<Drewer> {
                         icon: Icons.settings_backup_restore_rounded,
                         text: "Rider History".tr(),
                       ),
-                     
-                     
                       ListTiles(
                         onTap: () {
                           Navigator.push(
@@ -140,12 +140,12 @@ class _DrewerState extends State<Drewer> {
                         icon: Icons.settings_outlined,
                         text: "Settings".tr(),
                       ),
-                       ListTiles(
+                      ListTiles(
                         onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) =>  const GiftPage(),
+                              builder: (_) =>  GiftPage(),
                             ),
                           );
                         },
@@ -169,7 +169,7 @@ class _DrewerState extends State<Drewer> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) =>  const About(),
+                              builder: (_) => const About(),
                             ),
                           );
                         },
@@ -185,13 +185,14 @@ class _DrewerState extends State<Drewer> {
                               context: context,
                               builder: (BuildContext context) {
                                 return AlertDialog(
-                                 
-        backgroundColor:Theme.of(context).colorScheme.background,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.background,
                                   elevation: 20,
-                                  title:  Text('Sign Out Your Account'.tr()),
-                                  content:  TextEdt(
+                                  title: Text('Sign Out Your Account'.tr()),
+                                  content: TextEdt(
                                     text:
-                                        'Do you want to continue with sign out?'.tr(),
+                                        'Do you want to continue with sign out?'
+                                            .tr(),
                                     fontSize: null,
                                     color: null,
                                   ),
@@ -224,8 +225,9 @@ class _DrewerState extends State<Drewer> {
                                                     : ElevatedButton(
                                                         onPressed:
                                                             _navigateToSecondScreen,
-                                                        child:  Text(
-                                                            'Are you sure'.tr()),
+                                                        child: Text(
+                                                            'Are you sure'
+                                                                .tr()),
                                                       ),
                                               );
                                             });
