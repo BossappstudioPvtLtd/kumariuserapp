@@ -2,38 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:new_app/components/fortune_wheel_screen.dart';
-class OnboardingContent {
-  final String image;
-  final String title;
-  final String description;
 
-  OnboardingContent({
-    required this.image,
-    required this.title,
-    required this.description,
-  });
-}
-
-// Example data for the onboarding screens
-final List<OnboardingContent> onboardingData = [
-  OnboardingContent(
-    image: 'assets/images/gift2.png',
-    title: '',
-    description: 'Welcome to RideNow! Your premier choice for convenient and reliable transportation.then get your gift'.tr(),
-  ),
-  OnboardingContent(
-    image: 'assets/images/egg.png',
-    title: 'Explore Features'.tr(),
-    description: 'Discover and enjoy the gift features of the app'.tr(),
-  ),
-  OnboardingContent(
-    image: 'assets/images/wheel.png',
-    title: 'Get Started'.tr(),
-    description: 'Spin your way to happiness with our gift'.tr(),
-  ),
-];
-
-// Onboarding screen widget
 class Deatails extends StatefulWidget {
   const Deatails({super.key});
 
@@ -44,6 +13,24 @@ class Deatails extends StatefulWidget {
 class DeatailsState extends State<Deatails> {
   int _currentPage = 0;
   final PageController _pageController = PageController(initialPage: 0);
+
+  final List<Map<String, String>> onboardingData = [
+    {
+      'image': 'assets/images/gift2.png',
+      'title': '',
+      'description': 'Welcome to RideNow Your premier choice for convenient and reliable transportation.then get your gift'.tr(),
+    },
+    {
+      'image': 'assets/images/egg.png',
+      'title': 'Explore Features'.tr(),
+      'description': 'Discover and enjoy the gift features of the app'.tr(),
+    },
+    {
+      'image': 'assets/images/wheel.png',
+      'title': 'Get Started'.tr(),
+      'description': 'Spin your way to happiness with our gift'.tr(),
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -103,52 +90,47 @@ class DeatailsState extends State<Deatails> {
                     : ElevatedButton(
                         onPressed: () {
                           showCupertinoModalPopup(
-                              context: context,
-                              builder: (builder) {
-                                return Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 200,
-                                      
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 25),
-                                      child: Material(
+                            context: context,
+                            builder: (builder) {
+                              return Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 200,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                                    child: Material(
                                       borderRadius: BorderRadius.circular(16),
-                                        child: Stack(
-                                          children: [
-                                            Container(
-                                              decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
-                                              child: Image.asset(
-                                                  "assets/images/background.jpg",
-                                                  fit: BoxFit.cover),
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+                                            child: Image.asset(
+                                              "assets/images/background.jpg",
+                                              fit: BoxFit.cover,
                                             ),
-                                            const Column(
-                                              children: [
-                                             
-                                                SizedBox(
-                                                  height: 15,
-                                                ),
-                                                SizedBox(
-                                                  width: 300,
-                                                  child: WheelScreen(),
-                                                ),
-                                                
-                                               
-                                               
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                          const Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                width: 300,
+                                                child: WheelScreen(),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                );
-                              }
+                                  ),
+                                ],
                               );
+                            },
+                          );
                         },
-                        child:  Text('Get Started'.tr()),
+                        child: Text('Get Started'.tr()),
                       ),
               ],
             ),
@@ -161,7 +143,7 @@ class DeatailsState extends State<Deatails> {
 
 // Individual onboarding page content
 class OnboardingPageContent extends StatelessWidget {
-  final OnboardingContent content;
+  final Map<String, String> content;
 
   const OnboardingPageContent({super.key, required this.content});
 
@@ -170,10 +152,10 @@ class OnboardingPageContent extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Image.asset(content.image),
+        Image.asset(content['image']!),
         const SizedBox(height: 30),
         Text(
-          content.title,
+          content['title']!,
           style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -181,7 +163,7 @@ class OnboardingPageContent extends StatelessWidget {
         ),
         const SizedBox(height: 15),
         Text(
-          content.description,
+          content['description']!,
           textAlign: TextAlign.center,
           style: const TextStyle(
             fontSize: 16,
