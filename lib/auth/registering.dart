@@ -21,13 +21,16 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController userNameTextEditingController = TextEditingController();
-  TextEditingController userPhoneTextEditingController =
+  final TextEditingController userNameTextEditingController =
       TextEditingController();
-  TextEditingController emailTextEditingController = TextEditingController();
-  TextEditingController passwordTextEditingController = TextEditingController();
-  CommonMethods cMethods = CommonMethods();
-  bool passwordVisible = false;
+  final TextEditingController userPhoneTextEditingController =
+      TextEditingController();
+  final TextEditingController emailTextEditingController =
+      TextEditingController();
+  final TextEditingController passwordTextEditingController =
+      TextEditingController();
+  final CommonMethods cMethods = CommonMethods();
+  bool passwordVisible = true;
 
   XFile? imageFile;
   String urlOfUploadedImage = "";
@@ -35,44 +38,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   void initState() {
     super.initState();
-
-    passwordVisible = true;
   }
 
-  checkIfNetworkIsAvailable() {
-    cMethods.checkConnectivity(context);
-
-    if (imageFile != null) //image validation
-    {
+  Future<void> checkIfNetworkIsAvailable() async {
+    await cMethods.checkConnectivity(context);
+    if (imageFile != null) {
       signUpFormValidation();
     } else {
       cMethods.displaySnackBar("Please choose image first.", context);
     }
   }
 
-  signUpFormValidation() {
+  void signUpFormValidation() {
     if (userNameTextEditingController.text.trim().length < 3) {
       cMethods.displaySnackBar(
-          "your name must be atleast 4 or more characters.", context);
+          "Your name must be at least 4 or more characters.", context);
     } else if (!emailTextEditingController.text.contains("@")) {
-      cMethods.displaySnackBar("please write valid email.", context);
+      cMethods.displaySnackBar("Please write a valid email.", context);
     } else if (userPhoneTextEditingController.text.trim().length < 10) {
       cMethods.displaySnackBar(
-          "your phone number must be atleast 10 or more characters.", context);
+          "Your phone number must be at least 10 or more characters.", context);
     } else if (passwordTextEditingController.text.trim().length < 6) {
       cMethods.displaySnackBar(
-          "your password must be atleast 6 or more characters.", context);
+          "Your password must be at least 6 or more characters.", context);
     } else {
       uploadImageToStorage();
     }
   }
 
-  uploadImageToStorage() async {
-    String imageIDName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference referenceImage =
+  Future<void> uploadImageToStorage() async {
+    final String imageIDName = DateTime.now().millisecondsSinceEpoch.toString();
+    final Reference referenceImage =
         FirebaseStorage.instance.ref().child("Images").child(imageIDName);
-    UploadTask uploadTask = referenceImage.putFile(File(imageFile!.path));
-    TaskSnapshot snapshot = await uploadTask;
+    final UploadTask uploadTask = referenceImage.putFile(File(imageFile!.path));
+    final TaskSnapshot snapshot = await uploadTask;
     urlOfUploadedImage = await snapshot.ref.getDownloadURL();
 
     setState(() {
@@ -82,8 +81,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     registerNewUser();
   }
 
-//loader
-  registerNewUser() async {
+  Future<void> registerNewUser() async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -91,39 +89,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
           LoadingDialog(messageText: "Registering your account"),
     );
 
-    final User? userFirebase = (await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-      email: emailTextEditingController.text.trim(),
-      password: passwordTextEditingController.text.trim(),
-    )
-            .catchError((errorMsg) {
+    try {
+      final User? userFirebase =
+          (await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailTextEditingController.text.trim(),
+        password: passwordTextEditingController.text.trim(),
+      ))
+              .user;
+
+      if (userFirebase != null) {
+        final DatabaseReference usersRef = FirebaseDatabase.instance
+            .ref()
+            .child("users")
+            .child(userFirebase.uid);
+        final Map<String, String> userDataMap = {
+          "photo": urlOfUploadedImage,
+          "name": userNameTextEditingController.text.trim(),
+          "email": emailTextEditingController.text.trim(),
+          "phone": userPhoneTextEditingController.text.trim(),
+          "id": userFirebase.uid,
+          "blockStatus": "no",
+        };
+        await usersRef.set(userDataMap);
+
+        // Sign out the user if blockStatus is "yes"
+        if (userDataMap["blockStatus"] == "yes") {
+          await FirebaseAuth.instance.signOut();
+          if (!mounted) return;
+          cMethods.displaySnackBar(
+              "Your account has been blocked by the admin.", context);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (c) => const LoginScreen()));
+          return;
+        } else {
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (c) => const Drewer()));
+        }
+      }
+    } catch (errorMsg) {
       Navigator.pop(context);
       cMethods.displaySnackBar(errorMsg.toString(), context);
-    }))
-        .user;
-
-    if (!context.mounted) return;
-    Navigator.pop(context);
-
-    DatabaseReference usersRef =
-        FirebaseDatabase.instance.ref().child("users").child(userFirebase!.uid);
-    Map userDataMap = {
-      "photo": urlOfUploadedImage,
-      "name": userNameTextEditingController.text.trim(),
-      "email": emailTextEditingController.text.trim(),
-      "phone": userPhoneTextEditingController.text.trim(),
-      "id": userFirebase.uid,
-      "blockStatus": "no",
-    };
-    usersRef.set(userDataMap);
-
-    Navigator.push(context, MaterialPageRoute(builder: (c) => const Drewer()));
+    } finally {
+      if (mounted) {
+        Navigator.pop(context);
+      }
+    }
   }
 
-  chooseImageFromGallery() async {
+  Future<void> chooseImageFromGallery() async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-
     if (pickedFile != null) {
       setState(() {
         imageFile = pickedFile;
@@ -138,29 +153,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
         surfaceTintColor: Colors.white,
         title: const Text(
           "Create a User's Account",
-          style: TextStyle(
-            fontSize: 26,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(
-              height: 20,
-            ),
-
-            const SizedBox(
-              height: 5,
-            ),
+            const SizedBox(height: 20),
+            const SizedBox(height: 5),
             imageFile == null
                 ? Stack(
                     children: [
                       GestureDetector(
-                        onTap: () {
-                          chooseImageFromGallery();
-                        },
+                        onTap: chooseImageFromGallery,
                         child: Material(
                           borderRadius: BorderRadius.circular(40),
                           elevation: 15,
@@ -175,26 +180,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           ),
                         ),
                       ),
-                        Padding(
+                      Padding(
                         padding: const EdgeInsets.only(top: 60, left: 60),
                         child: InkWell(
-                          onTap: (){
-                            chooseImageFromGallery();
-                          },
+                          onTap: chooseImageFromGallery,
                           child: Material(
                             borderRadius: BorderRadius.circular(25),
-                            color:  Color.fromARGB(235, 1, 72, 130),
-                            child: Container(
-                             
+                            color: const Color.fromARGB(235, 1, 72, 130),
+                            child: const SizedBox(
                               height: 30,
                               width: 30,
-                              child: const Icon(Icons.add_a_photo_rounded,
-                              size: 20,
-                                  color:Colors.white),
+                              child: Icon(Icons.add_a_photo_rounded,
+                                  size: 20, color: Colors.white),
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   )
                 : Material(
@@ -209,132 +210,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         color: Colors.grey,
                         image: DecorationImage(
                           fit: BoxFit.fitHeight,
-                          image: FileImage(
-                            File(
-                              imageFile!.path,
-                            ),
-                          ),
+                          image: FileImage(File(imageFile!.path)),
                         ),
                       ),
                     ),
                   ),
-            const SizedBox(
-              height: 20,
-            ),
-
-            /* GestureDetector(
-                        onTap: () {
-                          chooseImageFromGallery();
-                        },
-                        child: const Icon(
-                          Icons.camera_alt,
-                          color: Colors.black,
-                        ),
-                      ),*/
+            const SizedBox(height: 20),
             const Text("Add your photo"),
-            const SizedBox(
-              height: 20,
-            ),
-
-            //text fields + button
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
-                  Material(
-                    elevation: 10,
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: TextFormField(
-                      controller: userNameTextEditingController,
-                      decoration: const InputDecoration(
-                        icon: Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Icon(Icons.person),
-                        ),
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        labelText: "User Name",
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 22,
-                  ),
-                  Material(
-                    elevation: 10,
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: TextFormField(
-                      controller: emailTextEditingController,
-                      decoration: const InputDecoration(
-                        icon: Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Icon(Icons.email),
-                        ),
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        labelText: "User Email",
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 22,
-                  ),
-                  Material(
-                    elevation: 10,
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: TextFormField(
-                      keyboardType: TextInputType.phone,
-                      controller: userPhoneTextEditingController,
-                      decoration: const InputDecoration(
-                        icon: Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Icon(Icons.phone_android),
-                        ),
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        labelText: "User Phone",
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 22,
-                  ),
-                  Material(
-                    elevation: 10,
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: TextFormField(
-                      obscureText: passwordVisible,
-                      controller: passwordTextEditingController,
-                      decoration: InputDecoration(
-                        icon: const Padding(
-                          padding: EdgeInsets.only(left: 15),
-                          child: Icon(Icons.lock),
-                        ),
-                        border: InputBorder.none,
-                        enabledBorder: InputBorder.none,
-                        disabledBorder: InputBorder.none,
-                        labelText: "password",
-                        suffixIcon: IconButton(
-                          icon: Icon(passwordVisible
-                              ? Icons.visibility_off
-                              : Icons.visibility),
-                          onPressed: () {
-                            setState(
-                              () {
-                                passwordVisible = !passwordVisible;
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 32,
-                  ),
+                  buildTextField(userNameTextEditingController, "User Name",
+                      Icons.person, false),
+                  const SizedBox(height: 22),
+                  buildTextField(emailTextEditingController, "User Email",
+                      Icons.email, false),
+                  const SizedBox(height: 22),
+                  buildTextField(userPhoneTextEditingController, "User Phone",
+                      Icons.phone_android, false, TextInputType.phone),
+                  const SizedBox(height: 22),
+                  buildTextField(passwordTextEditingController, "Password",
+                      Icons.lock, true),
+                  const SizedBox(height: 32),
                   MaterialButtons(
                     borderRadius: BorderRadius.circular(10),
                     meterialColor: const Color.fromARGB(255, 3, 22, 60),
@@ -344,28 +243,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     fontSize: 18,
                     textweight: FontWeight.bold,
                     text: "Register",
-                    onTap: () {
-                      checkIfNetworkIsAvailable();
-                    },
+                    onTap: checkIfNetworkIsAvailable,
                   ),
                 ],
               ),
             ),
-
-            const SizedBox(
-              height: 12,
-            ),
-
+            const SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
                   "Already have an Account?",
-                  style: TextStyle(
-                    color: Colors.grey,
-                  ),
+                  style: TextStyle(color: Colors.grey),
                 ),
-                //textbutton
                 TextButton(
                   onPressed: () {
                     Navigator.push(context,
@@ -375,10 +265,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     "Login Here",
                     style: TextStyle(color: Color.fromARGB(255, 1, 72, 130)),
                   ),
-                )
+                ),
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildTextField(TextEditingController controller, String labelText,
+      IconData icon, bool isPassword,
+      [TextInputType? keyboardType]) {
+    return Material(
+      elevation: 10,
+      borderRadius: BorderRadius.circular(10.0),
+      child: TextFormField(
+        controller: controller,
+        keyboardType: keyboardType,
+        obscureText: isPassword && passwordVisible,
+        decoration: InputDecoration(
+          icon: Padding(
+            padding: const EdgeInsets.only(left: 15),
+            child: Icon(icon),
+          ),
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          labelText: labelText,
+          suffixIcon: isPassword
+              ? IconButton(
+                  icon: Icon(passwordVisible
+                      ? Icons.visibility_off
+                      : Icons.visibility),
+                  onPressed: () {
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                )
+              : null,
         ),
       ),
     );

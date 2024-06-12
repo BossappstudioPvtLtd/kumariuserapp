@@ -17,10 +17,10 @@ class _HelpState extends State<Help> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor:Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title:  Text("Help Center".tr()),
-        backgroundColor:Theme.of(context).colorScheme.background,
+        title: Text("Help Center".tr()),
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
       body: Column(
         children: [
@@ -30,12 +30,12 @@ class _HelpState extends State<Help> {
           Center(
             child: CircleAvatar(
               radius: 45,
-        backgroundColor:Theme.of(context).colorScheme.onBackground,
+              backgroundColor: Theme.of(context).colorScheme.onBackground,
               child: Stack(
                 children: [
                   CircleAvatar(
                     radius: 40,
-        backgroundColor:Theme.of(context).colorScheme.onBackground,
+                    backgroundColor: Theme.of(context).colorScheme.onBackground,
                     backgroundImage:
                         const AssetImage("assets/logo/headphone.png"),
                   ),
@@ -51,15 +51,19 @@ class _HelpState extends State<Help> {
           CardListTILe(
             title: "Guide to Book".tr(),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const GuideBook(text: '',)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => const GuideBook(
+                            text: '',
+                          )));
             },
           ),
           CardListTILe(
             title: "Services".tr(),
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) =>  Services()));
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => Services()));
             },
           ),
           CardListTILe(
@@ -69,7 +73,6 @@ class _HelpState extends State<Help> {
                   MaterialPageRoute(builder: (_) => const FareDetails()));
             },
           ),
-         
           CardListTILe(
             title: "Safety and Accident".tr(),
             onTap: () {
@@ -77,7 +80,6 @@ class _HelpState extends State<Help> {
                   MaterialPageRoute(builder: (_) => const SafetyAccident()));
             },
           ),
-          
         ],
       ),
     );

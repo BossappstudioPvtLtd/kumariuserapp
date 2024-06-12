@@ -1,12 +1,9 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:new_app/auth/login_page.dart';
 import 'package:new_app/components/info_card.dart';
 import 'package:new_app/components/list_tiles.dart';
@@ -30,41 +27,15 @@ class Drewer extends StatefulWidget {
 class _DrewerState extends State<Drewer> {
   static double value = 0;
 
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  //final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  // final GoogleSignIn _googleSignIn = GoogleSignIn();
 
-  Future<void> _signOutGoogle() async {
-    await _firebaseAuth.signOut();
-    await _googleSignIn.signOut();
-  }
+  // Future<void> _signOutGoogle() async {
+  // await _firebaseAuth.signOut();
+  // await _googleSignIn.signOut();
+  // }
 
-  bool _isLoading = false;
-
-  void _navigateToSecondScreen() async {
-    setState(() {
-      _isLoading = true;
-
-      // User chose to sign out
-      _signOutGoogle();
-      Navigator.of(context).pop(true);
-      Navigator.pop(context);
-    });
-
-    // Simulate a network request or some delay
-    await Future.delayed(const Duration(seconds: 0));
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    // Navigate to second screen
-    Navigator.of(context).pop(true);
-    // User chose to sign out
-    _signOutGoogle();
-
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => const LoginScreen()));
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +116,7 @@ class _DrewerState extends State<Drewer> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) =>  GiftPage(),
+                              builder: (_) => const GiftPage(),
                             ),
                           );
                         },
@@ -186,7 +157,7 @@ class _DrewerState extends State<Drewer> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   backgroundColor:
-                                      Theme.of(context).colorScheme.background,
+                                      Theme.of(context).colorScheme.surface,
                                   elevation: 20,
                                   title: Text('Sign Out Your Account'.tr()),
                                   content: TextEdt(
@@ -212,25 +183,13 @@ class _DrewerState extends State<Drewer> {
                                     ),
                                     MaterialButtons(
                                       onTap: () {
-                                        showCupertinoDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Center(
-                                                child: _isLoading
-                                                    ? LoadingAnimationWidget
-                                                        .threeArchedCircle(
-                                                        color: Colors.blue,
-                                                        size: 50,
-                                                      )
-                                                    : ElevatedButton(
-                                                        onPressed:
-                                                            _navigateToSecondScreen,
-                                                        child: Text(
-                                                            'Are you sure'
-                                                                .tr()),
-                                                      ),
-                                              );
-                                            });
+                                        FirebaseAuth.instance.signOut();
+
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (c) =>
+                                                    const LoginScreen()));
                                       },
                                       elevationsize: 20,
                                       text: 'Continue'.tr(),

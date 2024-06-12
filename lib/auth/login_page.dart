@@ -93,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
           else
           {
             FirebaseAuth.instance.signOut();
-            cMethods.displaySnackBar("you are blocked. Contact admin: alizeb875@gmail.com", context);
+            cMethods.displaySnackBar("you are blocked. Contact admin: Kumariacabs@gmail.com", context);
           }
         }
         else

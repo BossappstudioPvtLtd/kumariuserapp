@@ -11,156 +11,165 @@ class GiftPage extends StatefulWidget {
 }
 
 class GiftPageState extends State<GiftPage> {
-  int _currentIndex = 0;
+  int _currentPage = 0;
+  final PageController _pageController = PageController(initialPage: 0);
 
-  final List<Map<String, String>> _onboardingData = [
+  final List<Map<String, String>> onboardingData = [
     {
-      'title': '',
-      'description':
-          'Welcome to RideNow Your premier choice for convenient and reliable transportation.then get your gift'
-              .tr(),
       'image': 'assets/images/gift2.png',
+      'title': '',
+      'description': 'Welcome to RideNow Your premier choice for convenient and reliable transportation.then get your gift'.tr(),
     },
     {
+      'image': 'assets/images/egg.png',
       'title': 'Explore Features'.tr(),
       'description': 'Discover and enjoy the gift features of the app'.tr(),
-      'image': 'assets/images/egg.png',
     },
     {
+      'image': 'assets/images/wheel.png',
       'title': 'Get Started'.tr(),
       'description': 'Spin your way to happiness with our gift'.tr(),
-      'image': 'assets/images/wheel.png',
     },
   ];
-
-  void _nextPage() {
-    if (_currentIndex < _onboardingData.length - 1) {
-      setState(() {
-        _currentIndex++;
-      });
-    } else {
-      // Navigate to home screen or next page
-    }
-  }
-
-  void _skip() {
-    setState(() {
-      _currentIndex = _onboardingData.length - 1;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
         children: <Widget>[
-          Image.asset(_onboardingData[_currentIndex]['image']!),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 17),
-            child: Text(
-              _onboardingData[_currentIndex]['title']!,
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          PageView.builder(
+            controller: _pageController,
+            itemCount: onboardingData.length,
+            onPageChanged: (int page) {
+              setState(() {
+                _currentPage = page;
+              });
+            },
+            itemBuilder: (context, index) {
+              return OnboardingPageContent(
+                content: onboardingData[index],
+              );
+            },
           ),
-          const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 17),
-            child: Text(
-              _onboardingData[_currentIndex]['description']!,
-              textAlign: TextAlign.center,
+          Positioned(
+            bottom: 20.0,
+            left: 0,
+            right: 0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: List<Widget>.generate(
+                    onboardingData.length,
+                    (int index) => AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      height: 10,
+                      width: (index == _currentPage) ? 30 : 10,
+                      margin: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: (index == _currentPage)
+                            ? Colors.amber
+                            : Colors.grey.withOpacity(0.5),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _currentPage != onboardingData.length - 1
+                    ? ElevatedButton(
+                        onPressed: () {
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeInOut,
+                          );
+                        },
+                        child: const Icon(Icons.arrow_forward),
+                      )
+                    : ElevatedButton(
+                        onPressed: () {
+                          showCupertinoModalPopup(
+                            context: context,
+                            builder: (builder) {
+                              return Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 200,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                                    child: Material(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Stack(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+                                            child: Image.asset(
+                                              "assets/images/background.jpg",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                          const Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 15,
+                                              ),
+                                              SizedBox(
+                                                width: 300,
+                                                child: WheelScreen(),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Text('Get Started'.tr()),
+                      ),
+              ],
             ),
           ),
         ],
       ),
-      bottomSheet: _currentIndex != _onboardingData.length - 1
-          ? BottomActionButtons(
-              onNext: _nextPage,
-              onSkip: _skip,
-            )
-          : TextButton(
-              child: Text('Get Started'.tr()),
-              onPressed: () {
-                showCupertinoModalPopup(
-                  context: context,
-                  builder: (builder) {
-                    return Column(
-                      children: [
-                        const SizedBox(
-                          height: 200,
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 25),
-                          child: Material(
-                            borderRadius: BorderRadius.circular(16),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(16)),
-                                  child: Image.asset(
-                                      "assets/images/background.jpg",
-                                      fit: BoxFit.cover),
-                                ),
-                                const Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    SizedBox(
-                                      width: 300,
-                                      child: WheelScreen(),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ); // Navigate to home screen or next page
-              },
-            ),
     );
   }
 }
 
-class BottomActionButtons extends StatefulWidget {
-  final Function onNext;
-  final Function onSkip;
+// Individual onboarding page content
+class OnboardingPageContent extends StatelessWidget {
+  final Map<String, String> content;
 
-  const BottomActionButtons(
-      {super.key, required this.onNext, required this.onSkip});
+  const OnboardingPageContent({super.key, required this.content});
 
-  @override
-  State<BottomActionButtons> createState() => _BottomActionButtonsState();
-}
-
-class _BottomActionButtonsState extends State<BottomActionButtons> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 70,
-      margin: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          TextButton(
-            child: Text('SKIP'.tr()),
-            onPressed: () => widget.onSkip(),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Image.asset(content['image']!),
+        const SizedBox(height: 30),
+        Text(
+          content['title']!,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
           ),
-          IconButton(
-            icon: const Icon(Icons.arrow_forward,color: Colors.amber,),
-            onPressed: () => widget.onNext(),
+        ),
+        const SizedBox(height: 15),
+        Text(
+          content['description']!,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            fontSize: 16,
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
