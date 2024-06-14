@@ -4,6 +4,8 @@ import 'package:speech_to_text/speech_to_text.dart' as stt;
 
 
 class SpeechScreen extends StatefulWidget {
+  const SpeechScreen({super.key});
+
   @override
   _SpeechScreenState createState() => _SpeechScreenState();
 }
@@ -45,7 +47,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Speech to Text'),
+        title: const Text('Speech to Text'),
         actions: [
           DropdownButton(
             onChanged: (selectedVal) {
@@ -57,7 +59,7 @@ class _SpeechScreenState extends State<SpeechScreen> {
               });
             },
             value: _currentLocale,
-            items: [
+            items: const [
               DropdownMenuItem(
                 value: 'en_US',
                 child: Text('English'),

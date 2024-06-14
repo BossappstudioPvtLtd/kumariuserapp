@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class CommonMethod {
   Widget header(String headerTitle, Widget widget) {
-    return CircleAvatar(
+    return const CircleAvatar(
       child: Column(
         children: [
           CircleAvatar(
-            child: const Padding(
+            child: Padding(
               padding: EdgeInsets.all(2),
             ),
           ),
