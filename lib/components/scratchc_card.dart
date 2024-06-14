@@ -36,6 +36,7 @@ class ScratchCardState extends State<ScratchCard> {
                   ),
                   brushSize: 30,
                   threshold: 50,
+                  // ignore: avoid_print
                   onChange: (value) => print("Scratch progress: $value%"),
                   onThreshold: () => print("Threshold reached, you won!"),
                   child: Container(

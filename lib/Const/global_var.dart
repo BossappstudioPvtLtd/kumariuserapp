@@ -11,6 +11,6 @@ String serverKeyFCM = "paste your key here";
 String googleMapKey = "AIzaSyAzem3yZ5ZnNnmymCWaxfj37qKZ00HdfSg";
 
 const CameraPosition googlePlexInitialPosition = CameraPosition(
-  target: LatLng(37.42796133580664, -122.085749655962),
+  target: LatLng(8.088306,  77.538452),
   zoom: 14.4746,
 );

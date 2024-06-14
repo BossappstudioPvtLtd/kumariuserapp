@@ -67,7 +67,7 @@ class _HomeState extends State<New>
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Done()));
+                                      builder: (context) => const Done()));
                                                       }).catchError((e) {
                             showDialog(
                                 context: context,
@@ -142,7 +142,7 @@ class _HomeState extends State<New>
                    
                       Image.asset("assets/vectors/otpimg.png",height: 200,width: 400,),
                     
-                     Text(
+                     const Text(
                         "You'll receive a 6 digit code to verify next.",
                         style: TextStyle(
                             fontSize: 13,
