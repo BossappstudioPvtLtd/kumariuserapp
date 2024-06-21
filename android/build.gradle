@@ -6,7 +6,9 @@ allprojects {
     
    dependencies {
     
-   
+    //classpth 'com.android.tools.build:gradle:7.3.0'
+    //classpth "org.jetbrains.kotlin:kotlin-gradle_plugun:$ktlin_version"
+   // classpth 'com.google.gms:google-services: 4.4.1' 
 
 
    }

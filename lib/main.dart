@@ -2,11 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:new_app/Appinfo/app_info.dart';
+import 'package:new_app/Appinfo/app_info.dart';
 import 'package:new_app/onboarding.dart/on_boarding.dart';
 import 'package:new_app/themes/NewMethord/ui_Provider.dart';
-//import 'package:new_app/themes/dark_mode.dart';
-//import 'package:new_app/themes/light_mode.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +24,8 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-  runApp(EasyLocalization(
+  runApp(
+    EasyLocalization(
       supportedLocales: const [
         Locale('en', 'US'),
         Locale('ta', 'IN'),
@@ -34,7 +33,9 @@ void main() async {
       ],
       path: 'assets/translations',
       fallbackLocale: const Locale('en', 'US'),
-      child: const MyApp()));
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -47,28 +48,32 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => UiProvider()..init(),
-      child:
-          Consumer<UiProvider>(builder: (context, UiProvider notifier, child) {
-        return MaterialApp(
-          localizationsDelegates: context.localizationDelegates,
-          supportedLocales: context.supportedLocales,
-          locale: context.locale,
-          debugShowCheckedModeBanner: false,
-          title: 'Flutter user app',
-          themeMode: notifier.isDark ? ThemeMode.dark : ThemeMode.light,
-          //Our custom theme applied
-          darkTheme: notifier.isDark ? notifier.darkTheme : notifier.lightTheme,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 3, 22, 60),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppInfo()),
+        ChangeNotifierProvider(create: (context) => UiProvider()..init()),
+      ],
+      child: Consumer<UiProvider>(
+        builder: (context, notifier, child) {
+          return MaterialApp(
+            localizationsDelegates: context.localizationDelegates,
+            supportedLocales: context.supportedLocales,
+            locale: context.locale,
+            debugShowCheckedModeBanner: false,
+            title: 'Flutter user app',
+            themeMode: notifier.isDark ? ThemeMode.dark : ThemeMode.light,
+            // Our custom theme applied
+            darkTheme: notifier.isDark ? notifier.darkTheme : notifier.lightTheme,
+            theme: ThemeData(
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: const Color.fromARGB(255, 3, 22, 60),
+              ),
+              useMaterial3: true,
             ),
-            useMaterial3: true,
-          ),
-          home: const OnBoding(),
-        );
-      }),
+            home: const OnBoding(),
+          );
+        },
+      ),
     );
   }
 }
