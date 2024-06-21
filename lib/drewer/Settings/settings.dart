@@ -1,11 +1,8 @@
-// ignore_for_file: unnecessary_import
-
 import 'package:app_settings/app_settings.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:new_app/components/m_buttons.dart';
 import 'package:new_app/components/setting_listtile.dart';
 import 'package:new_app/components/text_add.dart';
@@ -21,17 +18,28 @@ class Settings extends StatefulWidget {
 }
 
 class LocalizationChecker {
-  static changeLanguage(BuildContext context, Locale newLocale) {
-    EasyLocalization.of(context)!.setLocale(newLocale);
+  static Future<void> changeLanguage(BuildContext context, Locale newLocale) async {
+    await context.setLocale(newLocale);
   }
 }
 
 class SettingsState extends State<Settings> {
-  final bool _switch = true;
+  bool _switch = true;
   Locale _currentLocale = const Locale('en', 'US');
 
   Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _currentLocale = context.locale;
   }
 
   @override
@@ -42,9 +50,7 @@ class SettingsState extends State<Settings> {
         backgroundColor: Theme.of(context).colorScheme.background,
         leading: IconButton(
           onPressed: () {
-            setState(() {
-              Navigator.pop(context);
-            });
+            Navigator.pop(context);
           },
           icon: Icon(
             Icons.arrow_back_ios,
@@ -55,9 +61,10 @@ class SettingsState extends State<Settings> {
         title: Text(
           "Settings".tr(),
           style: TextStyle(
-              fontSize: 20,
-              color: Theme.of(context).colorScheme.onBackground,
-              fontWeight: FontWeight.w400),
+            fontSize: 20,
+            color: Theme.of(context).colorScheme.onBackground,
+            fontWeight: FontWeight.w400,
+          ),
         ),
         actions: <Widget>[
           IconButton(
@@ -74,8 +81,6 @@ class SettingsState extends State<Settings> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           child: Column(
             children: <Widget>[
-              //Account
-
               Row(
                 children: <Widget>[
                   Icon(
@@ -88,9 +93,10 @@ class SettingsState extends State<Settings> {
                   Text(
                     "Account".tr(),
                     style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w600),
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
@@ -100,35 +106,33 @@ class SettingsState extends State<Settings> {
               SettingListTile(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => const PrifileEdt(
-                                name: '',
-                                email: '',
-                                phone: '',
-                                photo: '',
-                              )));
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const PrifileEdt(
+                        name: '',
+                        email: '',
+                        phone: '',
+                        photo: '',
+                      ),
+                    ),
+                  );
                 },
                 text: "Edit Profile".tr(),
                 leadingicon: Icons.edit_outlined,
                 leadingiconcolor: Colors.blueGrey,
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
-                ), //Icons.arrow_forward_ios,
+                ),
                 text1: "App Settings".tr(),
-
                 leadingiconcolor1: Colors.green,
                 trailing1: const Icon(
                   Icons.arrow_forward_ios,
                 ),
                 onTap1: () {
-                  setState(() {
-                    AppSettings.openAppSettings();
-                  });
+                  AppSettings.openAppSettings();
                 },
                 leadingicon1: Icons.phonelink_setup,
               ),
-
               const SizedBox(
                 height: 40,
               ),
@@ -141,15 +145,13 @@ class SettingsState extends State<Settings> {
                   const SizedBox(
                     width: 15,
                   ),
-
-                  //Notification
-
                   Text(
                     "Notification".tr(),
                     style: TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20),
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 20,
+                    ),
                   ),
                 ],
               ),
@@ -161,9 +163,9 @@ class SettingsState extends State<Settings> {
                 borderRadius: BorderRadius.circular(10),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(10))),
+                    color: Theme.of(context).colorScheme.background,
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  ),
                   child: Column(
                     children: <Widget>[
                       ListTile(
@@ -174,14 +176,20 @@ class SettingsState extends State<Settings> {
                         title: Text(
                           "Notification".tr(),
                           style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         trailing: Switch(
-                            value: _switch,
-                            materialTapTargetSize:
-                                MaterialTapTargetSize.shrinkWrap,
-                            activeColor: Colors.green,
-                            onChanged: (bool val) {}),
+                          value: _switch,
+                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          activeColor: Colors.green,
+                          onChanged: (bool val) {
+                            setState(() {
+                              _switch = val;
+                            });
+                          },
+                        ),
                       ),
                       ListTile(
                         leading: const Icon(
@@ -191,25 +199,25 @@ class SettingsState extends State<Settings> {
                         title: Text(
                           "Dark Mode".tr(),
                           style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.w500),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         trailing: Consumer<UiProvider>(
-                            builder: (context, UiProvider notifier, child) {
-                          return Switch(
+                          builder: (context, UiProvider notifier, child) {
+                            return Switch(
                               value: notifier.isDark,
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
+                              materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               activeColor: Colors.green,
-                              onChanged: (value) => notifier.changeTheme());
-                        }),
+                              onChanged: (value) => notifier.changeTheme(),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
                 ),
               ),
-
-              //More
-
               const SizedBox(
                 height: 40,
               ),
@@ -225,9 +233,10 @@ class SettingsState extends State<Settings> {
                   Text(
                     "More".tr(),
                     style: TextStyle(
-                        fontSize: 18,
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w600),
+                      fontSize: 18,
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ],
               ),
@@ -236,9 +245,7 @@ class SettingsState extends State<Settings> {
               ),
               SettingListTile(
                 text: "Language".tr(),
-                onTap: () {
-                  // LocalizationChecker.changeLanguge(context);
-                },
+                onTap: () {},
                 leadingicon: Icons.language_outlined,
                 leadingiconcolor: Colors.blue,
                 trailing: DropdownButtonHideUnderline(
@@ -275,64 +282,66 @@ class SettingsState extends State<Settings> {
                   Icons.arrow_forward_ios,
                 ),
               ),
-
               const SizedBox(
                 height: 40,
               ),
               MaterialButtons(
                 onTap: () {
                   showCupertinoDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          backgroundColor: Colors.black87,
-                          elevation: 20,
-                          title: TextEdt(
-                            text: 'Sign Out Your Account'.tr(),
-                            color: Colors.white,
-                            fontSize: null,
-                          ),
-                          content: TextEdt(
-                            text: 'Do you want to continue with sign out?'.tr(),
-                            fontSize: null,
-                            color: Colors.grey,
-                          ),
-                          actions: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                MaterialButtons(
-                                  onTap: () {
-                                    Navigator.of(context).pop(false);
-                                  },
-                                  elevationsize: 20,
-                                  text: 'Cancel'.tr(),
-                                  fontSize: 17,
-                                  containerheight: 40,
-                                  containerwidth: 100,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  onPressed: null,
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        backgroundColor: Colors.black87,
+                        elevation: 20,
+                        title: TextEdt(
+                          text: 'Sign Out Your Account'.tr(),
+                          color: Colors.white,
+                          fontSize: null,
+                        ),
+                        content: TextEdt(
+                          text: 'Do you want to continue with sign out?'.tr(),
+                          fontSize: null,
+                          color: Colors.grey,
+                        ),
+                        actions: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              MaterialButtons(
+                                onTap: () {
+                                  Navigator.of(context).pop(false);
+                                },
+                                elevationsize: 20,
+                                text: 'Cancel'.tr(),
+                                fontSize: 17,
+                                containerheight: 40,
+                                containerwidth: 100,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
                                 ),
-                                MaterialButtons(
-                                  onTap: () {
-                                    _signOut();
-                                    Navigator.of(context).pop();
-                                  },
-                                  elevationsize: 20,
-                                  text: 'Continue'.tr(),
-                                  fontSize: 17,
-                                  containerheight: 40,
-                                  containerwidth: 100,
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  onPressed: null,
+                                onPressed: null,
+                              ),
+                              MaterialButtons(
+                                onTap: () {
+                                  _signOut();
+                                  Navigator.of(context).pop();
+                                },
+                                elevationsize: 20,
+                                text: 'Continue'.tr(),
+                                fontSize: 17,
+                                containerheight: 40,
+                                containerwidth: 100,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(10),
                                 ),
-                              ],
-                            )
-                          ],
-                        );
-                      });
+                                onPressed: null,
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    },
+                  );
                 },
                 containerheight: 40,
                 borderRadius: BorderRadius.circular(10),

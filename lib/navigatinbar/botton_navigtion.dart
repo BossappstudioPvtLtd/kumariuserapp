@@ -3,7 +3,7 @@
 import 'dart:io';
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:easy_localization/easy_localization.dart';
+//import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,22 +12,25 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 //import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:new_app/Appinfo/app_info.dart';
 //import 'package:new_app/Appinfo/app_info.dart';
 import 'package:new_app/Const/global_var.dart';
 import 'package:new_app/comen/common_methords.dart';
 //import 'package:new_app/components/loading_dialog.dart';
-import 'package:new_app/components/m_buttons.dart';
-import 'package:new_app/components/my_textfield.dart';
-import 'package:new_app/components/splashripple.dart';
-import 'package:new_app/components/user_datanav.dart';
+//import 'package:new_app/components/m_buttons.dart';
+//import 'package:new_app/components/my_textfield.dart';
+//import 'package:new_app/components/splashripple.dart';
+//import 'package:new_app/components/user_datanav.dart';
 import 'package:new_app/locatio%20Auto%20Fill/model/prediction_model.dart';
 import 'package:new_app/navigatinbar/chat_page.dart';
 import 'package:new_app/navigatinbar/favorite_page.dart';
 import 'package:new_app/navigatinbar/home_page.dart';
 import 'package:new_app/navigatinbar/profile_page.dart';
+import 'package:new_app/search_destination.dart';
+import 'package:provider/provider.dart';
 //import 'package:provider/provider.dart';
 
-import '../locatio Auto Fill/Widgets/prediction_place.dart';
+//import '../locatio Auto Fill/Widgets/prediction_place.dart';
 
 class BottonNavigations extends StatefulWidget {
   const BottonNavigations({super.key});
@@ -67,7 +70,7 @@ class _BottonNavigationsState extends State<BottonNavigations> {
   ];
   List bottomPages = [
     const HomePage(),
-      const ChatPage(),
+    const ChatPage(),
     const Deatails(),
     const ProfilePage()
   ];
@@ -124,6 +127,7 @@ class _BottonNavigationsState extends State<BottonNavigations> {
         setState(() {
           dropOffPredictionsPlacesList = predictionsList;
         });
+        debugPrint("predictioResultInjson =$predictionResultInJson");
       }
     }
   }
@@ -161,295 +165,20 @@ class _BottonNavigationsState extends State<BottonNavigations> {
   @override
   Widget build(BuildContext context) {
     _locatioController.text = _locationMessage;
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          var responseFromSearchPage = await showCupertinoModalPopup(
-            context: context,
-            builder: (builder) {
-              return StatefulBuilder(
-                builder: (BuildContext context,
-                    void Function(void Function()) setState) {
-                  return ListView(
-                    children: [
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 40),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: 20,
-                            top: 10,
-                          ),
-                          child: UserInfoNav(),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 20),
-                        child: Card(
-                          color: const Color.fromARGB(255, 3, 22, 60),
-                          elevation: 20,
-                          child: SizedBox(
-                            height: 160,
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                MyTextField(
-                                  controller: _locatioController,
-                                  icon: Icons.location_on,
-                                  hintText: _locationMessage,
-                                ),
-                                const SizedBox(
-                                  height: 7,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 32),
-                                  child: Material(
-                                    elevation: 20,
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: Form(
-                                      child: TextFormField(
-                                        controller:
-                                            destinationTextEditingController,
-                                        onChanged: (inputText) {
-                                          searchLocation(inputText);
-                                        },
-                                        textInputAction: TextInputAction.search,
-                                        decoration: InputDecoration(
-                                          hintText:
-                                              "Search Your Destination".tr(),
-                                          prefixIcon: const Padding(
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 12),
-                                            child: Icon(
-                                              Icons.location_on,
-                                              color: Color.fromARGB(
-                                                  255, 92, 240, 253),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      SliderTheme(
-                        data: SliderThemeData(
-                          thumbShape: const RoundSliderThumbShape(
-                            enabledThumbRadius: 50.0,
-                            disabledThumbRadius: 50,
-                            elevation: 3,
-                          ),
-                          overlayColor: Colors.grey.withAlpha(32),
-                          overlayShape: const RoundSliderOverlayShape(
-                              overlayRadius: 25.0),
-                          showValueIndicator: ShowValueIndicator.always,
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              MaterialButtons(
-                                elevationsize: 2,
-                                text: "Reset".tr(),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                containerheight: 50,
-                                containerwidth: 150,
-                                fontSize: 17,
-                                textweight: FontWeight.bold,
-                                textcolor: Colors.grey[500],
-                                onTap: () {
-                                  displayUserRideDetailsContainer();
-                                },
-                              ),
-                              MaterialButtons(
-                                elevationsize: 2,
-                                text: "Apply".tr(),
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                containerheight: 50,
-                                containerwidth: 150,
-                                fontSize: 17,
-                                textweight: FontWeight.bold,
-                                textcolor:
-                                    Theme.of(context).colorScheme.onBackground,
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => const SpalshRipple()),
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      /* const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child: Divider(
-                          height: 4,
-                          thickness: 4,
-                          color: Colors.white70,
-                        ),
-                      ),*/
+          var responseFromSearchPage = await Navigator.push(context,
+              MaterialPageRoute(builder: (c) => const SearchDestinationPage()));
 
-                      //display prediction results for destination place
-                      (dropOffPredictionsPlacesList.length > 0)
-                          ? Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 8, horizontal: 16),
-                              child: ListView.separated(
-                                padding: const EdgeInsets.all(0),
-                                itemBuilder: (context, index) {
-                                  return Card(
-                                    elevation: 3,
-                                    child: PredictionPlaceUI(
-                                      predictedPlaceData:
-                                          dropOffPredictionsPlacesList[index],
-                                    ),
-                                  );
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const SizedBox(
-                                  height: 2,
-                                ),
-                                itemCount: dropOffPredictionsPlacesList.length,
-                                shrinkWrap: true,
-                                physics: const ClampingScrollPhysics(),
-                              ),
-                            )
-                          : Container(),
-
-                      ///ride details container
-
-                      Positioned(
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: Container(
-                          height: rideDetailsContainerHeight,
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15),
-                                topRight: Radius.circular(15)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white12,
-                                blurRadius: 15.0,
-                                spreadRadius: 0.5,
-                                offset: Offset(.7, .7),
-                              ),
-                            ],
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 18),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 16, right: 16),
-                                  child: SizedBox(
-                                    height: 190,
-                                    child: Card(
-                                      elevation: 10,
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                .70,
-                                        color: Colors.black,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              top: 8, bottom: 8),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 8, right: 8),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    const Text(
-                                                      // (tripDirectionDetailsInfo != null) ? tripDirectionDetailsInfo!.distanceTextString! :
-                                                      "2km",
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white70,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    const Text(
-                                                      //(tripDirectionDetailsInfo != null) ? tripDirectionDetailsInfo!.durationTextString! :
-                                                      "Your Destination kanyakumari",
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Colors.white70,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    GestureDetector(
-                                                      onTap: () {},
-                                                      child: Image.asset(
-                                                          "assets/images/uberexec.png",
-                                                          height: 50,
-                                                          width: 50),
-                                                    ),
-                                                    const Text(
-                                                      // (tripDirectionDetailsInfo != null) ? "\$ ${(cMethods.calculateFareAmount(tripDirectionDetailsInfo!)).toString()}" :
-                                                      "",
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        color: Colors.white70,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-          );
           if (responseFromSearchPage == "placeSelected") {
-            displayUserRideDetailsContainer();
+            String dropOffLocation =
+                Provider.of<AppInfo>(context, listen: false)
+                        .dropOffLocation!
+                        .placeName ??
+                    "";
+            debugPrint("dropOffLocation = $dropOffLocation");
           }
         },
         shape: RoundedRectangleBorder(
