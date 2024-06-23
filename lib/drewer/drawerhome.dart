@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_icons/flutter_animated_icons.dart';
 import 'package:new_app/auth/login_page.dart';
 import 'package:new_app/components/info_card.dart';
 import 'package:new_app/components/list_tiles.dart';
@@ -24,18 +24,35 @@ class Drewer extends StatefulWidget {
   State<Drewer> createState() => _DrewerState();
 }
 
-class _DrewerState extends State<Drewer> {
-  static double value = 0;
+class _DrewerState extends State<Drewer> with SingleTickerProviderStateMixin {
+  bool isOpen = false; // Track the open/close state of the menu
+  late AnimationController _controller; // Animation controller for the icon
 
-  //final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  // final GoogleSignIn _googleSignIn = GoogleSignIn();
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 250),
+    );
+  }
 
-  // Future<void> _signOutGoogle() async {
-  // await _firebaseAuth.signOut();
-  // await _googleSignIn.signOut();
-  // }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
- 
+  void _animate() {
+    setState(() {
+      isOpen = !isOpen; // Toggle isOpen state
+      if (isOpen) {
+        _controller.forward(); // Start animation forward (open menu)
+      } else {
+        _controller.reverse(); // Reverse animation (close menu)
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +74,7 @@ class _DrewerState extends State<Drewer> {
             children: [
               Column(
                 children: [
+                  SizedBox(height: 50,),
                   const InfoCard(
                     name: '',
                     Profession: '',
@@ -212,31 +230,32 @@ class _DrewerState extends State<Drewer> {
                 ],
               ),
               TweenAnimationBuilder(
-                  tween: Tween<double>(begin: 0, end: value),
-                  duration: const Duration(milliseconds: 250),
-                  curve: Curves.easeIn,
-                  builder: (_, double val, __) {
-                    return Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.identity()
-                        ..setEntry(3, 2, 0.001)
-                        ..setEntry(0, 3, 200 * val)
-                        ..rotateY((pi / 6) * val),
-                      child: const BottonNavigations(),
-                    );
-                  }),
-              GestureDetector(
-                onHorizontalDragUpdate: (e) {
-                  if (e.delta.dx > 0) {
-                    setState(() {
-                      value = 1;
-                    });
-                  } else {
-                    setState(() {
-                      value = 0;
-                    });
-                  }
+                tween: Tween<double>(begin: 0, end: isOpen ? 1 : 0),
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeIn,
+                builder: (_, double val, __) {
+                  return Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()
+                      ..setEntry(3, 2, 0.001)
+                      ..setEntry(0, 3, 200 * val)
+                      ..rotateY((pi / 6) * val),
+                    child: const BottonNavigations(),
+                  );
                 },
+              ),
+              Positioned(
+                top: 10,
+                left: 19,
+                child: GestureDetector(
+                  onTap: _animate,
+                  child: AnimatedIcon(
+                    icon: isOpen ? AnimatedIcons.menu_close : AnimatedIcons.menu_home,
+                    progress: _controller,
+                    color: Colors.black87,
+                    size: 30,
+                  ),
+                ),
               ),
             ],
           ),
@@ -244,8 +263,4 @@ class _DrewerState extends State<Drewer> {
       ),
     );
   }
-}
-
-class Payment {
-  const Payment();
 }

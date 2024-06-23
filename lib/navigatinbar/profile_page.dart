@@ -1,7 +1,5 @@
 // ignore_for_file: unused_element, non_constant_identifier_names, deprecated_member_use
-
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';

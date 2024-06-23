@@ -32,5 +32,5 @@ class CommonMethod {
     );
   }
 
-  static sendRequestToAPI(String apiPlacesUrl) {}
+  
 }
