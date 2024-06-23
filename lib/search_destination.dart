@@ -1,19 +1,18 @@
-//import 'dart:io';
-
-import 'package:easy_localization/easy_localization.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-//import 'package:image_picker/image_picker.dart';
+import 'package:new_app/locatio%20Auto%20Fill/model/add_model.dart';
+import 'package:provider/provider.dart';
+import 'package:new_app/Appinfo/app_info.dart';
 import 'package:new_app/Const/global_var.dart';
 import 'package:new_app/comen/common_methords.dart';
 import 'package:new_app/components/my_textfield.dart';
 import 'package:new_app/components/user_datanav.dart';
 import 'package:new_app/locatio%20Auto%20Fill/Widgets/prediction_place.dart';
 import 'package:new_app/locatio%20Auto%20Fill/model/prediction_model.dart';
-import 'package:new_app/navigatinbar/profile_page.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 
 class SearchDestinationPage extends StatefulWidget {
   const SearchDestinationPage({super.key});
@@ -22,60 +21,68 @@ class SearchDestinationPage extends StatefulWidget {
   State<SearchDestinationPage> createState() => _SearchDestinationPageState();
 }
 
-TextEditingController pickUpTextEditingController = TextEditingController();
-TextEditingController destinationTextEditingController =
-    TextEditingController();
-List<PredictionModel> dropOffPredictionsPlacesList = [];
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
-CommonMethods cMethods = CommonMethods();
-double searchContainerHeight = 276;
-double bottomMapPadding = 0;
-double rideDetailsContainerHeight = 0;
-
-//DirectionDetails? tripDirectionDetailsInfo;
-
-//User? user = FirebaseAuth.instance.currentUser;
-String? userEmail;
-String? userName;
-//User? currentUser;
-
 class _SearchDestinationPageState extends State<SearchDestinationPage> {
-  String _locationMessage = "";
+  TextEditingController pickUpTextEditingController = TextEditingController();
+  TextEditingController destinationTextEditingController = TextEditingController();
+  List<PredictionModel> dropOffPredictionsPlacesList = [];
+
+  CommonMethods cMethods = CommonMethods();
+  double searchContainerHeight = 276;
+  double bottomMapPadding = 0;
+  double rideDetailsContainerHeight = 0;
+
   @override
   void initState() {
-    _getCurrentLocation();
     super.initState();
-    if (user != null) {
-      userEmail = user!
-          .email; // Assuming the user is logged in using email and password
-      userName = user!.displayName;
-      currentUser =
-          _auth.currentUser; // Assuming the user has a display name set up
-    }
-    _getCurrentLocation();
+    _getUserAddress();
   }
 
-  void _getCurrentLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-
+  Future<void> _getUserAddress() async {
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    String address = await convertGeoGraphicCoOrdinatesIntoHumanReadableAddress(position, context);
     setState(() {
-      _locationMessage =
-          '${placemarks[0].name}, ${placemarks[0].locality}, ${placemarks[0].country}';
+      pickUpTextEditingController.text = address;
     });
   }
 
-  ///Places API - Place AutoComplete
-  searchLocation(String locationName) async {
-    if (locationName.length > 1) {
-      String apiPlacesUrl =
-          "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$locationName&key=$googleMapKey&components=country:in";
+  static Future<String> convertGeoGraphicCoOrdinatesIntoHumanReadableAddress(Position position, BuildContext context) async {
+    String humanReadableAddress = "";
+    String apiGeoCodingUrl = "https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=$googleMapKey";
 
-      var responseFromPlacesAPI =
-          await CommonMethods.sendRequestToAPI(apiPlacesUrl);
+    var responseFromAPI = await sendRequestToAPI(apiGeoCodingUrl);
+
+    if (responseFromAPI != "error") {
+      humanReadableAddress = responseFromAPI["results"][0]["formatted_address"];
+
+      AddressModel model = AddressModel();
+      model.humanReadableAddress = humanReadableAddress;
+      model.longitudePosition = position.longitude;
+      model.latitudePosition = position.latitude;
+
+      Provider.of<AppInfo>(context, listen: false).updatePickUpLocation(model);
+    }
+    print('value is ----------------- $humanReadableAddress');
+    return humanReadableAddress;
+  }
+
+  static Future<dynamic> sendRequestToAPI(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        return "error";
+      }
+    } catch (e) {
+      return "error";
+    }
+  }
+
+  void searchLocation(String locationName) async {
+    if (locationName.length > 1) {
+      String apiPlacesUrl = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$locationName&key=$googleMapKey&components=country:in";
+
+      var responseFromPlacesAPI = await CommonMethods.sendRequestToAPI(apiPlacesUrl);
 
       if (responseFromPlacesAPI == "error") {
         return;
@@ -84,23 +91,19 @@ class _SearchDestinationPageState extends State<SearchDestinationPage> {
       if (responseFromPlacesAPI["status"] == "OK") {
         var predictionResultInJson = responseFromPlacesAPI["predictions"];
         var predictionsList = (predictionResultInJson as List)
-            .map((eachPlacePrediction) =>
-                PredictionModel.fromJson(eachPlacePrediction))
+            .map((eachPlacePrediction) => PredictionModel.fromJson(eachPlacePrediction))
             .toList();
 
         setState(() {
           dropOffPredictionsPlacesList = predictionsList;
         });
-        debugPrint("predictioResultInjson =$predictionResultInJson");
+        debugPrint("predictionResultInjson =$predictionResultInJson");
       }
     }
   }
 
-  final _locatioController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    _locatioController.text = _locationMessage;
-    
     return Scaffold(
       backgroundColor: Colors.amber,
       body: ListView(
@@ -108,10 +111,7 @@ class _SearchDestinationPageState extends State<SearchDestinationPage> {
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 40),
             child: Padding(
-              padding: EdgeInsets.only(
-                left: 20,
-                top: 10,
-              ),
+              padding: EdgeInsets.only(left: 20, top: 10),
               child: UserInfoNav(),
             ),
           ),
@@ -124,17 +124,12 @@ class _SearchDestinationPageState extends State<SearchDestinationPage> {
                 height: 160,
                 child: Column(
                   children: [
-                    const SizedBox(
-                      height: 15,
-                    ),
+                    const SizedBox(height: 15),
                     MyTextField(
-                      controller: _locatioController,
+                      controller: pickUpTextEditingController,
                       icon: Icons.location_on,
-                      hintText: _locationMessage,
                     ),
-                    const SizedBox(
-                      height: 7,
-                    ),
+                    const SizedBox(height: 7),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 32),
                       child: Material(
@@ -166,77 +161,10 @@ class _SearchDestinationPageState extends State<SearchDestinationPage> {
               ),
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          SliderTheme(
-            data: SliderThemeData(
-              thumbShape: const RoundSliderThumbShape(
-                enabledThumbRadius: 50.0,
-                disabledThumbRadius: 50,
-                elevation: 3,
-              ),
-              overlayColor: Colors.grey.withAlpha(32),
-              overlayShape: const RoundSliderOverlayShape(overlayRadius: 25.0),
-              showValueIndicator: ShowValueIndicator.always,
-            ),
-            child: const Center(
-                /* child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                MaterialButtons(
-                                  elevationsize: 2,
-                                  text: "Reset".tr(),
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(10)),
-                                  containerheight: 50,
-                                  containerwidth: 150,
-                                  fontSize: 17,
-                                  textweight: FontWeight.bold,
-                                  textcolor: Colors.grey[500],
-                                  onTap: () {
-                                    displayUserRideDetailsContainer();
-                                  },
-                                ),
-                                MaterialButtons(
-                                  elevationsize: 2,
-                                  text: "Apply".tr(),
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(10)),
-                                  containerheight: 50,
-                                  containerwidth: 150,
-                                  fontSize: 17,
-                                  textweight: FontWeight.bold,
-                                  textcolor:
-                                      Theme.of(context).colorScheme.onBackground,
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (_) => const SpalshRipple()),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),*/
-                ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Divider(
-              height: 4,
-              thickness: 4,
-              color: Colors.white70,
-            ),
-          ),
-          //display prediction results for destination place
+          const SizedBox(height: 10),
           (dropOffPredictionsPlacesList.isNotEmpty)
               ? Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ListView.separated(
                     padding: const EdgeInsets.all(0),
                     itemBuilder: (context, index) {
@@ -244,18 +172,13 @@ class _SearchDestinationPageState extends State<SearchDestinationPage> {
                         predictedPlaceData: dropOffPredictionsPlacesList[index],
                       );
                     },
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const SizedBox(
-                      height: 2,
-                    ),
+                    separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 2),
                     itemCount: dropOffPredictionsPlacesList.length,
                     shrinkWrap: true,
                     physics: const ClampingScrollPhysics(),
                   ),
                 )
               : Container(),
-
-          
         ],
       ),
     );

@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AppInfo()),
+         ChangeNotifierProvider(create: (context) => AppInfo(),),
         ChangeNotifierProvider(create: (context) => UiProvider()..init()),
       ],
       child: Consumer<UiProvider>(

@@ -2,13 +2,14 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-//import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:new_app/Const/global_var.dart';
+import 'package:new_app/Models/direction_deteils.dart';
 import 'package:new_app/Models/online_earby_drivers.dart';
 import 'package:new_app/auth/login_page.dart';
 import 'package:new_app/comen/manage_drivers_methods.dart';
-//import 'package:new_app/navigatinbar/botton_navigtion.dart';
+import 'dart:math';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,17 +23,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       Completer<GoogleMapController>();
   GoogleMapController? controllerGoogleMap;
   Position? currentPositionOfUser;
-   Set<Marker> markerSet = {};
-   
+  double searchContainerHeight = 276;
+  double bottomMapPadding = 0;
+  double rideDetailsContainerHeight = 0;
+  DirectionDetails? tripDirectionDetailsInfo;
+  List<LatLng> polylineCoOrdinates = [];
+  Set<Polyline> polylineSet = {};
+  Set<Marker> markerSet = {};
+
   bool nearbyOnlineDriversKeysLoaded = false;
   BitmapDescriptor? carIconNearbyDriver;
- makeDriverNearbyCarIcon()
-  {
-    if(carIconNearbyDriver == null)
-    {
-      ImageConfiguration configuration = createLocalImageConfiguration(context, size: Size(0.5, 0.5));
-      BitmapDescriptor.fromAssetImage(configuration, "assets/images/tracking.png").then((iconImage)
-      {
+  double animationValue = 0; // Initial animation value
+
+  makeDriverNearbyCarIcon() {
+    if (carIconNearbyDriver == null) {
+      ImageConfiguration configuration =
+          createLocalImageConfiguration(context, size: Size(0.5, 0.5));
+      BitmapDescriptor.fromAssetImage(
+              configuration, "assets/images/tracking.png")
+          .then((iconImage) {
         carIconNearbyDriver = iconImage;
       });
     }
@@ -40,23 +49,25 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   String userName = "";
 
-
-   void getCurrentLiveLocationOfUser() async {
-    Position positionOfUser = await Geolocator.getCurrentPosition(desiredAccuracy: 
-    LocationAccuracy.bestForNavigation);currentPositionOfUser = positionOfUser;
-    LatLng positionOfUserInLatLng = LatLng(currentPositionOfUser!.latitude, currentPositionOfUser!.longitude);
+  void getCurrentLiveLocationOfUser() async {
+    Position positionOfUser = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
+    currentPositionOfUser = positionOfUser;
+    LatLng positionOfUserInLatLng = LatLng(
+        currentPositionOfUser!.latitude, currentPositionOfUser!.longitude);
     CameraPosition cameraPosition =
-    CameraPosition(target: positionOfUserInLatLng, zoom: 15);controllerGoogleMap!
-    .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-  }
+        CameraPosition(target: positionOfUserInLatLng, zoom: 15);
 
+    controllerGoogleMap!
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     getUserInfoAndCheckBlockStatus();
-   // initializeGeoFireListener();
+    // initializeGeoFireListener();
   }
 
   @override
@@ -102,20 +113,21 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     }
   }
 
-   updateAvailableNearbyOnlineDriversOnMap()
-  {
+  updateAvailableNearbyOnlineDriversOnMap() {
     setState(() {
       markerSet.clear();
     });
 
     Set<Marker> markersTempSet = Set<Marker>();
 
-    for(OnlineNearbyDrivers eachOnlineNearbyDriver in ManageDriversMethods.nearbyOnlineDriversList)
-    {
-      LatLng driverCurrentPosition = LatLng(eachOnlineNearbyDriver.latDriver!, eachOnlineNearbyDriver.lngDriver!);
+    for (OnlineNearbyDrivers eachOnlineNearbyDriver
+        in ManageDriversMethods.nearbyOnlineDriversList) {
+      LatLng driverCurrentPosition = LatLng(
+          eachOnlineNearbyDriver.latDriver!, eachOnlineNearbyDriver.lngDriver!);
 
       Marker driverMarker = Marker(
-        markerId: MarkerId("driver ID = " + eachOnlineNearbyDriver.uidDriver.toString()),
+        markerId: MarkerId(
+            "driver ID = " + eachOnlineNearbyDriver.uidDriver.toString()),
         position: driverCurrentPosition,
         icon: carIconNearbyDriver!,
       );
@@ -127,87 +139,53 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       markerSet = markersTempSet;
     });
   }
-  //13/06/24
-  /* initializeGeoFireListener()
-  {
-    Geofire.initialize("onlineDrivers");
-    Geofire.queryAtLocation(currentPositionOfUser!.latitude, currentPositionOfUser!.longitude, 22)!
-        .listen((driverEvent)
-    {
-      if(driverEvent != null)
-      {
-        var onlineDriverChild = driverEvent["callBack"];
 
-        switch(onlineDriverChild)
-        {
-          case Geofire.onKeyEntered:
-            OnlineNearbyDrivers onlineNearbyDrivers = OnlineNearbyDrivers();
-            onlineNearbyDrivers.uidDriver = driverEvent["key"];
-            onlineNearbyDrivers.latDriver = driverEvent["latitude"];
-            onlineNearbyDrivers.lngDriver = driverEvent["longitude"];
-            ManageDriversMethods.nearbyOnlineDriversList.add(onlineNearbyDrivers);
-
-            if(nearbyOnlineDriversKeysLoaded == true)
-            {
-              //update drivers on google map
-              updateAvailableNearbyOnlineDriversOnMap();
-            }
-
-            break;
-
-          case Geofire.onKeyExited:
-            ManageDriversMethods.removeDriverFromList(driverEvent["key"]);
-
-            //update drivers on google map
-            updateAvailableNearbyOnlineDriversOnMap();
-
-            break;
-
-          case Geofire.onKeyMoved:
-            OnlineNearbyDrivers onlineNearbyDrivers = OnlineNearbyDrivers();
-            onlineNearbyDrivers.uidDriver = driverEvent["key"];
-            onlineNearbyDrivers.latDriver = driverEvent["latitude"];
-            onlineNearbyDrivers.lngDriver = driverEvent["longitude"];
-            ManageDriversMethods.updateOnlineNearbyDriversLocation(onlineNearbyDrivers);
-
-            //update drivers on google map
-            updateAvailableNearbyOnlineDriversOnMap();
-
-            break;
-
-          case Geofire.onGeoQueryReady:
-            nearbyOnlineDriversKeysLoaded = true;
-            
-            //update drivers on google map
-            updateAvailableNearbyOnlineDriversOnMap();
-            
-            break;
-        }
-      }
+  void _animate() {
+    setState(() {
+      animationValue = animationValue == 0 ? 1 : 0;
     });
   }
- */
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: GoogleMap(
-          padding: const EdgeInsets.only(top: 136),
-          mapType: MapType.normal,
-          myLocationEnabled: true,
-          initialCameraPosition: const CameraPosition(
-            target: LatLng(37.42796133580664, -122.085749655962),
-            zoom: 14.4746,
+      body: Stack(
+        children: [
+          GoogleMap(
+            padding: EdgeInsets.only(top: 26, bottom: bottomMapPadding),
+            mapType: MapType.normal,
+            myLocationEnabled: true,
+            initialCameraPosition: googlePlexInitialPosition,
+            onMapCreated: (GoogleMapController mapController) {
+              controllerGoogleMap = mapController;
+              // updateMapTheme(controllerGoogleMap!);
+
+              googleMapCompleterController.complete(controllerGoogleMap);
+
+              setState(() {
+                bottomMapPadding = 300;
+              });
+
+              getCurrentLiveLocationOfUser();
+            },
           ),
-          onMapCreated: (GoogleMapController mapController) {
-            controllerGoogleMap = mapController;
-            googleMapCompleterController.complete(controllerGoogleMap);
-            getCurrentLiveLocationOfUser();
-          },
-        ),
+         
+        ],
       ),
+    );
+  }
+}
+
+class BottonNavigations extends StatelessWidget {
+  const BottonNavigations();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 200,
+      height: 200,
+      color: Colors.blue,
+      child: Center(child: Text('Bottom Navigations', style: TextStyle(color: Colors.white))),
     );
   }
 }
