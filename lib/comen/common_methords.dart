@@ -173,4 +173,6 @@ class CommonMethods {
 
     return overAllTotalFareAmount.toStringAsFixed(1);
   }
+
+  calculateFareAmount(DirectionDetails directionDetails) {}
 }
