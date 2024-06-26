@@ -1,347 +1,80 @@
-// ignore_for_file: library_private_types_in_public_api, unused_element, deprecated_member_use
-
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:new_app/Drivers/drivers_data.dart';
-class SpalshRipple extends StatefulWidget {
+import 'package:new_app/components/my_painter.dart';
+
+class SpalshRipple extends HookWidget {
   const SpalshRipple({super.key});
 
   @override
-  _SpalshRippleState createState() => _SpalshRippleState();
-}
-
-class _SpalshRippleState extends State<SpalshRipple>
-    with TickerProviderStateMixin {
-  late AnimationController firstRippleController;
-  late AnimationController secondRippleController;
-  late AnimationController thirdRippleController;
-  late AnimationController centerCircleController;
-  late Animation<double> firstRippleRadiusAnimation;
-  late Animation<double> firstRippleOpacityAnimation;
-  late Animation<double> firstRippleWidthAnimation;
-  late Animation<double> secondRippleRadiusAnimation;
-  late Animation<double> secondRippleOpacityAnimation;
-  late Animation<double> secondRippleWidthAnimation;
-  late Animation<double> thirdRippleRadiusAnimation;
-  late Animation<double> thirdRippleOpacityAnimation;
-  late Animation<double> thirdRippleWidthAnimation;
-  late Animation<double> centerCircleRadiusAnimation;
-
-  @override
-  void initState() {
-    firstRippleController = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        seconds: 2,
-      ),
-    );
-
-    firstRippleRadiusAnimation = Tween<double>(begin: 0, end: 150).animate(
-      CurvedAnimation(
-        parent: firstRippleController,
-        curve: Curves.ease,
-      ),
-    )
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          firstRippleController.repeat();
-        } else if (status == AnimationStatus.dismissed) {
-          firstRippleController.forward();
-        }
-      });
-
-    firstRippleOpacityAnimation = Tween<double>(begin: 1, end: 0).animate(
-      CurvedAnimation(
-        parent: firstRippleController,
-        curve: Curves.ease,
-      ),
-    )..addListener(
-        () {
-          setState(() {});
-        },
-      );
-
-    firstRippleWidthAnimation = Tween<double>(begin: 10, end: 0).animate(
-      CurvedAnimation(
-        parent: firstRippleController,
-        curve: Curves.ease,
-      ),
-    )..addListener(
-        () {
-          setState(() {});
-        },
-      );
-
-    secondRippleController = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        seconds: 2,
-      ),
-    );
-
-    secondRippleRadiusAnimation = Tween<double>(begin: 0, end: 150).animate(
-      CurvedAnimation(
-        parent: secondRippleController,
-        curve: Curves.ease,
-      ),
-    )
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          secondRippleController.repeat();
-        } else if (status == AnimationStatus.dismissed) {
-          secondRippleController.forward();
-        }
-      });
-
-    secondRippleOpacityAnimation = Tween<double>(begin: 1, end: 0).animate(
-      CurvedAnimation(
-        parent: secondRippleController,
-        curve: Curves.ease,
-      ),
-    )..addListener(
-        () {
-          setState(() {});
-        },
-      );
-
-    secondRippleWidthAnimation = Tween<double>(begin: 10, end: 0).animate(
-      CurvedAnimation(
-        parent: secondRippleController,
-        curve: Curves.ease,
-      ),
-    )..addListener(
-        () {
-          setState(() {});
-        },
-      );
-
-    thirdRippleController = AnimationController(
-      vsync: this,
-      duration: const Duration(
-        seconds: 2,
-      ),
-    );
-
-    thirdRippleRadiusAnimation = Tween<double>(begin: 0, end: 500).animate(
-      CurvedAnimation(
-        parent: thirdRippleController,
-        curve: Curves.ease,
-      ),
-    )
-      ..addListener(() {
-        setState(() {});
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          thirdRippleController.repeat();
-        } else if (status == AnimationStatus.dismissed) {
-          thirdRippleController.forward();
-        }
-      });
-
-    thirdRippleOpacityAnimation = Tween<double>(begin: 1, end: 0).animate(
-      CurvedAnimation(
-        parent: thirdRippleController,
-        curve: Curves.ease,
-      ),
-    )..addListener(
-        () {
-          setState(() {});
-        },
-      );
-
-    thirdRippleWidthAnimation = Tween<double>(begin: 10, end: 0).animate(
-      CurvedAnimation(
-        parent: thirdRippleController,
-        curve: Curves.ease,
-      ),
-    )..addListener(
-        () {
-          setState(() {});
-        },
-      );
-
-    centerCircleController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-
-    centerCircleRadiusAnimation = Tween<double>(begin: 00, end: 00).animate(
-      CurvedAnimation(
-        parent: centerCircleController,
-        curve: Curves.fastOutSlowIn,
-      ),
-    )
-      ..addListener(
-        () {
-          setState(() {});
-        },
-      )
-      ..addStatusListener(
-        (status) {
-          if (status == AnimationStatus.completed) {
-            centerCircleController.reverse();
-          } else if (status == AnimationStatus.dismissed) {
-            centerCircleController.forward();
-          }
-        },
-      );
-
-    firstRippleController.forward();
-    Timer(
-      const Duration(milliseconds: 765),
-      () => secondRippleController.forward(),
-    );
-
-    Timer(
-      const Duration(milliseconds: 1050),
-      () => thirdRippleController.forward(),
-    );
-
-    centerCircleController.forward();
-      if (currentUser != null) {
-      userRef = FirebaseDatabase.instance
-          .reference()
-          .child('users/${currentUser!.uid}');
-    }
-    
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    firstRippleController.dispose();
-    secondRippleController.dispose();
-    thirdRippleController.dispose();
-    centerCircleController.dispose();
-    super.dispose();
-  }
-
-//userCurrent datails
- 
-
-  User? currentUser = FirebaseAuth.instance.currentUser;
-  DatabaseReference? userRef;
-
-
-  @override
   Widget build(BuildContext context) {
+    final controllers = List.generate(4, (i) => useAnimationController(duration: Duration(seconds: i < 3 ? 2 : 1)));
+
+    final animations = List.generate(3, (i) => [
+      useAnimation(Tween<double>(begin: 0, end: i == 2 ? 500 : 150).animate(CurvedAnimation(parent: controllers[i], curve: Curves.ease))),
+      useAnimation(Tween<double>(begin: 1, end: 0).animate(CurvedAnimation(parent: controllers[i], curve: Curves.ease))),
+      useAnimation(Tween<double>(begin: 10, end: 0).animate(CurvedAnimation(parent: controllers[i], curve: Curves.ease))),
+    ]);
+
+    final centerCircleRadiusAnimation = useAnimation(Tween<double>(begin: 0, end: 0).animate(CurvedAnimation(parent: controllers[3], curve: Curves.fastOutSlowIn)));
+
+    useEffect(() {
+      controllers[0].repeat();
+      Timer(const Duration(milliseconds: 765), controllers[1].forward);
+      Timer(const Duration(milliseconds: 1050), controllers[2].forward);
+      controllers[3].repeat(reverse: true);
+      return () => controllers.forEach((controller) => controller.dispose());
+    }, []);
+
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final userRef = currentUser != null ? FirebaseDatabase.instance.ref('users/${currentUser.uid}') : null;
+
     return Scaffold(
-        backgroundColor:Theme.of(context).colorScheme.background,
       body: Stack(
         children: [
           const DriverListScreen(),
           Center(
             child: CustomPaint(
               painter: MyPainter(
-                firstRippleRadiusAnimation.value,
-                firstRippleOpacityAnimation.value,
-                firstRippleWidthAnimation.value,
-                secondRippleRadiusAnimation.value,
-                secondRippleOpacityAnimation.value,
-                secondRippleWidthAnimation.value,
-                thirdRippleRadiusAnimation.value,
-                thirdRippleOpacityAnimation.value,
-                thirdRippleWidthAnimation.value,
-                centerCircleRadiusAnimation.value,
+                animations[0][0], animations[0][1], animations[0][2],
+                animations[1][0], animations[1][1], animations[1][2],
+                animations[2][0], animations[2][1], animations[2][2],
+                centerCircleRadiusAnimation,
               ),
             ),
           ),
-          Center(
-            child: Material(elevation: 20,
-            borderRadius:const BorderRadius.all(
-                                    Radius.circular(50),
-                                  ),
-              child:currentUser == null || userRef == null
-        ? const Center(child: Text('No user logged in'))
-              : StreamBuilder<Object>(
-            stream: userRef!.onValue,
-                builder: (context,AsyncSnapshot event) {
-                  if (event.hasData &&
-                  !event.hasError &&
-                  event.data.snapshot.value != null) {
-                Map data = event.data.snapshot.value;
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(100.0),
-                    child: Image.network("${data['photo']}",
-                       width: 50, height: 50, fit: BoxFit.cover),
-                  );
-                }
-                else{return  Center(child: CircularProgressIndicator());}
-                }
-              ),
+        Center(
+            child: Material(
+              elevation: 20,
+              borderRadius: const BorderRadius.all(Radius.circular(50)),
+              child: currentUser == null || userRef == null
+                  ? const Center(child: Text('No user logged in'))
+                  : StreamBuilder(
+                      stream: userRef.onValue,
+                      builder: (context, AsyncSnapshot snapshot) {
+                        if (snapshot.hasData && !snapshot.hasError && snapshot.data.snapshot.value != null) {
+                          final data = Map<String, dynamic>.from(snapshot.data.snapshot.value);
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(100.0),
+                            child: Image.network(
+                              data['photo'],
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        } else {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                      },
+                    ),
             ),
           )
         ],
       ),
     );
-  }
-}
-
-class MyPainter extends CustomPainter {
-  final double firstRippleRadius;
-  final double firstRippleOpacity;
-  final double firstRippleStrokeWidth;
-  final double secondRippleRadius;
-  final double secondRippleOpacity;
-  final double secondRippleStrokeWidth;
-  final double thirdRippleRadius;
-  final double thirdRippleOpacity;
-  final double thirdRippleStrokeWidth;
-  final double centerCircleRadius;
-
-  MyPainter(
-      this.firstRippleRadius,
-      this.firstRippleOpacity,
-      this.firstRippleStrokeWidth,
-      this.secondRippleRadius,
-      this.secondRippleOpacity,
-      this.secondRippleStrokeWidth,
-      this.thirdRippleRadius,
-      this.thirdRippleOpacity,
-      this.thirdRippleStrokeWidth,
-      this.centerCircleRadius);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    Color myColor = const Color(0xff653ff4);
-
-    Paint firstPaint = Paint();
-    firstPaint.color = myColor.withOpacity(firstRippleOpacity);
-    firstPaint.style = PaintingStyle.stroke;
-    firstPaint.strokeWidth = firstRippleStrokeWidth;
-
-    canvas.drawCircle(Offset.zero, firstRippleRadius, firstPaint);
-
-    Paint secondPaint = Paint();
-    secondPaint.color = myColor.withOpacity(secondRippleOpacity);
-    secondPaint.style = PaintingStyle.stroke;
-    secondPaint.strokeWidth = secondRippleStrokeWidth;
-
-    canvas.drawCircle(Offset.zero, secondRippleRadius, secondPaint);
-
-    Paint thirdPaint = Paint();
-    thirdPaint.color = myColor.withOpacity(thirdRippleOpacity);
-    thirdPaint.style = PaintingStyle.stroke;
-    thirdPaint.strokeWidth = thirdRippleStrokeWidth;
-
-    canvas.drawCircle(Offset.zero, thirdRippleRadius, thirdPaint);
-
-    Paint fourthPaint = Paint();
-    fourthPaint.color = myColor;
-    fourthPaint.style = PaintingStyle.fill;
-
-    canvas.drawCircle(Offset.zero, centerCircleRadius, fourthPaint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return true;
   }
 }

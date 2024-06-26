@@ -91,6 +91,8 @@ dependencies:
   slider_button: ^2.1.0
   flutter_polyline_points: ^1.0.0
   flutter_animated_icons: ^1.0.1
+  shimmer: ^3.0.0
+  
   
   
   

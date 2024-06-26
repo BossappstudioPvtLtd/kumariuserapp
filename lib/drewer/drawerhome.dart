@@ -3,7 +3,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_icons/flutter_animated_icons.dart';
 import 'package:new_app/auth/login_page.dart';
 import 'package:new_app/components/info_card.dart';
 import 'package:new_app/components/list_tiles.dart';
@@ -74,7 +73,7 @@ class _DrewerState extends State<Drewer> with SingleTickerProviderStateMixin {
             children: [
               Column(
                 children: [
-                  SizedBox(height: 50,),
+                  const SizedBox(height: 70,),
                   const InfoCard(
                     name: '',
                     Profession: '',
@@ -244,19 +243,57 @@ class _DrewerState extends State<Drewer> with SingleTickerProviderStateMixin {
                   );
                 },
               ),
-              Positioned(
+            /*  Positioned(
                 top: 10,
                 left: 19,
                 child: GestureDetector(
                   onTap: _animate,
-                  child: AnimatedIcon(
-                    icon: isOpen ? AnimatedIcons.menu_close : AnimatedIcons.menu_home,
-                    progress: _controller,
-                    color: Colors.black87,
-                    size: 30,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                  radius: 20,
+                    child: AnimatedIcon(
+                      icon: isOpen ? AnimatedIcons.menu_close : AnimatedIcons.menu_home,
+                      progress: _controller,
+                      color: Colors.black87,
+                      size: 30,
+                    ),
                   ),
                 ),
+              ),*/
+               Positioned(
+            top: 36,
+            left: 19,
+            child: GestureDetector(
+              onTap:  _animate,
+                child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const
+                  [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 5,
+                      spreadRadius: 0.5,
+                      offset: Offset(0.7, 0.7),
+                    ),
+                  ],
+                ),
+                child:   CircleAvatar(
+                  
+                    backgroundColor: Colors.white,
+                  radius: 20,
+                    child: AnimatedIcon(
+                      icon: isOpen ? AnimatedIcons.menu_close : AnimatedIcons.menu_home,
+                      progress: _controller,
+                      color: Colors.black87,
+                      size: 30,
+                    ),
+                  ),
               ),
+            ),
+          ),
+
             ],
           ),
         ),
