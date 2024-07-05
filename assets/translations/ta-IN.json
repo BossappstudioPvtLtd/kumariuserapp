@@ -1,0 +1,127 @@
+{
+   
+
+
+    "Hello": "வணக்கம்",
+    "Where are we taking you?": "நாங்கள் உங்களை எங்கு அழைத்துச் செல்கிறோம்?",
+    "Search Your Destination": "உங்கள் இலக்கைத் தேடுங்கள்",
+    "Reset": "மீட்டமை",
+    "Apply": "விண்ணப்பிக்க",
+
+    "User Information": "பயனர் தகவல்",
+    "Location": "இடம்",
+    "Email": "மின்னஞ்சல்",
+    "Phone": "தொலைபேசி",
+
+    "Profile Editing": "சுயவிவரத்தை திருத்துதல்",
+    "Add Your Image": "உங்கள் படத்தைச் சேர்க்கவும்",
+    "Name": "பெயர்",
+    "Submit": "சமர்ப்பிக்கவும்",
+
+    "Speak":"பேசு",
+
+    "Sign Out Your Account": "உங்கள் கணக்கை வெளியேற்றுக",
+    "Do you want to continue with sign out?": "சைன் அவுட் செய்ய தொடங்க வேண்டுமா?",
+    "Cancel": "ரத்து செய்க",
+    "Continue": "தொடருக",
+    "Are you sure": "நீங்கள் உறுதியாக இருக்கிறீர்களா?",
+
+
+    
+    "Brightness":"பிரகாசம்",
+    
+    "App Settings":"பயன்பாட்டு அமைப்புகள்",
+    "Settings": "அமைப்புகள்",
+    "Account": "கணக்கு",
+    "Edit Profile": "சுயவிவரத்தை திருத்து",
+    "Change Password": "கடவுச்சொல்லை மாற்று",
+    "Notification": "அறிவிப்பு",
+    "Darak_Mode": "இருள் முறை",
+    "More": "மேலும்",
+    "Language": "மொழி",
+    "Sign Out": "வெளியேறு",
+    "Booking": "முன்பதிவு",
+    "Rider History": "பயண வரலாறு",
+    "Help Center": "உதவி மையம்",
+
+    "Gift":"பரிசு",
+    "Get Started":"தொடங்கு",
+    "Spin":"சுழல்",
+    
+
+    "About": "பற்றி",
+    "Darak Mode": "இருள் முறை",
+    "Guide to Book": "முன்பதிவு வழிகாட்டி",
+    "Services": "சேவைகள்",
+    "Fare Details": "கட்டண விவரங்கள்",
+    "Safety and Accident": "பாதுகாப்பு மற்றும் விபத்து",
+    "Guide Book": "வழிகாட்டி புத்தகம்",
+    "Create an Account": "கணக்கை உருவாக்கவும்",
+    "Destination": "இலக்கு",
+    "Ride Option": "பயண விருப்பம்",
+    "Confirm Your Booking": "உங்கள் முன்பதிவை உறுதிசெய்யவும்",
+    "Track Your Ride": "உங்கள் பயணத்தை கண்காணிக்கவும்",
+    "Rating": "மதிப்பீடு",
+    "Enjoy Your Ride!": "உங்கள் பயணத்தை மகிழுங்கள்!",
+    "Create an Account, Once downloaded, open the app and follow the instructions to create an account. Youll need to provide your email, phone number.": "பயன்பாட்டை பதிவிறக்கம் செய்த பிறகு, திறந்து கணக்கை உருவாக்குவதற்கான வழிமுறைகளைப் பின்பற்றவும். உங்கள் மின்னஞ்சல், தொலைபேசி எண்ணை வழங்க வேண்டும்.",
+    "Enter Your Destination: Use the apps interface to input your destination. You can either type in the address or select it on the map.": "உங்கள் இலக்கை உள்ளிட: பயன்பாட்டின் இடைமுகத்தைப் பயன்படுத்தி உங்கள் இலக்கை உள்ளிடவும். நீங்கள் முகவரியை தட்டச்சு செய்யவோ அல்லது வரைபடத்தில் தேர்ந்தெடுக்கவோ முடியும்.",
+    "Choose Your Ride Option: Most apps offer various options such as economy, premium, or shared rides. Select the option that suits your needs and budget.": "உங்கள் பயண விருப்பத்தைத் தேர்ந்தெடுக்கவும்: பல பயன்பாடுகள் பொருளாதார, பிரீமியம் அல்லது பகிரப்பட்ட பயணங்கள் போன்ற பல்வேறு விருப்பங்களை வழங்குகின்றன. உங்கள் தேவைகளுக்கும் பட்ஜெட்டிற்கும் பொருந்தும் விருப்பத்தைத் தேர்ந்தெடுக்கவும்.",
+    "Confirm Your Booking: After selecting your ride option, the app will show you the estimated fare and wait time. Confirm your booking to request a ride.": "உங்கள் முன்பதிவை உறுதிசெய்யவும்: உங்கள் பயண விருப்பத்தைத் தேர்ந்தெடுத்த பிறகு, பயன்பாடு உங்களுக்கு கணக்கிடப்பட்ட கட்டணத்தையும் காத்திருக்கும் நேரத்தையும் காட்டும். பயணத்தை கோருவதற்கு உங்கள் முன்பதிவை உறுதிசெய்யவும்.",
+    "Track Your Ride: Once your booking is confirmed, youll be able to track your ride in real-time on the app. Youll see the drivers name, photo, and the vehicle details.": "உங்கள் பயணத்தை கண்காணிக்கவும்: உங்கள் முன்பதிவு உறுதிசெய்யப்பட்ட பிறகு, நீங்கள் பயன்பாட்டில் நேரடியாக உங்கள் பயணத்தை கண்காணிக்க முடியும். ஓட்டுநரின் பெயர், புகைப்படம் மற்றும் வாகன விவரங்களைப் பார்க்க முடியும்.",
+    "Enjoy Your Ride: Once your ride arrives, hop in, and enjoy the journey to your destination. The app will handle the payment automatically through the payment method you provided during account setup.": "உங்கள் பயணத்தை மகிழுங்கள்: உங்கள் பயணம் வந்தவுடன், ஏறி, உங்கள் இலக்கிற்கு பயணத்தை மகிழுங்கள். கணக்கு அமைப்பு நேரத்தில் நீங்கள் வழங்கிய கட்டண முறையின் மூலம் பயன்பாடு கட்டணத்தை தானாகவே கையாளும்.",
+    "Rate Your Experience: After your ride, youll usually have the option to rate your driver and provide feedback. This helps maintain the quality of service within the ride-hailing community.": "உங்கள் அனுபவத்தை மதிப்பீடு செய்யவும்: உங்கள் பயணத்தின் பிறகு, பொதுவாக, உங்கள் ஓட்டுநருக்கு மதிப்பீடு செய்யும் விருப்பமும் கருத்துக்களையும் வழங்கும் விருப்பமும் இருக்கும். இது பயண சேவை சமூகத்தின் தரத்தை பராமரிக்க உதவுகிறது.",
+    "Confirmation: After booking": "உறுதிப்படுத்தல்: முன்பதிவுக்குப் பிறகு",
+    "Wait for Pickup": "பிக்கப்புக்காக காத்திருங்கள்",
+    "Ride": "பயணம்",
+    "Payment Methods": "கட்டண முறைகள்",
+    "Feedback": "கருத்து",
+    "Safety": "பாதுகாப்பு",
+    "Booking: You can book a cab through various methods such as a mobile app, website, or phone call to the cab company. Provide your location, destination, and any other necessary details like the type of vehicle needed or any special requirements.": "முன்பதிவு: நீங்கள் மொபைல் பயன்பாடு, வலைத்தளம் அல்லது காப் நிறுவனத்திற்கு தொலைபேசி அழைப்பு போன்ற பல்வேறு முறைகளில் காப் முன்பதிவு செய்யலாம். உங்கள் இருப்பிடம், இலக்கு மற்றும் தேவையான மற்ற விவரங்களை வழங்கவும்.",
+    "Confirmation: After booking, youll receive a confirmation message with details like the drivers name, vehicle number, and estimated time of arrival (ETA).": "உறுதிப்படுத்தல்: முன்பதிவுக்குப் பிறகு, ஓட்டுநரின் பெயர், வாகன எண் மற்றும் வருகை மதிப்பீடு நேரம் போன்ற விவரங்களுடன் நீங்கள் உறுதிப்படுத்தல் செய்தியைப் பெறுவீர்கள்.",
+    "Wait for Pickup: Wait at the designated pickup location. Keep your phone handy to communicate with the driver if needed.": "பிக்கப்புக்காக காத்திருங்கள்: குறிப்பிட்ட பிக்கப் இடத்தில் காத்திருங்கள். தேவையானால் ஓட்டுநருடன் தொடர்பு கொள்ள உங்கள் தொலைபேசியை வைத்திருங்கள்.",
+    "Ride: Once the cab arrives, confirm the drivers identity and vehicle details before getting in. Share your destination with the driver, and enjoy your ride.": "பயணம்: காப் வந்தவுடன், ஓட்டுநரின் அடையாளத்தை மற்றும் வாகன விவரங்களை உறுதிப்படுத்திய பிறகு உள்ளே செல்லவும். உங்கள் இலக்கை ஓட்டுநருடன் பகிர்ந்து, பயணத்தை மகிழுங்கள்.",
+    "Payment: Payment methods vary depending on the cab service. Some accept cash, while others are cashless and accept payment through the app or card.": "கட்டணம்: காப் சேவையின் அடிப்படையில் கட்டண முறைகள் மாறுபடும். சிலர் பணத்தை ஏற்கின்றனர், ஆனால் மற்றவர்கள் பணமில்லாமல் பயன்பாட்டின் மூலம் அல்லது கார்டு மூலம் கட்டணத்தை ஏற்கின்றனர்.",
+    "Feedback: After the ride, you may have the option to rate the driver and provide feedback. This helps maintain service quality.": "கருத்து: பயணத்தின் பிறகு, நீங்கள் ஓட்டுநருக்கு மதிப்பீடு செய்யும் விருப்பமும் கருத்துக்களையும் வழங்கும் விருப்பமும் இருக்கலாம். இது சேவையின் தரத்தை பராமரிக்க உதவுகிறது.",
+    "Safety: Always prioritize your safety. Share your ride details with a trusted contact, and if you feel uncomfortable during the ride, dont hesitate to ask the driver to stop in a safe location or to contact the authorities if necessary.": "பாதுகாப்பு: எப்போதும் உங்கள் பாதுகாப்புக்கு முன்னுரிமை கொடுக்கவும். உங்கள் பயண விவரங்களை ஒரு நம்பகமான தொடர்புக்கு பகிரவும், பயணத்தின் போது நீங்கள் வசதியில்லாமல் இருந்தால், ஓட்டுநரிடம் ஒரு பாதுகாப்பான இடத்தில் நிறுத்த கேட்கவும் அல்லது தேவையானால் அதிகாரிகளை தொடர்பு கொள்ள தயங்க வேண்டாம்.",
+    "Charches": "கட்டணங்கள்",
+    "Time Based Fare": "நேர அடிப்படையிலான கட்டணம்",
+    "Additional Charges": "கூடுதல் கட்டணங்கள்",
+    "cabs are equipped with meters that calculate the fare based on the distance traveled and time spent in the cab. The fare typically includes a base fare plus additional charges for distance and time.": "காப்கள் பயணித்த தூரம் மற்றும் காபில் செலவிட்ட நேரத்தின் அடிப்படையில் கட்டணத்தை கணக்கிடும் மீட்டர்களால் பொருத்தப்பட்டுள்ளன. கட்டணம் பொதுவாக ஒரு அடிப்படை கட்டணம் மற்றும் தூரம் மற்றும் நேரத்திற்கான கூடுதல் கட்டணங்களை உடையதாகும்.",
+    "Time Based Fare: The charge a flat rate for waiting time, separate from the distance traveled. For example, they might charge a certain amount per minute for waiting time, regardless of whether the taxi is moving or stationary.": "நேர அடிப்படையிலான கட்டணம்: பயணித்த தூரத்திற்கு பிரித்துத் தருவது தவிர, காத்திருக்கும் நேரத்திற்கு ஒரு நிலையான கட்டணத்தை வசூலிக்கின்றன. உதாரணமாக, காத்திருக்கும் நேரத்திற்கு ஒரு நிச்சயமான தொகையை, டாக்சி நகர்கிறதா அல்லது நிலைத்திருக்கிறதா என்பது பொருட்படுத்தாமல், ஒரு நிமிடத்திற்கு வசூலிக்கலாம்.",
+    "Additional Charges: Cab fares may also include additional charges for tolls, airport fees, late-night surcharges, or extra passengers. These charges are usually added on our company.": "கூடுதல் கட்டணங்கள்: காப் கட்டணங்கள் சுங்கவசூலிகள், விமான நிலையக் கட்டணங்கள், நடுநிசி கூடுதல் கட்டணங்கள் அல்லது கூடுதல் பயணிகள் ஆகியவற்றுக்கான கூடுதல் கட்டணங்களையும் கொண்டிருக்கலாம். இந்த கட்டணங்கள் பொதுவாக எங்கள் நிறுவனத்தில் சேர்க்கப்படுகின்றன.",
+    "Seat Belt": "சீட் பெல்ட்",
+    "Speed Limits": "வேக எல்லைகள்",
+    "Distraction": "தவிப்பு",
+    "Emergency": "அவசர நிலை",
+    "Aggressive": "வன்முறை",
+    "Emergency Contact": "அவசர தொடர்பு",
+    "Fatigue Management": "சோர்வு மேலாண்மை",
+    "Seatbelt Usage: Always remind passengers to fasten their seatbelts before the journey begins. As a driver, ensure you are also wearing your seatbelt at all times.": "சீட்பெல்ட் பயன்பாடு: பயணம் தொடங்கும் முன் பயணிகள் அவர்களின் சீட்பெல்ட்களை அணிவதை எப்போதும் நினைவூட்டுங்கள். ஓட்டுநராக, நீங்கள் எப்போதும் உங்கள் சீட்பெல்டை அணிந்திருப்பதை உறுதி செய்யுங்கள்.",
+    "Speed Limits: Emphasize the importance of obeying speed limits and driving at a safe and reasonable speed for the conditions": "வேக எல்லைகள்: வேக எல்லைகளை கடைபிடிப்பது மற்றும் சூழ்நிலைக்கு ஏற்ப பாதுகாப்பான மற்றும் சமநிலையான வேகத்தில் ஓட்டுவதின் முக்கியத்துவத்தை வலியுறுத்துங்கள்.",
+    "Distraction-Free Driving: Encourage drivers to avoid distractions such as using mobile phones, eating, or adjusting the radio while driving.Maintaining.": "விழிப்புணர்வு ஓட்டுநேரம்: மொபைல் போன்களை பயன்படுத்துதல், உணவுப் பருகுதல், அல்லது வானொலி சீரமைத்தல் போன்ற திசைதிருப்பலை தவிர்க்க ஓட்டுநர்களை ஊக்குவிக்கவும்.",
+    "Emergency Procedures: Provide guidance on what to do in case of emergencies, such as breakdowns, accidents, or medical emergencies involving passengers.": "அவசர செயல்முறைகள்: உதிர்ச்சிகள், விபத்துகள் அல்லது பயணிகளை சம்பந்தப்படுத்திய மருத்துவ அவசரநிலைகள் போன்ற அவசர நிலைகளில் என்ன செய்ய வேண்டும் என்பதற்கு வழிகாட்டல் வழங்குங்கள்.",
+    "Handling Aggressive Behavior: The drivers on how to handle aggressive or unruly passengers without escalating the situation.": "வன்முறை நடத்தை கையாளுதல்: நிலைமை மிகைப்படுத்தப்படாமல் வன்முறை அல்லது கட்டுப்படுத்த முடியாத பயணிகளை எவ்வாறு கையாளுவது என்பதில் ஓட்டுநர்களுக்கு வழிகாட்டல் வழங்குங்கள்.",
+    "Emergency Contact Information: Ensure drivers have access to emergency contact numbers for law enforcement, medical services, and the cab company.": "அவசர தொடர்பு தகவல்: சட்ட அமலாக்கம், மருத்துவ சேவைகள் மற்றும் காப் நிறுவனம் ஆகியவற்றின் அவசர தொடர்பு எண்களுக்கு ஓட்டுநர்கள் அணுகல் உள்ளதை உறுதி செய்யுங்கள்.",
+    "Fatigue Management: Educate drivers on the dangers of driving while fatigued and encourage them to take breaks when needed.Alcohol and Drug Policy: Clearly state the company's policy regarding alcohol and drug use, emphasizing zero tolerance while on duty.": "சோர்வு மேலாண்மை: சோர்வுடன் ஓட்டுவதன் ஆபத்துகளை ஓட்டுநர்களுக்கு விளக்கி, தேவையான போது ஓய்வெடுக்க அவர்களை ஊக்குவிக்குங்கள். மது மற்றும் போதைப்பொருள் கொள்கை: மது மற்றும் போதைப்பொருள் பயன்பாட்டை பற்றிய நிறுவத்தின் கொள்கையை தெளிவாக கூறி, பணியில் இருக்கும் போது பூஜ்ய சகிப்புத்தன்மையை வலியுறுத்துங்கள்.",
+
+
+    "we’re more than just a transportation service; we’re your gateway to a smooth, safe, and comfortable journey. Our fleet of modern vehicles is equipped with the latest technology to ensure you reach your destination on time, every time.":"நாங்கள் வெறும் ஒரு போக்குவரத்து சேவையல்ல; உங்கள் பயணத்தை மிருதுவாக, பாதுகாப்பாக மற்றும் வசதியாக ஆக்குவதற்கான நுழைவாயிலாக உள்ளோம். எங்கள் நவீன வாகன படை சமீபத்திய தொழில்நுட்பத்துடன் சீரமைக்கப்பட்டுள்ளது, உங்கள் இலக்கை ஒவ்வொரு முறையும் நேரத்திற்கு அடைய வேண்டும் என உறுதி செய்யுகிறது.",
+    "Our Mission To provide dependable, high-quality transportation solutions that cater to the diverse needs of our community. Whether it’s a rush to the airport, a tour of the city, or a daily commute, we’re here to make your travel experience seamless.":"எங்கள் பயணம்: எங்கள் சமுதாயத்தின் பல்வேறு தேவைகளை பூர்த்தி செய்ய முடியும், நம்பகமான, உயர்தர போக்குவரத்து தீர்வுகளை வழங்குவது. அதாவது விமான நிலையம் செல்லும் திடீர் தேவையோ, நகரத்தின் சுற்றுப்பயணமோ, அல்லது தினசரி கடமையோ, உங்கள் பயண அனுபவத்தை எளிதாக ஆக்க நாங்கள் இங்கு இருக்கிறோம்.",
+    "Our Vision To be the leading cab service in the city, renowned for our commitment to excellence, customer satisfaction, and environmental sustainability. We strive to innovate and evolve, ensuring that every ride with us is a step towards a greener future.":"எங்கள் பார்வை: நாங்கள் நகரில் முன்னணி காப் சேவையாக, மேம்பாட்டு உழைப்பு, வாடிக்கையாளர் திருப்தி மற்றும் சுற்றுச்சூழல் நிலைத்தன்மைக்கான தாராளமான ஒப்பந்தங்களுக்காகப் புகழ்பெற்ற சேவையாக இருக்க வேண்டும். ஒவ்வொரு பயணமும் ஒரு பசுமையான எதிர்காலத்தை நோக்கி ஒரு படியாக உறுதி செய்வதற்காக நாங்கள் புதுமை செய்யும் முயற்சியில் இருக்கிறோம்.",
+     
+
+
+    "Our Services": "எங்கள் சேவைகள்",
+     
+    "24/7 Availability: Our cabs are available around the clock, ready to serve you at a moment’s notice.": "24/7 கிடைக்கும்: எங்கள் கேப்கள் அனைத்து நேரங்களிலும் கிடைக்கும், உடனடியாக உங்களுக்கு சேவை செய்ய தயாராக உள்ளன.",
+    "Professional Drivers: Our drivers are experienced, knowledgeable, and dedicated to providing a friendly service.": "தொழில்முறை ஓட்டுநர்கள்: எங்கள் ஓட்டுநர்கள் அனுபவமுள்ளவர்களும், அறிவும் நிறைந்தவர்களும், நட்பான சேவையை வழங்கத் தங்களை அர்ப்பணித்தவர்களும் ஆவர்.",
+    "Online Booking: Easily book your ride through our user-friendly app or website.": "ஆன்லைன் முன்பதிவு: எங்கள் பயனர் நண்பகappம் அல்லது இணையதளம் மூலம் உங்கள் பயணத்தை எளிதாக முன்பதிவு செய்யுங்கள்.",
+    "Competitive Pricing: Enjoy transparent and fair pricing with no hidden fees.": "போட்டி விலைகள்: மறைந்த கட்டணங்கள் இன்றி வெளிப்படையான மற்றும் நியாயமான விலைகளை அனுபவியுங்கள்.",
+    "Join the Ride Experience the difference with City Cabs. Book your next ride and let us take the wheel.": "பயணத்தில் சேருங்கள்: சிட்டி கேப்ஸுடன் வித்தியாசத்தை அனுபவியுங்கள். உங்கள் அடுத்த பயணத்தை முன்பதிவு செய்து எங்களை சக்கரத்தை எடுத்துக் கொள்ள அனுமதியுங்கள்.",
+    "Safe travels are just a click away!": "பாதுகாப்பான பயணங்கள் ஒரு கிளிக்கில் தூரத்தில் உள்ளன!",
+
+    "Explore Features":"அம்சங்களை ஆராயுங்கள்",
+    "Welcome to RideNow Your premier choice for convenient and reliable transportation.then get your gift":"வசதியான மற்றும் நம்பகமான போக்குவரத்திற்கான உங்கள் முதன்மைத் தேர்வான RideNow க்கு வரவேற்கிறோம். பின்னர் உங்கள் பரிசைப் பெறுங்கள்",
+    "Discover and enjoy the gift features of the app" : "ஆப்பின் பரிசு அம்சங்களை கண்டறிந்து மகிழுங்கள்",
+    "Spin your way to happiness with our gift" :"எங்கள் பரிசு மூலம் உங்களின் மகிழ்ச்சிக்கு சுழியுங்கள்" 
+}
