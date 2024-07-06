@@ -3,6 +3,8 @@ class OnlineNearbyDrivers {
   double? latDriver;
   double? lngDriver;
 
+  var vehicleType;
+
   OnlineNearbyDrivers({
     this.uidDriver,
     this.latDriver,

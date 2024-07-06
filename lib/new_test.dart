@@ -63,10 +63,10 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
   makeDriverNearbyCarIcon() {
     if (carIconNearbyDriver == null) {
       ImageConfiguration configuration = createLocalImageConfiguration(context,
-          size: const Size(0.10, 0.10)); // Smaller size
+          size: const Size(0.5, 0.5)); // Smaller size
       BitmapDescriptor.fromAssetImage(
         configuration,
-        "assets/images/placeholder(1).png",
+        "assets/images/transport.png",
       ).then((iconImage) {
         carIconNearbyDriver = iconImage;
       });

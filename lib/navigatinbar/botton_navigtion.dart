@@ -4,7 +4,6 @@ import 'package:new_app/comen/common_methords.dart';
 import 'package:new_app/navigatinbar/chat_page.dart';
 import 'package:new_app/navigatinbar/favorite_page.dart';
 import 'package:new_app/navigatinbar/profile_page.dart';
-import 'package:new_app/navigatinbar/home_page.dart';
 import 'package:new_app/new_test.dart';
 
 class BottonNavigations extends StatefulWidget {
@@ -27,8 +26,8 @@ class _BottonNavigationsState extends State<BottonNavigations> {
   ];
   List bottomPages = [
     const HomePage1(),
-    const ChatPage(),
-     MyHomePage(),
+    const HomePage2(),
+     YourWidget(),
     const ProfilePage()
   ];
 

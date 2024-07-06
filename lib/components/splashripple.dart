@@ -32,10 +32,9 @@ class SpalshRipple extends HookWidget {
     final currentUser = FirebaseAuth.instance.currentUser;
     final userRef = currentUser != null ? FirebaseDatabase.instance.ref('users/${currentUser.uid}') : null;
 
-    return Scaffold(
-      body: Stack(
+    return Stack(
         children: [
-          const DriverListScreen(),
+          
           Center(
             child: CustomPaint(
               painter: MyPainter(
@@ -74,7 +73,7 @@ class SpalshRipple extends HookWidget {
             ),
           )
         ],
-      ),
+      
     );
   }
 }
