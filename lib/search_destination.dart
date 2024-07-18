@@ -24,7 +24,7 @@ class SearchDestinationPage extends StatefulWidget {
 }
 
 class SearchDestinationPageState extends State<SearchDestinationPage>
-    with WidgetsBindingObserver {
+  with WidgetsBindingObserver {
   TextEditingController pickUpTextEditingController = TextEditingController();
   TextEditingController destinationTextEditingController =TextEditingController();
   List<PredictionModel> dropOffPredictionsPlacesList = [];

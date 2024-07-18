@@ -12,16 +12,14 @@ class Deatails extends StatefulWidget {
 class _DeatailsState extends State<Deatails> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Center(
+    return Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25),
             child: Material(
               borderRadius: BorderRadius.circular(30),
               elevation: 20,
               child: Container(
-               
+               height: 300,
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(32)),
                     color: Color.fromARGB(255, 236, 232, 232)),
@@ -65,7 +63,7 @@ class _DeatailsState extends State<Deatails> {
                       ],
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 50,
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -84,8 +82,7 @@ class _DeatailsState extends State<Deatails> {
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
+     
   }
 }

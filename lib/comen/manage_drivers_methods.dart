@@ -11,6 +11,8 @@ class ManageDriversMethods
 
     if(nearbyOnlineDriversList.length > 0)
     {
+      
+      print("Driver ID: =============================$driverID - removed from list");
       nearbyOnlineDriversList.removeAt(index);
     }
   }
@@ -23,3 +25,4 @@ class ManageDriversMethods
     nearbyOnlineDriversList[index].lngDriver = nearbyOnlineDriverInformation.lngDriver;
   }
 }
+
