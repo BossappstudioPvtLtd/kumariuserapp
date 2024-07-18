@@ -128,7 +128,7 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
 
     if (snap.snapshot.value != null) {
       final userData = snap.snapshot.value as Map;
-      if (userData["blockStatus"] == "no") {
+      if (userData["blockStatus"] == "no") { 
         setState(() {
           userName = (snap.snapshot.value as Map)["name"];
           userPhone = (snap.snapshot.value as Map)["phone"];
