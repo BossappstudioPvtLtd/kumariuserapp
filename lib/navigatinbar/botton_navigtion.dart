@@ -27,7 +27,7 @@ class _BottonNavigationsState extends State<BottonNavigations> {
   List bottomPages = [
     const HomePage1(),
     const HomePage2(),
-     YourWidget(),
+     MyWidget(),
     const ProfilePage()
   ];
 

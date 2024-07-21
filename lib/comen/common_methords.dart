@@ -174,4 +174,6 @@ class CommonMethods {
   }
 
   calculateFareAmount(DirectionDetails directionDetails) {}
+
+  static obtainOriginToDestinationDirectionDetails(LatLng driverCurrentPositionLatLng, LatLng dropOffLocation) {}
 }

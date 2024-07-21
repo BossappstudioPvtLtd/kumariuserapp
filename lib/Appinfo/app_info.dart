@@ -7,6 +7,10 @@ class AppInfo extends ChangeNotifier
   AddressModel? pickUpLocation;
   AddressModel? dropOffLocation;
 
+  get userPickUpLocation => null;
+
+  get userDropOffLocation => null;
+
   void updatePickUpLocation(AddressModel pickUpModel)
   {
     pickUpLocation = pickUpModel;

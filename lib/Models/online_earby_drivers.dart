@@ -10,4 +10,6 @@ class OnlineNearbyDrivers {
     this.latDriver,
     this.lngDriver,
   });
+
+  set locationID(locationID) {}
 }

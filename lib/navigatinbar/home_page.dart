@@ -475,7 +475,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
           builder: (BuildContext context) => InfoDialog(
                 title: "No Driver Available",
                 description:
-                    "No driver found in the nearby location. Please try again shortly.",
+                    "No driver found in the nearby location. Please try again shortly.", message: '', onConfirm: () {  },
               ));
     }
 

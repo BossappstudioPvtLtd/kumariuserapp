@@ -5,7 +5,7 @@ class InfoDialog extends StatefulWidget
 {
   String? title, description;
 
-  InfoDialog({super.key, this.title, this.description,});
+  InfoDialog({super.key, this.title, this.description, required String message, required Null Function() onConfirm,});
 
   @override
   State<InfoDialog> createState() => _InfoDialogState();

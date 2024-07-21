@@ -22,4 +22,20 @@ class ManageDriversMethods
     nearbyOnlineDriversList[index].latDriver = nearbyOnlineDriverInformation.latDriver;
     nearbyOnlineDriversList[index].lngDriver = nearbyOnlineDriverInformation.lngDriver;
   }
+
+  static void updateOnlineNearbyDriverPosition(OnlineNearbyDrivers nearbyDriver) {}
+
+  static void addOnlineDriver(OnlineNearbyDrivers onlineNearbyDrivers) {}
+
+  static void removeOnlineDriverFromList(map) {}
+
+  static void updateActiveNearbyAvailableDriverLocation(OnlineNearbyDrivers onlineNearbyDrivers) {}
+
+  static void addDriverToList(OnlineNearbyDrivers onlineNearbyDriver) {}
+
+  static void deleteOfflineDriverFromList(map) {}
+
+  static void updateActiveNearbyDriverLocation(OnlineNearbyDrivers onlineNearbyDriver) {}
+
+  static void addOnlineNearbyDriversIntoList(OnlineNearbyDrivers onlineNearbyDrivers) {}
 }
