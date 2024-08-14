@@ -11,6 +11,7 @@ class ManageDriversMethods
 
     if(nearbyOnlineDriversList.length > 0)
     {
+      
       nearbyOnlineDriversList.removeAt(index);
     }
   }
@@ -23,3 +24,4 @@ class ManageDriversMethods
     nearbyOnlineDriversList[index].lngDriver = nearbyOnlineDriverInformation.lngDriver;
   }
 }
+

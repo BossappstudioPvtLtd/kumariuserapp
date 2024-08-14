@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:new_app/Appinfo/app_info.dart';
 import 'package:new_app/Const/global_var.dart';
@@ -24,11 +25,11 @@ class PredictionPlaceUI extends StatefulWidget {
 class _PredictionPlaceUIState extends State<PredictionPlaceUI> {
   ///Place Details - Places API
   fetchClickedPlaceDetails(String placeID) async {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) =>
-          LoadingDialog(messageText: "Getting details..."),
+     showDialog(
+       barrierDismissible: false,
+       context: context,
+       builder: (BuildContext context) =>
+           LoadingDialog(messageText: "Getting details..".tr()),
     );
 
     String urlPlaceDetailsAPI =
@@ -108,7 +109,7 @@ class _PredictionPlaceUIState extends State<PredictionPlaceUI> {
                         widget.predictedPlaceData!.secondary_text.toString(),
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           color: Colors.white,
                         ),
                       ),

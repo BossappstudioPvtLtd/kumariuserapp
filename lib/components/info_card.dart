@@ -66,7 +66,7 @@ class _InfoCardState extends State<InfoCard> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10,),
+                  const  SizedBox(height: 10,),
                     Padding(
                       padding: const EdgeInsets.only(left: 40),
                       child: TextEdt(

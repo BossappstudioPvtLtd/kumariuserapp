@@ -1,7 +1,8 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:new_app/comen/common_methords.dart';
-import 'package:new_app/navigatinbar/chat_page.dart';
+import 'package:new_app/navigatinbar/image_animation.dart';
+import 'package:new_app/navigatinbar/trips_history_page.dart';
 import 'package:new_app/navigatinbar/favorite_page.dart';
 import 'package:new_app/navigatinbar/profile_page.dart';
 import 'package:new_app/new_test.dart';
@@ -20,14 +21,14 @@ CommonMethods cMethods = CommonMethods();
 class _BottonNavigationsState extends State<BottonNavigations> {
   List<IconData> iconList = [
     Icons.home_outlined,
-    Icons.message_outlined,
+    Icons.account_tree,
     Icons.favorite_outline_sharp,
     Icons.person_2_outlined
   ];
   List bottomPages = [
     const HomePage1(),
-    const HomePage2(),
-     YourWidget(),
+    const TripsHistoryPage(),
+    PageListGuideAr(),
     const ProfilePage()
   ];
 

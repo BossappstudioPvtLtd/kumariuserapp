@@ -24,7 +24,7 @@ class SearchDestinationPage extends StatefulWidget {
 }
 
 class SearchDestinationPageState extends State<SearchDestinationPage>
-    with WidgetsBindingObserver {
+  with WidgetsBindingObserver {
   TextEditingController pickUpTextEditingController = TextEditingController();
   TextEditingController destinationTextEditingController =TextEditingController();
   List<PredictionModel> dropOffPredictionsPlacesList = [];
@@ -73,9 +73,6 @@ class SearchDestinationPageState extends State<SearchDestinationPage>
 
       Provider.of<AppInfo>(context, listen: false).updatePickUpLocation(model);
     }
-    print('value is ----------------- $humanReadableAddress');
-    
-    print('value is ================= $humanReadableAddress');
     return humanReadableAddress;
   }
 
@@ -192,7 +189,7 @@ class SearchDestinationPageState extends State<SearchDestinationPage>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "Hi There,".tr(),
+                                "Hi There".tr(),
                                 style: const TextStyle(
                                     fontSize: 18,
                                     color: Colors.white,

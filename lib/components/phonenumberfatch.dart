@@ -50,7 +50,7 @@ class PhoneNumberdataState extends State<PhoneNumberdata> {
             subtitle: Text(snapshot.data?['Firestore'] ?? 'Not found'),
           );
         }
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       },
     );
   }

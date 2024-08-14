@@ -47,7 +47,37 @@
     "Gift":"பரிசு",
     "Get Started":"தொடங்கு",
     "Spin":"சுழல்",
-    
+
+
+
+
+
+
+    "======SearchDestinationPage====":"======SearchDestinationPage====",
+
+    "Where to?": "எங்கே?",
+    "Hi There": "வணக்கம்",
+    "Go": "போ",
+    "No Driver Available": "இறுக்கவில்லை",
+    "No driver found in the nearby location. Please try again shortly.": "சமிபத்தில் ஓட்டுநர் இல்லை. தயவு செய்து சிறிது நேரம் கழித்து மீண்டும் முயற்சிக்கவும்.",
+    "OK": "சரி",
+    "Getting direction...": "வழி கிடைக்கிறது...",
+    "Getting details...": "விவரங்கள் கிடைக்கிறது...",
+    "Trips History": "பயண வரலாறு",
+    "Your Files Empty": "உங்கள் கோப்புகள் காலியாக உள்ளன",
+    "PAY CASH": "பணம் கொடுங்கள்",
+    "This is fare amount": "இது கட்டண தொகை",
+    "Driver has Arrived": "ஓட்டுனர் வந்துவிட்டார்",
+    "you have to pay to the driver.": "நீங்கள் ஓட்டுனருக்கு கட்டணமாக கொடுக்க வேண்டும்.",
+     "driver is coming": "ஓட்டுனர் வருகிறார்",
+
+
+
+
+
+
+
+
 
     "About": "பற்றி",
     "Darak Mode": "இருள் முறை",

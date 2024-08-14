@@ -10,8 +10,10 @@ import 'package:new_app/components/m_buttons.dart';
 import 'package:new_app/components/screen_bright.dart';
 import 'package:new_app/components/text_add.dart';
 import 'package:new_app/drewer/About/about.dart';
+import 'package:new_app/drewer/Gift/gift_List.dart';
 import 'package:new_app/drewer/Gift/gift_details.dart';
 import 'package:new_app/drewer/HelpeCenter/help.dart';
+import 'package:new_app/drewer/advertisements.dart';
 import 'package:new_app/drewer/rider_history.dart';
 import 'package:new_app/drewer/Settings/settings.dart';
 import 'package:new_app/navigatinbar/botton_navigtion.dart';
@@ -81,9 +83,6 @@ class _DrewerState extends State<Drewer> with SingleTickerProviderStateMixin {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 30,
-                      ),
                       const Padding(
                         padding: EdgeInsets.only(left: 18),
                       ),
@@ -109,7 +108,7 @@ class _DrewerState extends State<Drewer> with SingleTickerProviderStateMixin {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const RiderHistory(),
+                              builder: (_) =>  const RiderHistory(),
                             ),
                           );
                         },
@@ -133,12 +132,24 @@ class _DrewerState extends State<Drewer> with SingleTickerProviderStateMixin {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (_) => const GiftPage(),
+                              builder: (_) => const GiftOfferListScreen(),
                             ),
                           );
                         },
                         icon: Icons.card_giftcard_rounded,
                         text: "Gift".tr(),
+                      ),
+                       ListTiles(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) =>   const AdvertisementListScreen(),
+                            ),
+                          );
+                        },
+                        icon: CupertinoIcons.rectangle_3_offgrid_fill,
+                        text: "advertisements".tr(),
                       ),
                       ListTiles(
                         onTap: () {
@@ -165,7 +176,7 @@ class _DrewerState extends State<Drewer> with SingleTickerProviderStateMixin {
                         text: "About".tr(),
                       ),
                       const SizedBox(
-                        height: 100,
+                        height: 50,
                       ),
                       ListTiles(
                         onTap: () {
@@ -282,12 +293,12 @@ class _DrewerState extends State<Drewer> with SingleTickerProviderStateMixin {
                 child:   CircleAvatar(
                   
                     backgroundColor: Colors.white,
-                  radius: 20,
+                  radius: 15,
                     child: AnimatedIcon(
                       icon: isOpen ? AnimatedIcons.menu_close : AnimatedIcons.menu_home,
                       progress: _controller,
                       color: Colors.black87,
-                      size: 30,
+                      size: 20,
                     ),
                   ),
               ),

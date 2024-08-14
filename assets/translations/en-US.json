@@ -46,12 +46,30 @@
     "Cancel":"Cancel",
     "Continue":"Continue",
     "Are you sure":"Are you sure",
-
-
-     
     "Speak":"Speak",
-    
     "Guide Book": "Guide Book",
+
+
+
+    "======SearchDestinationPage====":"======SearchDestinationPage====",
+
+    "Where to?":"Where to?",
+    "Hi There":"Hi There",
+    "Go":"Go",
+    "No Driver Available":"No Driver Available",
+    "No driver found in the nearby location. Please try again shortly.":"No driver found in the nearby location. Please try again shortly.",
+    "OK":"OK",
+    "Getting direction...":"Getting direction...",
+    "Getting details...":"Getting details...",
+    "Trips History":"Trips History",
+    "Your Files Empty":"Your Files Empty",
+    "Driver has Arrived":"Driver has Arrived",
+    "PAY CASH":"PAY CASH",
+    "This is fare amount":"This is fare amount",
+    "Driver is Coming":"Driver is Coming",
+
+
+
 
     "Create an Account": "Create an Account",
     "Destination": "Destination",

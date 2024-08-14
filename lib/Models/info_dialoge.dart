@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:restart_app/restart_app.dart';
 
 // ignore: must_be_immutable
 class InfoDialog extends StatefulWidget
@@ -62,9 +64,10 @@ class _InfoDialogState extends State<InfoDialog>
                     onPressed: ()
                     {
                       Navigator.pop(context);
+                       Restart.restartApp();
                     },
-                    child: const Text(
-                      "OK",
+                    child:  Text(
+                      "OK".tr(),
                     ),
                   ),
                 ),

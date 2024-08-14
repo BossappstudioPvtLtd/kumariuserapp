@@ -43,18 +43,18 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
       apiKey: "AIzaSyBevn7kkdLhblWAVvG6lhLYoDk7C12LPKA",
-      authDomain: "bossapp-9fba7.firebaseapp.com",
-      projectId: "bossapp-9fba7",
-      storageBucket: "bossapp-9fba7.appspot.com",
+      authDomain: "myapiprojects-425308.firebaseapp.com",
+      projectId: "myapiprojects-425308",
+      storageBucket: "myapiprojects-425308.appspot.com",
       messagingSenderId: "1028914323103",
       appId: "1:1028914323103:web:760480d896f0aeb937ccaa",
   );
 
   static const FirebaseOptions android = FirebaseOptions(
       apiKey: "AIzaSyBevn7kkdLhblWAVvG6lhLYoDk7C12LPKA",
-      authDomain: "bossapp-9fba7.firebaseapp.com",
-      projectId: "bossapp-9fba7",
-      storageBucket: "bossapp-9fba7.appspot.com",
+      authDomain: "myapiprojects-425308.firebaseapp.com",
+      projectId: "myapiprojects-425308",
+      storageBucket: "myapiprojects-425308.appspot.com",
       messagingSenderId: "1028914323103",
       appId: "1:1028914323103:web:760480d896f0aeb937ccaa",
 
@@ -62,9 +62,9 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
       apiKey: "AIzaSyBevn7kkdLhblWAVvG6lhLYoDk7C12LPKA",
-      authDomain: "bossapp-9fba7.firebaseapp.com",
-      projectId: "bossapp-9fba7",
-      storageBucket: "bossapp-9fba7.appspot.com",
+      authDomain: "myapiprojects-425308.firebaseapp.com",
+      projectId: "myapiprojects-425308",
+      storageBucket: "myapiprojects-425308.appspot.com",
       messagingSenderId: "1028914323103",
       appId: "1:1028914323103:web:760480d896f0aeb937ccaa",
   );

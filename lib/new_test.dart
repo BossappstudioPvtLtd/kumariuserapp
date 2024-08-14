@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_geofire/flutter_geofire.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geolocator/geolocator.dart';
@@ -14,18 +17,22 @@ import 'package:new_app/Const/trip_var.dart';
 import 'package:new_app/Models/direction_deteils.dart';
 import 'package:new_app/Models/info_dialoge.dart';
 import 'package:new_app/Models/online_earby_drivers.dart';
+import 'package:new_app/Show/advertisement_show.dart';
 import 'package:new_app/auth/login_page.dart';
 import 'package:new_app/comen/common_methords.dart';
 import 'package:new_app/comen/manage_drivers_methods.dart';
 import 'package:new_app/comen/push_notification.dart';
 import 'package:new_app/components/loading_dialog.dart';
+import 'package:new_app/components/m_buttons.dart';
 import 'package:new_app/components/payment_dialod.dart';
 import 'package:new_app/components/splashripple.dart';
 import 'package:new_app/navigatinbar/botton_navigtion.dart';
+import 'package:new_app/navigatinbar/trips_history_page.dart';
 
 import 'package:new_app/search_destination.dart';
 import 'package:provider/provider.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomePage1 extends StatefulWidget {
   const HomePage1({super.key});
@@ -58,6 +65,8 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
   StreamSubscription<DatabaseEvent>? tripStreamSubscription;
   bool requestingDirectionDetailsInfo = false;
 
+  bool isTripDetailsContainerDisplayed = false;
+
   double animationValue = 0; // Initial animation value
 
   makeDriverNearbyCarIcon() {
@@ -76,17 +85,60 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
   String userName = "";
 
   void getCurrentLiveLocationOfUser() async {
-    Position positionOfUser = await Geolocator.getCurrentPosition(desiredAccuracy:
-    LocationAccuracy.bestForNavigation);currentPositionOfUser = positionOfUser;
-    LatLng positionOfUserInLatLng = LatLng(currentPositionOfUser!.latitude, currentPositionOfUser!.longitude);
-    CameraPosition cameraPosition =CameraPosition(target: positionOfUserInLatLng, zoom: 15);
-    controllerGoogleMap!.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+    Position positionOfUser = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
+    currentPositionOfUser = positionOfUser;
+    LatLng positionOfUserInLatLng = LatLng(
+        currentPositionOfUser!.latitude, currentPositionOfUser!.longitude);
+    CameraPosition cameraPosition =
+        CameraPosition(target: positionOfUserInLatLng, zoom: 15);
+    controllerGoogleMap!
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
 
-    await CommonMethods.convertGeoGraphicCoOrdinatesIntoHumanReadableAddress(currentPositionOfUser!, context);
+    await CommonMethods.convertGeoGraphicCoOrdinatesIntoHumanReadableAddress(
+        currentPositionOfUser!, context);
 
     await getUserInfoAndCheckBlockStatus();
 
     await initializeGeoFireListener();
+     showDialog(
+  barrierDismissible: false,
+  context: context,
+  builder: (BuildContext context) => Padding(
+    padding: const EdgeInsets.symmetric(vertical:100,horizontal: 10),
+    child: Container(
+      height: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius:BorderRadius.circular(16)),
+    
+      child: Stack(
+        children: <Widget>[
+          // Your existing AdvertisementShow widget
+        
+             const AdvertisementShow(),
+        
+          // Close button
+          Positioned(
+           top: 20,
+            right: 10,
+            child: IconButton(
+              
+              icon: const CircleAvatar(
+                backgroundColor: Colors.black,
+                child: 
+              Icon(Icons.close,color: Colors.white,)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+);
+
   }
 
   @override
@@ -94,7 +146,9 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     getUserInfoAndCheckBlockStatus();
+   
   }
+
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
@@ -107,6 +161,8 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    
+  tripStatusDisplayController.close();
     super.dispose();
   }
 
@@ -153,30 +209,35 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
   }
 
   retrieveDirectionDetails() async {
-    var pickUpLocation = Provider.of<AppInfo>(context, listen: false).pickUpLocation;
-    var dropOffDestinationLocation =Provider.of<AppInfo>(context, listen: false).dropOffLocation;
+    var pickUpLocation =
+        Provider.of<AppInfo>(context, listen: false).pickUpLocation;
+    var dropOffDestinationLocation =
+        Provider.of<AppInfo>(context, listen: false).dropOffLocation;
 
-    var pickupGeoGraphicCoOrdinates = LatLng( pickUpLocation!.latitudePosition!, pickUpLocation.longitudePosition!);
-    var dropOffDestinationGeoGraphicCoOrdinates = LatLng(dropOffDestinationLocation!.latitudePosition!, dropOffDestinationLocation.longitudePosition!);
-
+    var pickupGeoGraphicCoOrdinates = LatLng(
+        pickUpLocation!.latitudePosition!, pickUpLocation.longitudePosition!);
+    var dropOffDestinationGeoGraphicCoOrdinates = LatLng(
+        dropOffDestinationLocation!.latitudePosition!,
+        dropOffDestinationLocation.longitudePosition!);
 
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) =>
-          LoadingDialog(messageText: "Getting direction..."),
+          LoadingDialog(messageText: "Getting direction...".tr()),
     );
-
+ 
     ///Directions API
     var detailsFromDirectionAPI =
-        await CommonMethods.getDirectionDetailsFromAPI( pickupGeoGraphicCoOrdinates,dropOffDestinationGeoGraphicCoOrdinates);
+        await CommonMethods.getDirectionDetailsFromAPI(
+            pickupGeoGraphicCoOrdinates,
+            dropOffDestinationGeoGraphicCoOrdinates);
 
     setState(() {
       tripDirectionDetailsInfo = detailsFromDirectionAPI;
     });
 
     Navigator.pop(context);
-   
 
     showCupertinoModalPopup(
         context: context,
@@ -187,6 +248,7 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
             bottom: 0,
             child: Container(
               height: rideDetailsContainerHeight,
+              width: double.infinity,
               decoration: const BoxDecoration(
                 color: Colors.black54,
                 borderRadius: BorderRadius.only(
@@ -206,18 +268,21 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16, right: 16),
-                      child: SizedBox(
+                   
+                       SizedBox(
                         height: 300,
                         child: Card(
                             elevation: 10,
+                            
+                              color: Colors.black87,
                             child: Container(
                               width: MediaQuery.of(context).size.width * .90,
-                              color: Colors.black45,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(top: 8, bottom: 8),
+                            decoration: const BoxDecoration(
+                              
+                              color: Colors.black87,
+                           borderRadius:BorderRadius.all(Radius.circular(16))
+                            ),
+                              
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -331,49 +396,125 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        ElevatedButton(
-                                            onPressed: () {
+                                        MaterialButtons(
+                                          elevationsize: 20,
+                                          fontSize: 17,
+                                          containerheight: 40,
+                                          containerwidth: 100,
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(10),
+                                          ),
+                                            text: "Cancel".tr(),
+                                            onTap: () {
                                               resetAppNow();
                                               Navigator.of(context).pop(false);
-                                            },
-                                            child: const Text("Cancel ")),
-                                        Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 20),
-                                            child: ElevatedButton(
-                                              onPressed: () async {
-                                                MakeTriprequst();
-                                                availableNearbyOnlineDriversList = ManageDriversMethods.nearbyOnlineDriversList;
+                                            }),
 
-                                                //search driver
-                                                searchDriver();
-                                                // Navigate to the SplashRipple page
-                                                 await
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (_) =>
-                                                          const SpalshRipple()),
-                                                         
+                                        MaterialButtons(
+                                          elevationsize: 20,
+                                          text: "Go".tr(),
+                                          fontSize: 17,
+                                          containerheight: 40,
+                                          containerwidth: 100,
+                                          borderRadius: const BorderRadius.all(
+                                            Radius.circular(10),
+                                          ),
+                                          onTap: () async {
+                                            MakeTriprequst();
+                                            availableNearbyOnlineDriversList =
+                                            ManageDriversMethods
+                                            .nearbyOnlineDriversList;
+                                            //search driver
+                                            searchDriver();
+                                            // Navigate to the SplashRipple page
+                                            await showCupertinoModalPopup(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return CupertinoTheme(
+                                                  data:
+                                                      const CupertinoThemeData(
+                                                    brightness: Brightness
+                                                        .light, // Ensure the modal is bright
+                                                  ),
+                                                  child: Container(
+                                                    height: 250,
+                                                    width: double.infinity,
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16),
+                                                      color: Colors.black,
+                                                    ),
+                                                    child: const SpalshRipple(),
+                                                  ),
                                                 );
-
-                                                // Code here will execute when returning from SplashRipple page
-                                                resetAppNow(); // Reset the app state
-                                             cancelRideRequest();
-
-                                                Navigator.of(context).pop( false); // Cancel any ride requests or similar tasks
                                               },
-                                              child: const Text("GO"),
-                                            )),
-                                      
+                                            );
+                                            // Code here will execute when returning from SplashRipple page
+                                            resetAppNow(); // Reset the app state
+                                            cancelRideRequest();
+
+                                            Navigator.of(context).pop(
+                                                false); // Cancel any ride requests or similar tasks
+                                          },
+                                        ),
+
+                                        // Padding(
+                                        //     padding: const EdgeInsets.only(
+                                        //         right: 20),
+
+                                        //     child: ElevatedButton(
+                                        //       onPressed: () async {
+                                        //         MakeTriprequst();
+                                        //         availableNearbyOnlineDriversList =
+                                        //             ManageDriversMethods
+                                        //                 .nearbyOnlineDriversList;
+                                        //         //search driver
+                                        //         searchDriver();
+                                        //         // Navigate to the SplashRipple page
+                                        //         await showCupertinoModalPopup(
+                                        //           context: context,
+                                        //           builder:
+                                        //               (BuildContext context) {
+                                        //             return CupertinoTheme(
+                                        //               data:
+                                        //                   const CupertinoThemeData(
+                                        //                 brightness: Brightness
+                                        //                     .light, // Ensure the modal is bright
+                                        //               ),
+                                        //               child: Container(
+                                        //                 height: 300,
+                                        //                 width: double.infinity,
+                                        //                 decoration:
+                                        //                     BoxDecoration(
+                                        //                   borderRadius:
+                                        //                       BorderRadius
+                                        //                           .circular(16),
+                                        //                   color: Colors.black,
+                                        //                 ),
+                                        //                 child:
+                                        //                     const SpalshRipple(),
+                                        //               ),
+                                        //             );
+                                        //           },
+                                        //         );
+                                        //         // Code here will execute when returning from SplashRipple page
+                                        //         resetAppNow(); // Reset the app state
+                                        //         cancelRideRequest();
+
+                                        //         Navigator.of(context).pop(
+                                        //             false); // Cancel any ride requests or similar tasks
+                                        //       },
+                                        //       child: const Text("GO"),
+                                        //     )),
                                       ],
                                     )
                                   ],
                                 ),
-                              ),
+                              
                             )),
                       ),
-                    ),
+                    
                   ],
                 ),
               ),
@@ -383,13 +524,16 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
 
 //draw route from pickup to dropOffDestination
     PolylinePoints pointsPolyline = PolylinePoints();
-    List<PointLatLng> latLngPointsFromPickUpToDestination =pointsPolyline.decodePolyline(tripDirectionDetailsInfo!.encodedPoints!);
+    List<PointLatLng> latLngPointsFromPickUpToDestination =
+        pointsPolyline.decodePolyline(tripDirectionDetailsInfo!.encodedPoints!);
+
     polylineCoOrdinates.clear();
-    if (latLngPointsFromPickUpToDestination.isNotEmpty) {latLngPointsFromPickUpToDestination.forEach((PointLatLng latLngPoint) {
-        polylineCoOrdinates.add(LatLng(latLngPoint.latitude, latLngPoint.longitude));
+    if (latLngPointsFromPickUpToDestination.isNotEmpty) {
+      latLngPointsFromPickUpToDestination.forEach((PointLatLng latLngPoint) {
+        polylineCoOrdinates
+            .add(LatLng(latLngPoint.latitude, latLngPoint.longitude));
       });
     }
-
     polylineSet.clear();
     setState(() {
       Polyline polyline = Polyline(
@@ -408,47 +552,56 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
 
     //fit the polyline into the map
     LatLngBounds boundsLatLng;
-    if (pickupGeoGraphicCoOrdinates.latitude >dropOffDestinationGeoGraphicCoOrdinates.latitude &&
-        pickupGeoGraphicCoOrdinates.longitude >dropOffDestinationGeoGraphicCoOrdinates.longitude) {
-        boundsLatLng = LatLngBounds(southwest: dropOffDestinationGeoGraphicCoOrdinates,
+    if (pickupGeoGraphicCoOrdinates.latitude >
+            dropOffDestinationGeoGraphicCoOrdinates.latitude &&
+        pickupGeoGraphicCoOrdinates.longitude >
+            dropOffDestinationGeoGraphicCoOrdinates.longitude) {
+      boundsLatLng = LatLngBounds(
+        southwest: dropOffDestinationGeoGraphicCoOrdinates,
         northeast: pickupGeoGraphicCoOrdinates,
       );
-      } 
-
-    else if (
-
-      pickupGeoGraphicCoOrdinates.longitude >dropOffDestinationGeoGraphicCoOrdinates.longitude) {
-      boundsLatLng = LatLngBounds(southwest: LatLng(pickupGeoGraphicCoOrdinates.latitude,
-      dropOffDestinationGeoGraphicCoOrdinates.longitude),
-      northeast: LatLng(dropOffDestinationGeoGraphicCoOrdinates.latitude,pickupGeoGraphicCoOrdinates.longitude),
+    } else if (pickupGeoGraphicCoOrdinates.longitude >
+        dropOffDestinationGeoGraphicCoOrdinates.longitude) {
+      boundsLatLng = LatLngBounds(
+        southwest: LatLng(pickupGeoGraphicCoOrdinates.latitude,
+            dropOffDestinationGeoGraphicCoOrdinates.longitude),
+        northeast: LatLng(dropOffDestinationGeoGraphicCoOrdinates.latitude,
+            pickupGeoGraphicCoOrdinates.longitude),
       );
-    } 
-
-    else if (pickupGeoGraphicCoOrdinates.latitude > dropOffDestinationGeoGraphicCoOrdinates.latitude) {
-      boundsLatLng = LatLngBounds(southwest: LatLng(dropOffDestinationGeoGraphicCoOrdinates.latitude,
-      pickupGeoGraphicCoOrdinates.longitude), northeast: LatLng(pickupGeoGraphicCoOrdinates.latitude,
-       dropOffDestinationGeoGraphicCoOrdinates.longitude),
+    } else if (pickupGeoGraphicCoOrdinates.latitude >
+        dropOffDestinationGeoGraphicCoOrdinates.latitude) {
+      boundsLatLng = LatLngBounds(
+        southwest: LatLng(dropOffDestinationGeoGraphicCoOrdinates.latitude,
+            pickupGeoGraphicCoOrdinates.longitude),
+        northeast: LatLng(pickupGeoGraphicCoOrdinates.latitude,
+            dropOffDestinationGeoGraphicCoOrdinates.longitude),
       );
-    } 
-
-    else {
+    } else {
       boundsLatLng = LatLngBounds(
         southwest: pickupGeoGraphicCoOrdinates,
         northeast: dropOffDestinationGeoGraphicCoOrdinates,
       );
     }
+
     controllerGoogleMap!
         .animateCamera(CameraUpdate.newLatLngBounds(boundsLatLng, 72));
 
     //add markers to pickup and dropOffDestination points
-    Marker pickUpPointMarker = Marker(markerId: const MarkerId("pickUpPointMarkerID"),
-      position: pickupGeoGraphicCoOrdinates,icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-      infoWindow: InfoWindow(title: pickUpLocation.placeName, snippet: "Pickup Location"),
+    Marker pickUpPointMarker = Marker(
+      markerId: const MarkerId("pickUpPointMarkerID"),
+      position: pickupGeoGraphicCoOrdinates,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+      infoWindow: InfoWindow(
+          title: pickUpLocation.placeName, snippet: "Pickup Location"),
     );
 
-    Marker dropOffDestinationPointMarker = Marker( markerId: const MarkerId("dropOffDestinationPointMarkerID"),
-      position: dropOffDestinationGeoGraphicCoOrdinates,icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-      infoWindow: InfoWindow(title: dropOffDestinationLocation.placeName,snippet: "Destination Location"),
+    Marker dropOffDestinationPointMarker = Marker(
+      markerId: const MarkerId("dropOffDestinationPointMarkerID"),
+      position: dropOffDestinationGeoGraphicCoOrdinates,
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+      infoWindow: InfoWindow(
+          title: dropOffDestinationLocation.placeName,
+          snippet: "Destination Location"),
     );
 
     setState(() {
@@ -481,6 +634,47 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
     });
   }
 
+  resetAppNow() {
+    setState(() {
+      polylineCoOrdinates.clear();
+      polylineSet.clear();
+      markerSet.clear();
+      circleSet.clear();
+      rideDetailsContainerHeight = 0;
+      requestContainerHeight = 0;
+      tripContainerHeight = 0;
+      searchContainerHeight = 276;
+      bottomMapPadding = 300;
+      isDrawerOpened = true;
+
+      status = "";
+      nameDriver = "";
+      photoDriver = "";
+      phoneNumberDriver = "";
+      carDetailsDriver = "";
+      tripStatusDisplay = 'Driver is Arriving';
+    });
+  }
+
+  cancelRideRequest() {
+    //remove ride request from database
+    tripRequestRef!.remove();
+    setState(() {
+      stateOfApp = "normal";
+    });
+  }
+
+  displayRequestContainer() {
+    setState(() {
+      rideDetailsContainerHeight = 0;
+      requestContainerHeight = 220;
+      bottomMapPadding = 200;
+      isDrawerOpened = true;
+    });
+
+    //send ride request
+  }
+
   updateAvailableNearbyOnlineDriversOnMap() {
     setState(() {
       markerSet.clear();
@@ -488,16 +682,16 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
 
     Set<Marker> markersTempSet = <Marker>{};
 
-    for (OnlineNearbyDrivers eachOnlineNearbyDriver 
-    in ManageDriversMethods.nearbyOnlineDriversList) { LatLng driverCurrentPosition = LatLng(
-       eachOnlineNearbyDriver.latDriver!, eachOnlineNearbyDriver.lngDriver!);
+    for (OnlineNearbyDrivers eachOnlineNearbyDriver
+        in ManageDriversMethods.nearbyOnlineDriversList) {
+      LatLng driverCurrentPosition = LatLng(
+          eachOnlineNearbyDriver.latDriver!, eachOnlineNearbyDriver.lngDriver!);
 
       Marker driverMarker = Marker(
-        markerId: MarkerId(
-        "driver ID = " + eachOnlineNearbyDriver.uidDriver.toString()),
-        position: driverCurrentPosition,
-        icon: carIconNearbyDriver!,
-      );
+          markerId: MarkerId("driver ID = ${eachOnlineNearbyDriver.uidDriver}"),
+          position: driverCurrentPosition,
+          icon: carIconNearbyDriver!,
+          onTap: () {});
 
       markersTempSet.add(driverMarker);
     }
@@ -510,8 +704,8 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
   initializeGeoFireListener() {
     Geofire.initialize("onlineDrivers");
     Geofire.queryAtLocation(currentPositionOfUser!.latitude,
-    currentPositionOfUser!.longitude, 22)! //location radius change here
-    .listen((driverEvent) {
+            currentPositionOfUser!.longitude, 22)! //location radius change here
+        .listen((driverEvent) {
       if (driverEvent != null) {
         var onlineDriverChild = driverEvent["callBack"];
 
@@ -528,10 +722,10 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
               //update drivers on google map
               updateAvailableNearbyOnlineDriversOnMap();
             }
-        break;
-        case Geofire.onKeyExited:
+            break;
+          case Geofire.onKeyExited:
             ManageDriversMethods.removeDriverFromList(driverEvent["key"]);
-              //update drivers on google map
+            //update drivers on google map
             updateAvailableNearbyOnlineDriversOnMap();
 
             break;
@@ -554,173 +748,143 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
 
             //update drivers on google map
             updateAvailableNearbyOnlineDriversOnMap();
-
             break;
         }
       }
     });
   }
-   resetAppNow() {
-      setState(() {
-        polylineCoOrdinates.clear();
-        polylineSet.clear();
-        markerSet.clear();
-        circleSet.clear();
-        rideDetailsContainerHeight = 0;
-        requestContainerHeight = 0;
-        tripContainerHeight = 0;
-        searchContainerHeight = 276;
-        bottomMapPadding = 300;
-        isDrawerOpened = true;
 
-        status = "";
-        nameDriver = "";
-        photoDriver = "";
-        phoneNumberDriver = "";
-        carDetailsDriver = "";
-        tripStatusDisplay = 'Driver is Arriving';
-      });
-     // Restart.restartApp();
-    }
+  MakeTriprequst() {
+    tripRequestRef =
+        FirebaseDatabase.instance.ref().child("tripRequests").push();
 
-    cancelRideRequest() {
-      //remove ride request from database
-      tripRequestRef!.remove();
-      setState(() {
-        stateOfApp = "normal";
-      });
-    }
+    var pickUpLocation =
+        Provider.of<AppInfo>(context, listen: false).pickUpLocation;
+    var dropOffDestinationLocation =
+        Provider.of<AppInfo>(context, listen: false).dropOffLocation;
 
-    displayRequestContainer() {
-      setState(() {
-        rideDetailsContainerHeight = 0;
-        requestContainerHeight = 220;
-        bottomMapPadding = 200;
-        isDrawerOpened = true;
-      });
+    Map pickUpCoOrdinatesMap = {
+      "latitude": pickUpLocation!.latitudePosition.toString(),
+      "longitude": pickUpLocation.longitudePosition.toString(),
+    };
+    Map dropOffDestinationCoOrdinatesMap = {
+      "latitude": dropOffDestinationLocation!.latitudePosition.toString(),
+      "longitude": dropOffDestinationLocation.longitudePosition.toString(),
+    };
 
-      //send ride request
-    }
+    Map driverCoOrdinates = {
+      "latitude": "",
+      "longitude": "",
+    };
 
-    MakeTriprequst() {
-      tripRequestRef =
-          FirebaseDatabase.instance.ref().child("tripRequests").push();
+    Map dataMap = {
+      "tripID": tripRequestRef!.key,
+      "publishDateTime": DateTime.now().toString(),
+      "userName": userName,
+      "userPhone": userPhone,
+      "userID": userID,
+      "pickUpLatLng": pickUpCoOrdinatesMap,
+      "dropOffLatLng": dropOffDestinationCoOrdinatesMap,
+      "pickUpAddress": pickUpLocation.placeName,
+      "dropOffAddress": dropOffDestinationLocation.placeName,
+      "driverID": "waiting",
+      "carDetails": "",
+      "driverLocation": driverCoOrdinates,
+      "driverName": "",
+      "driverPhone": "",
+      "driverPhoto": "",
+      "fareAmount": "",
+      "status": "new",
+    };
+    tripRequestRef!.set(dataMap);
 
-      var pickUpLocation =Provider.of<AppInfo>(context, listen: false).pickUpLocation;
-      var dropOffDestinationLocation =Provider.of<AppInfo>(context, listen: false).dropOffLocation;
-
-      Map pickUpCoOrdinatesMap = {
-        "latitude": pickUpLocation!.latitudePosition.toString(),
-        "longitude": pickUpLocation.longitudePosition.toString(),
-      };
-      Map dropOffDestinationCoOrdinatesMap = {
-        "latitude": dropOffDestinationLocation!.latitudePosition.toString(),
-        "longitude": dropOffDestinationLocation.longitudePosition.toString(),
-      };
-
-      Map driverCoOrdinates = {
-        "latitude": "",
-        "longitude": "",
-      };
-
-      Map dataMap = {
-        "tripID": tripRequestRef!.key,
-        "publishDateTime": DateTime.now().toString(),
-        "userName": userName,
-        "userPhone": userPhone,
-        "userID": userID,
-        "pickUpLatLng": pickUpCoOrdinatesMap,
-        "dropOffLatLng": dropOffDestinationCoOrdinatesMap,
-        "pickUpAddress": pickUpLocation.placeName,
-        "dropOffAddress": dropOffDestinationLocation.placeName,
-        "driverID": "waiting",
-        "carDetails": "",
-        "driverLocation": driverCoOrdinates,
-        "driverName": "",  
-        "driverPhone": "",
-        "driverPhoto": "",
-        "fareAmount": "",
-        "status": "new",
-      };
-      tripRequestRef!.set(dataMap);
-
-     tripStreamSubscription = tripRequestRef!.onValue.listen((eventSnapshot) async
-    {
-      if(eventSnapshot.snapshot.value == null)
-      {
+    tripStreamSubscription =
+        tripRequestRef!.onValue.listen((eventSnapshot) async {
+      if (eventSnapshot.snapshot.value == null) {
         return;
       }
-       if((eventSnapshot.snapshot.value as Map)["driverName"]!= null)
-       {
+
+      if ((eventSnapshot.snapshot.value as Map)["driverName"] != null) {
         nameDriver = (eventSnapshot.snapshot.value as Map)["driverName"];
-       }
-       if((eventSnapshot.snapshot.value as Map)["driverPhone"] != null)
-       {
-        phoneNumberDriver = (eventSnapshot.snapshot.value as Map)["driverPhone"];
-       }
-       if((eventSnapshot.snapshot.value as Map)["driverPhoto"]!= null)
-       {
-        photoDriver = (eventSnapshot.snapshot.value as Map)["driverPhoto"];
-       }
-       if((eventSnapshot.snapshot.value as Map)["carDetails"]!= null)
-       {
-        carDetailsDriver = (eventSnapshot.snapshot.value as Map)["carDetails"];
-       }
-       
-        if((eventSnapshot.snapshot.value as Map)["status"]!= null)
-       {
-        status = (eventSnapshot.snapshot.value as Map)["status"];
-       }
-
-       if((eventSnapshot.snapshot.value as Map)["driverLocation"] != null)
-       {
-         double driverLatitude = double.parse((eventSnapshot.snapshot.value as Map)["driverLocatio"]["latitude"].toString());
-         double driverLongitude = double.parse((eventSnapshot.snapshot.value as Map)["driverLocation"]["longitude"].toString());
-         LatLng driverCurrentLocationLatLng = LatLng (driverLatitude,driverLongitude); 
-
-         if(status == "assepted")
-         {
-          //update info for pickup to user on UI
-          //info from driver current location to user pickup location
-           updateFromDriverCurrentLocationToPickUp(driverCurrentLocationLatLng);
-         }
-          else if(status == "arrived")
-          {
-             setState(() {
-            tripStatusDisplay = 'Driver has Arrived';
-          });
-          }
-          else if(status == "ontrip")
-          {
-            
-          //update info for dropoff to user on UI
-          //info from driver current location to user dropoff location
-          updateFromDriverCurrentLocationToDropOffDestination(driverCurrentLocationLatLng);
-      
-          }
-       }
-        if(status == "accepted")
-      {
-        displayTripDetailsContainer();
-
-        Geofire.stopListener();
-
-        //remove drivers markers
-        setState(() {
-          markerSet.removeWhere((element) => element.markerId.value.contains("driver"));
-        });
       }
-      if(status == "ended")
-      {
-         if((eventSnapshot.snapshot.value as Map)["fareAmount"] != null)
-         {
-             // var responseFromPaymentDialog = await showDialog(
-             // context: context,
-             // builder: (BuildContext context) => 
-             // PaymentDialog(fareAmount: fareAmount.toString()),
-         // );
-         //   if(responseFromPaymentDialog == "paid")
-          {
+
+      if ((eventSnapshot.snapshot.value as Map)["driverPhone"] != null) {
+        phoneNumberDriver =
+            (eventSnapshot.snapshot.value as Map)["driverPhone"];
+      }
+
+      if ((eventSnapshot.snapshot.value as Map)["driverPhoto"] != null) {
+        photoDriver = (eventSnapshot.snapshot.value as Map)["driverPhoto"];
+      }
+
+      if ((eventSnapshot.snapshot.value as Map)["carDetails"] != null) {
+        carDetailsDriver = (eventSnapshot.snapshot.value as Map)["carDetails"];
+      }
+
+      if ((eventSnapshot.snapshot.value as Map)["status"] != null) {
+        status = (eventSnapshot.snapshot.value as Map)["status"];
+      }
+
+      var driverLocation =
+          (eventSnapshot.snapshot.value as Map)["driverLocation"] as Map?;
+
+      if (driverLocation != null) {
+        if (driverLocation["latitude"] != null &&
+            driverLocation["longitude"] != null) {
+          double driverLatitude =
+              double.parse(driverLocation["latitude"].toString());
+          double driverLongitude =
+              double.parse(driverLocation["longitude"].toString());
+          LatLng driverCurrentLocationLatLng =
+              LatLng(driverLatitude, driverLongitude);
+
+          if (status == "accepted") {
+            if (!isTripDetailsContainerDisplayed) {
+              displayTripDetailsContainer();
+              isTripDetailsContainerDisplayed = true;
+            }
+
+            Geofire.stopListener();
+
+            // Remove driver's markers
+            setState(() {
+              markerSet.removeWhere(
+                  (element) => element.markerId.value.contains("driver"));
+            });
+            //update info for pickup to user on UI
+            //info from driver current location to user pickup location
+            // Update info for pickup to user on UI
+            // Info from driver current location to user pickup location
+            updateFromDriverCurrentLocationToPickUp(
+                driverCurrentLocationLatLng);
+          } else if (status == "arrived") {
+            // Update info for arrived - when driver reaches the pickup point of the user
+            setState(() {
+              tripStatusDisplay = 'Driver has Arrived';
+            });
+          } else if (status == "ontrip") {
+            // Update info for dropoff to user on UI
+            // Info from driver current location to user dropoff location
+            updateFromDriverCurrentLocationToDropOffDestination(
+                driverCurrentLocationLatLng);
+          }
+        }
+      }
+      // if (status == "accepted") {
+
+      // }
+
+      if (status == "ended") {
+        if ((eventSnapshot.snapshot.value as Map)["fareAmount"] != null) {
+          double fareAmount = double.parse(
+              (eventSnapshot.snapshot.value as Map)["fareAmount"].toString());
+
+          var responseFromPaymentDialog = await showDialog(
+            context: context,
+            builder: (BuildContext context) =>
+                PaymentDialog(fareAmount: fareAmount.toString()),
+          );
+          if (responseFromPaymentDialog == "paid") {
             tripRequestRef!.onDisconnect();
             tripRequestRef = null;
 
@@ -731,98 +895,216 @@ class _HomePage1State extends State<HomePage1> with WidgetsBindingObserver {
 
             Restart.restartApp();
           }
-         }
+        }
       }
-    }
-    );
-   }
-
-displayTripDetailsContainer()
-  {
-    setState(() {
-      requestContainerHeight = 0;
-      tripContainerHeight = 291;
-      bottomMapPadding = 281;
     });
   }
+StreamController<String> tripStatusDisplayController = StreamController<String>.broadcast();
 
-   updateFromDriverCurrentLocationToPickUp(driverCurrentLocationLatLng) async
-  {
-    if(!requestingDirectionDetailsInfo)
-    {
-      requestingDirectionDetailsInfo = true;
+ 
 
-      var userPickUpLocationLatLng = LatLng(currentPositionOfUser!.latitude, currentPositionOfUser!.longitude);
 
-      var directionDetailsPickup = await CommonMethods.getDirectionDetailsFromAPI(driverCurrentLocationLatLng, userPickUpLocationLatLng);
+ void displayTripDetailsContainer() {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    backgroundColor: Colors.transparent,
+    barrierColor: Colors.transparent,
+    builder: (BuildContext context) {
+      return Container(
+        height: 300,
+        decoration: const BoxDecoration(
+          color: Colors.black87,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.white24,
+              blurRadius: 15.0,
+              spreadRadius: 0.5,
+              offset: Offset(0.7, 0.7),
+            ),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 5),
+              // Trip status display text
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  StreamBuilder<String>(
+                    stream: tripStatusDisplayController.stream,
+                    initialData: tripStatusDisplay,
+                    builder: (context, snapshot) {
+                      return Text(
+                        snapshot.data ?? '',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.green,
+                        ),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: true,
+                      );
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 19),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ClipOval(
+                    child: Image.network(
+                      photoDriver == ''
+                          ? "https://firebasestorage.googleapis.com/v0/b/myapiprojects-425308.appspot.com/o/drivericon.png?alt=media&token=06d831a7-7b31-42f4-996d-9412a922b368"
+                          : photoDriver,
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        nameDriver,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      Text(
+                        carDetailsDriver,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 19),
+              const Divider(
+                height: 1,
+                color: Colors.white70,
+                thickness: 1,
+              ),
+              const SizedBox(height: 19),
+              // Call driver button
+              GestureDetector(
+                onTap: () {
+                  launchUrl(Uri.parse("tel://$phoneNumberDriver"));
+                },
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: 21,
+                      backgroundColor: Colors.green,
+                      child: CircleAvatar(
+                        radius: 22,
+                        backgroundColor: Colors.green,
+                        child: CircleAvatar(
+                          radius: 18,
+                          backgroundColor: Colors.black,
+                          child: Icon(
+                            Icons.phone,
+                            color: Colors.green,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+updateFromDriverCurrentLocationToPickUp(driverCurrentLocationLatLng) async {
+  if (!requestingDirectionDetailsInfo) {
+    requestingDirectionDetailsInfo = true;
 
-      if(directionDetailsPickup == null)
-      {
-        return;
-      }
+    var userPickUpLocationLatLng = LatLng(currentPositionOfUser!.latitude, currentPositionOfUser!.longitude);
 
-      setState(() {
-        tripStatusDisplay = "Driver is Coming - ${directionDetailsPickup.durationTextString}";
-      });
+    var directionDetailsPickup = await CommonMethods.getDirectionDetailsFromAPI(
+        driverCurrentLocationLatLng, userPickUpLocationLatLng);
 
-      requestingDirectionDetailsInfo = false;
+    if (directionDetailsPickup == null) {
+      return;
     }
+
+    tripStatusDisplayController.add("Driver is Coming - ${directionDetailsPickup.durationTextString}");
+
+    requestingDirectionDetailsInfo = false;
+  }
+}
+
+updateFromDriverCurrentLocationToDropOffDestination(driverCurrentLocationLatLng) async {
+  if (!requestingDirectionDetailsInfo) {
+    requestingDirectionDetailsInfo = true;
+
+    var dropOffLocation = Provider.of<AppInfo>(context, listen: false).dropOffLocation;
+    var userDropOffLocationLatLng = LatLng(dropOffLocation!.latitudePosition!, dropOffLocation.longitudePosition!);
+
+    var directionDetailsPickup = await CommonMethods.getDirectionDetailsFromAPI(
+        driverCurrentLocationLatLng, userDropOffLocationLatLng);
+
+    if (directionDetailsPickup == null) {
+      return;
+    }
+
+    tripStatusDisplayController.add("Driving to DropOff Location\n- ${directionDetailsPickup.durationTextString}");
+
+    requestingDirectionDetailsInfo = false;
+  }
+}
+
+
+  noDriverAvailable() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => InfoDialog(
+              title: "No Driver Available".tr(),
+              description:
+                  "No driver found in the nearby location. Please try again shortly.".tr(),
+            ));
   }
 
-  updateFromDriverCurrentLocationToDropOffDestination(driverCurrentLocationLatLng) async
-  {
-    if(!requestingDirectionDetailsInfo)
-    {
-      requestingDirectionDetailsInfo = true;
-
-      var dropOffLocation = Provider.of<AppInfo>(context, listen: false).dropOffLocation;
-      var userDropOffLocationLatLng = LatLng(dropOffLocation!.latitudePosition!, dropOffLocation.longitudePosition!);
-
-      var directionDetailsPickup = await CommonMethods.getDirectionDetailsFromAPI(driverCurrentLocationLatLng, userDropOffLocationLatLng);
-
-      if(directionDetailsPickup == null)
-      {
-        return;
-      }
-
-      setState(() {
-        tripStatusDisplay = "Driving to DropOff Location - ${directionDetailsPickup.durationTextString}";
-      });
-
-      requestingDirectionDetailsInfo = false;
-    }
-  }
-
-
-    noDriverAvailable() {
-      showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) => InfoDialog(
-                title: "No Driver Available",
-                description:
-                    "No driver found in the nearby location. Please try again shortly.",
-              ));
+  searchDriver() {
+    if (availableNearbyOnlineDriversList!.length == 0) {
+      cancelRideRequest();
+      resetAppNow();
+      noDriverAvailable();
+      return;
     }
 
-    searchDriver() {
-      if (availableNearbyOnlineDriversList!.length == 0) {
-        cancelRideRequest();
-        resetAppNow();
-        noDriverAvailable();
-        return;
-      }
+    var currentDriver = availableNearbyOnlineDriversList![0];
 
-       var currentDriver = availableNearbyOnlineDriversList![0];
-
-     //send notification to this currentDriver - currentDriver means selected driver
-   sendNotificationToDriver(currentDriver);
+    //send notification to this currentDriver - currentDriver means selected driver
+    sendNotificationToDriver(currentDriver);
 
     availableNearbyOnlineDriversList!.removeAt(0);
-    }
 
-    sendNotificationToDriver(OnlineNearbyDrivers currentDriver)
-  {
+    print(
+        "Current Driver ID:========================== ${currentDriver.uidDriver}");
+  }
+
+  sendNotificationToDriver(OnlineNearbyDrivers currentDriver) {
     //update driver's newTripStatus - assign tripID to current driver
     DatabaseReference currentDriverRef = FirebaseDatabase.instance
         .ref()
@@ -831,68 +1113,48 @@ displayTripDetailsContainer()
         .child("newTripStatus");
 
     currentDriverRef.set(tripRequestRef!.key);
-    
-    print('value is 1----------------- $currentDriverRef');
+
     //get current driver device recognition token
     DatabaseReference tokenOfCurrentDriverRef = FirebaseDatabase.instance
-    
-    
         .ref()
         .child("drivers")
         .child(currentDriver.uidDriver.toString())
         .child("deviceToken");
 
-    tokenOfCurrentDriverRef.once().then((dataSnapshot)
-
-    {
-      
-      
-      if(dataSnapshot.snapshot.value != null)
-      
-      {
+    tokenOfCurrentDriverRef.once().then((dataSnapshot) {
+      if (dataSnapshot.snapshot.value != null) {
         String deviceToken = dataSnapshot.snapshot.value.toString();
 
-    print('value is 2----------------- $deviceToken');
         //send notification
-          PushNotificationService.sendNotificationToSelectedDriver(
-            deviceToken,
-            context,
-            tripRequestRef!.key.toString()
-        );
+        PushNotificationService.sendNotificationToSelectedDriver(
+            deviceToken, context, tripRequestRef!.key.toString());
+      } else {
+        return;
       }
-      else
-      {
-         return;
-      }
-      const oneTickPerSec = Duration(seconds :1);
-      var timerCountDown = Timer.periodic(oneTickPerSec, (timer)
-      {
-        
+
+      const oneTickPerSec = Duration(seconds: 1);
+      var timerCountDown = Timer.periodic(oneTickPerSec, (timer) {
         requestTimeoutDriver = requestTimeoutDriver - 1;
 
-         //when trip request is not requesting means trip request cancelled - stop timer
-     /*   if(stateOfApp != "requesting")
-        {
-          timer.cancel();
-          currentDriverRef.set("cancelled");
-          currentDriverRef.onDisconnect();
-          requestTimeoutDriver = 20;
-        }*/
+        //when trip request is not requesting means trip request cancelled - stop timer
+        // if(stateOfApp != "requesting")
+        // {
+        //   timer.cancel();
+        //   currentDriverRef.set("cancelled");
+        //   currentDriverRef.onDisconnect();
+        //   requestTimeoutDriver = 20;
+        // }
 
-
-         //when trip request is accepted by online nearest available driver
-       currentDriverRef.onValue.listen((dataSnapshot)
-        {
-          if(dataSnapshot.snapshot.value.toString() == "accepted")
-          {
+        //when trip request is accepted by online nearest available driver
+        currentDriverRef.onValue.listen((dataSnapshot) {
+          if (dataSnapshot.snapshot.value.toString() == "accepted") {
             timer.cancel();
             currentDriverRef.onDisconnect();
             requestTimeoutDriver = 20;
           }
         });
-         //if 20 seconds passed - send notification to next nearest online available driver
-        if(requestTimeoutDriver == 0)
-        {
+        //if 20 seconds passed - send notification to next nearest online available driver
+        if (requestTimeoutDriver == 0) {
           currentDriverRef.set("timeout");
           timer.cancel();
           currentDriverRef.onDisconnect();
@@ -902,11 +1164,8 @@ displayTripDetailsContainer()
           searchDriver();
         }
       });
-      
     });
   }
-   
-
 
   void _animate() {
     setState(() {

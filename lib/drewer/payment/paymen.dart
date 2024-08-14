@@ -31,7 +31,7 @@ class CraditCardState extends State<CraditCard> {
           automaticallyImplyLeading: false,
           elevation: 0.0,
           leading: IconButton(
-            padding: EdgeInsets.only(left: 10),
+            padding:const EdgeInsets.only(left: 10),
             onPressed: () {
               setState(() {
                 Navigator.pop(context);
@@ -115,7 +115,7 @@ class CraditCardState extends State<CraditCard> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          backgroundColor: Color.fromARGB(255, 4, 22, 45),
+                          backgroundColor:const Color.fromARGB(255, 4, 22, 45),
                         ),
                         child: Container(
                           width: view.maxWidth,

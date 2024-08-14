@@ -26,23 +26,20 @@ class LoadingDialog extends StatelessWidget
           color: Colors.black87,
           borderRadius: BorderRadius.circular(5),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
+       
           child: Row(
             children: [
-
-              const SizedBox(width: 5,),
 
               const CircularProgressIndicator(
                 valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
               ),
 
-              const SizedBox(width: 8,),
+              const SizedBox(width: 5,),
 
               Text(
                 messageText,
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 13,
                   color: Colors.white,
                 ),
               ),
@@ -50,7 +47,7 @@ class LoadingDialog extends StatelessWidget
             ],
           ),
         ),
-      ),
+      
     );
   }
 }

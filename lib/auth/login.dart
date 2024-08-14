@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:new_app/Service/google_auth.dart';
-import 'package:new_app/Service/phoneAuthentication.dart';
+import 'package:new_app/Service/phone_authentication.dart';
 import 'package:new_app/auth/otp_screen.dart';
 //import 'package:new_app/auth/phonenumber.dart';
 import 'package:new_app/components/applogo_area.dart';

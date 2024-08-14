@@ -44,7 +44,7 @@ class _SettingListTileState extends State<SettingListTile> {
         decoration: 
          BoxDecoration(
               color: Theme.of(context).colorScheme.background, 
-            borderRadius: BorderRadius.all(Radius.circular(10))),
+            borderRadius:const BorderRadius.all(Radius.circular(10))),
         child: Column(
           children: <Widget>[
             GestureDetector(

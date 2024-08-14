@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:new_app/auth/otp_screen.dart';
 
-import '../Service/phoneAuthentication.dart';
+import '../Service/phone_authentication.dart';
 import '../components/image_add.dart';
 
 class PhoneScreen extends StatefulWidget {
@@ -71,74 +71,71 @@ class _PhoneScreenState extends State<PhoneScreen> {
                   
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
-                    child: Container(
-                      
-                      child: Form(
-                        key: _formKey,
-                        child: TextFormField(
-                          controller: phoneController,
-                          inputFormatters: [LengthLimitingTextInputFormatter(10)],
-                          keyboardType: TextInputType.number,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter phone number';
-                            }
-                            if (value.length != 10) {
-                              return 'Enter 10 digit number';
-                            }
-                      
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              phoneController.text = value;
-                            });
-                          },
-                          autofillHints: const [AutofillHints.oneTimeCode],
-                          decoration: InputDecoration(
-                            hintText: 'Enter phone number',
-                            prefixIcon: Container(
-                              padding: const EdgeInsets.all(8.0),
-                              child: InkWell(
-                                onTap: () {
-                                  showCountryPicker(
-                                      context: context,
-                                      countryListTheme: const CountryListThemeData(
-                                        flagSize: 20,
-                                        bottomSheetHeight: 400,
-                                      ),
-                                      onSelect: (value) {
-                                        setState(() {
-                                          selectedCountry = value;
-                                        });
+                    child: Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        controller: phoneController,
+                        inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Enter phone number';
+                          }
+                          if (value.length != 10) {
+                            return 'Enter 10 digit number';
+                          }
+                    
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            phoneController.text = value;
+                          });
+                        },
+                        autofillHints: const [AutofillHints.oneTimeCode],
+                        decoration: InputDecoration(
+                          hintText: 'Enter phone number',
+                          prefixIcon: Container(
+                            padding: const EdgeInsets.all(8.0),
+                            child: InkWell(
+                              onTap: () {
+                                showCountryPicker(
+                                    context: context,
+                                    countryListTheme: const CountryListThemeData(
+                                      flagSize: 20,
+                                      bottomSheetHeight: 400,
+                                    ),
+                                    onSelect: (value) {
+                                      setState(() {
+                                        selectedCountry = value;
                                       });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(top: 8),
-                                  child: Text(
-                                      '${selectedCountry.flagEmoji}+ ${selectedCountry.phoneCode}'),
-                                ),
+                                    });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8),
+                                child: Text(
+                                    '${selectedCountry.flagEmoji}+ ${selectedCountry.phoneCode}'),
                               ),
                             ),
-                            suffixIcon: phoneController.text.length > 9
-                                ? Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Container(
-                                      height: 10,
-                                      width: 10,
-                                      decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white),
-                                      child: const Icon(Icons.done,
-                                          color: Color.fromARGB(255, 53, 255, 60)),
-                                    ),
-                                  )
-                                : null,
-                            hintStyle: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-                                fontSize: 16),
                           ),
+                          suffixIcon: phoneController.text.length > 9
+                              ? Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    height: 10,
+                                    width: 10,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.white),
+                                    child: const Icon(Icons.done,
+                                        color: Color.fromARGB(255, 53, 255, 60)),
+                                  ),
+                                )
+                              : null,
+                          hintStyle: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w300,
+                              fontSize: 16),
                         ),
                       ),
                     ),

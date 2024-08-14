@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scale_button/scale_button.dart';
 
 class MaterialButtons extends StatefulWidget {
   final Color? textcolor;
@@ -8,12 +9,11 @@ class MaterialButtons extends StatefulWidget {
   final double elevationsize;
   final void Function()? onTap;
   final BorderRadiusGeometry? borderRadius;
-  
-  final void Function()?onPressed;
-
+  final void Function()? onPressed;
   final String text;
   final double? fontSize;
   final FontWeight? textweight;
+
   const MaterialButtons({
     super.key,
     this.meterialColor,
@@ -25,7 +25,8 @@ class MaterialButtons extends StatefulWidget {
     this.fontSize,
     this.textcolor,
     this.containerwidth,
-    this.textweight, this. onPressed, 
+    this.textweight,
+    this.onPressed,
   });
 
   @override
@@ -35,24 +36,29 @@ class MaterialButtons extends StatefulWidget {
 class _MaterialButtonsState extends State<MaterialButtons> {
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return ScaleButton(
+      duration: const Duration(milliseconds: 200),
+      bound: 0.1,
+      onTap: widget.onTap,
+      child: Material(
         color: widget.meterialColor,
         elevation: widget.elevationsize,
         borderRadius: widget.borderRadius,
-        child: InkWell(
-          onTap: widget.onTap,
-          child: SizedBox(
-            height: widget.containerheight,
-            width: widget.containerwidth,
-            child: Center(
-              child: Text(widget.text,
-                  style: TextStyle(
-                    fontSize: widget.fontSize,
-                    fontWeight: widget.textweight,
-                    color: widget.textcolor,
-                  )),
+        child: SizedBox(
+          height: widget.containerheight,
+          width: widget.containerwidth,
+          child: Center(
+            child: Text(
+              widget.text,
+              style: TextStyle(
+                fontSize: widget.fontSize,
+                fontWeight: widget.textweight,
+                color: widget.textcolor,
+              ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

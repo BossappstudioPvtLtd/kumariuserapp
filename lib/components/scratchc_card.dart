@@ -55,7 +55,7 @@ class ScratchCardState extends State<ScratchCard> {
                                 width: 200,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(10),
-                                  color: Color.fromARGB(255, 249, 250, 255),
+                                  color: const Color.fromARGB(255, 249, 250, 255),
                                 ),
                                 child: const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

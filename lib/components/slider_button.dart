@@ -18,7 +18,7 @@ class SliderButton1State extends State<SliderButton1> {
     return SliderButton(
       action: () async {
             // Simulate some asynchronous action (e.g., network request or delay)
-            await Future.delayed(Duration(seconds: 1)); // Simulating a delay of 1 second
+            await Future.delayed(const Duration(seconds: 1)); // Simulating a delay of 1 second
 
             // Return true if the action is considered successful, false otherwise
             return true;

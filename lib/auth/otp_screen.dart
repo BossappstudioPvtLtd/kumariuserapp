@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:flutter/material.dart';
-import 'package:new_app/Service/phoneAuthentication.dart';
+import 'package:new_app/Service/phone_authentication.dart';
 import 'package:new_app/auth/phone_user_profile.dart';
 import 'package:pinput/pinput.dart';
 

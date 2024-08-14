@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:new_app/components/fortune_wheel_screen.dart';
 
 class GiftPage extends StatefulWidget {
-  const GiftPage({super.key});
+  const GiftPage({super.key,});
 
   @override
   GiftPageState createState() => GiftPageState();

@@ -11,9 +11,9 @@
 	<key>BUNDLE_ID</key>
 	<string>com.yourdomain.newApp</string>
 	<key>PROJECT_ID</key>
-	<string>bossapp-9fba7</string>
+	<string>myapiprojects-425308</string>
 	<key>STORAGE_BUCKET</key>
-	<string>bossapp-9fba7.appspot.com</string>
+	<string>myapiprojects-425308.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
